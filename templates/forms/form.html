@@ -1,0 +1,46 @@
+{% load cms_tags cms_js_tags i18n menu_tags sekizai_tags static %}
+
+<head>
+    <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/css/modal_survey.css' %}" rel="stylesheet">
+    {% render_block "css" %}
+</head>
+
+<body>
+    {% if completed %}
+    <script type="text/javascript">
+        window.location.href = "{% url 'form_completed' %}";
+    </script>
+    {% else %}
+    <!-- Renderiza tu formulario aquí -->
+    <div class="modal-survey-container modal-survey-embed">
+        <div class="section_content section_content-4 survey_element wirk-form">
+            <!-- Muestra la categoría de la pregunta actual -->
+            <h3>
+                <p>{{ current_question.category }}</p>
+            </h3>
+        </div>
+        <div class=" survey_table eachdisplay">
+            <div class="survey_element survey_question sq4 active_question ms-imgpos wirk-form">
+                <!-- Muestra el texto de la pregunta -->
+                <span>{{ current_question.text }}</span>
+            </div>
+        </div>
+        <div class="survey_table qt4">
+            <form method="post">
+                {% csrf_token %}
+                <div style="margin: 20px; padding: 20px;">
+                    <!-- Itera sobre las respuestas de la pregunta actual -->
+                    {% for answer in answers %}
+                        <label style="display: block; margin-bottom: 10px;" for="answer{{ answer.id }}">
+                            <input type="radio" id="answer{{ answer.id }}" name="answer" value="{{ answer.id }}">
+                            {{ answer.text }}
+                        </label>
+                    {% endfor %}
+                </div>
+                <button type="submit" style="margin: 20px;">Siguiente</button>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+</body>

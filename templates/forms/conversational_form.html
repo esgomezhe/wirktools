@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ form.title }}</title>
+    {% load static %}
+    <script src="{% static 'assets/js/conversational_form.js' %}"></script>
+</head>
+<body>
+    <h1>{{ form.title }}</h1>
+    <div id="conversationalForm" data-form-id="{{ form.id }}">
+        <!-- El formulario conversacional se carga aquí -->
+    </div>
+</body>
+</html>
