@@ -6,6 +6,7 @@ from . import views
 
 router = DefaultRouter()
 router.register(r'forms', views.FormViewSet)
+router.register(r'completed-forms', views.CompletedFormViewSet)
 
 urlpatterns = [
     path('', views.index, name='index'),

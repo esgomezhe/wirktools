@@ -15,21 +15,28 @@ function App() {
   }, []);
 
   const handleAnswerSelect = (answerId) => {
+    const question = forms[0].questions[currentQuestionIndex];
+    const answer = question.answers.find(a => a.id === answerId);
+    if (!answer) return;
+
+    const newAnswer = {
+      questionId: question.id,
+      answerId: answer.id,
+      value: answer.value,
+      category: question.category,
+    };
+
     setSelectedAnswer(answerId);
+    setAnswers(current => [...current, newAnswer]);
   };
 
-  const handleNextQuestion = () => {
+  const handleNextQuestion = async () => {
     if (selectedAnswer !== null) {
-      const newAnswer = {
-        questionId: forms[0].questions[currentQuestionIndex].id,
-        answerId: selectedAnswer,
-      };
-      setAnswers((current) => [...current, newAnswer]);
-
       if (currentQuestionIndex < forms[0]?.questions.length - 1) {
-        setCurrentQuestionIndex((current) => current + 1);
-        setSelectedAnswer(null); // Resetea la selección de respuesta para la próxima pregunta
+        setCurrentQuestionIndex(current => current + 1);
+        setSelectedAnswer(null);
       } else {
+        await handleSubmitForm();
         setIsCompleted(true);
       }
     } else {
@@ -39,10 +46,57 @@ function App() {
 
   const handlePreviousQuestion = () => {
     if (currentQuestionIndex > 0) {
-      setCurrentQuestionIndex((current) => current - 1);
-      setSelectedAnswer(null); // Opcional: resetea la selección o restaura la respuesta anterior si es necesario
-      // Elimina la última respuesta guardada al retroceder
-      setAnswers((current) => current.slice(0, -1));
+      setCurrentQuestionIndex(current => current - 1);
+      setSelectedAnswer(null);
+      // Opcionalmente, podrías remover la última respuesta seleccionada si retrocedes
+      setAnswers(current => current.slice(0, -1));
+    }
+  };
+
+  const calculateCategoryAverages = () => {
+    const categoryScores = {};
+    const categoryCounts = {};
+
+    answers.forEach(({ category, value }) => {
+      if (categoryScores[category]) {
+        categoryScores[category] += value;
+        categoryCounts[category] += 1;
+      } else {
+        categoryScores[category] = value;
+        categoryCounts[category] = 1;
+      }
+    });
+
+    return Object.keys(categoryScores).map(category => ({
+      category,
+      average: categoryScores[category] / categoryCounts[category],
+    }));
+  };
+
+  const handleSubmitForm = async () => {
+    const completedFormData = {
+      form_title: forms[0].title,
+      content: {
+        answers: answers,
+      },
+    };
+
+    try {
+      const response = await fetch('http://localhost:8000/completed-forms/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(completedFormData),
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      console.log('Formulario enviado con éxito');
+    } catch (error) {
+      console.error('Error al enviar el formulario:', error);
     }
   };
 
@@ -59,7 +113,6 @@ function App() {
         forms.length > 0 && (
           <div>
             <h1>{forms[0].title}</h1>
-            <h2>{forms[0].questions[currentQuestionIndex].category}</h2>
             <p>{forms[0].questions[currentQuestionIndex].text}</p>
             {forms[0].questions[currentQuestionIndex].answers.map((answer) => (
               <button
@@ -86,12 +139,13 @@ function App() {
       ) : (
         <div>
           <p>¡Formulario completado!</p>
+          <h2>Promedio de Puntajes por Categoría</h2>
           <ul>
-            {answers.map((answer, index) => (
-              <li key={index}>Pregunta {answer.questionId}, Respuesta {answer.answerId}</li>
+            {calculateCategoryAverages().map(({ category, average }) => (
+              <li key={category}>{category}: {average.toFixed(2)}</li>
             ))}
           </ul>
-          <button onClick={handleRestart}>Reiniciar Formulario</button>
+          <button onClick={handleRestart}>Rellenar otro formulario</button>
         </div>
       )}
     </div>

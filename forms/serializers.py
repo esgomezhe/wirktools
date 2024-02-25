@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Form, Question, Answer
+from .models import Form, Question, Answer, CompletedForm
 
 class AnswerSerializer(serializers.ModelSerializer):
     class Meta:
@@ -19,3 +19,8 @@ class FormSerializer(serializers.ModelSerializer):
     class Meta:
         model = Form
         fields = ['id', 'title', 'questions']
+
+class CompletedFormSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CompletedForm
+        fields = ['id', 'user', 'form_title', 'content']

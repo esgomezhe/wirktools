@@ -1,6 +1,6 @@
 import nested_admin
 from django.contrib import admin
-from .models import Form, Question, Answer
+from .models import Form, Question, Answer, CompletedForm
 
 class AnswerInline(nested_admin.NestedStackedInline):
     model = Answer
@@ -22,3 +22,8 @@ class FormAdmin(nested_admin.NestedModelAdmin):
     inlines = [QuestionInline]
 
 admin.site.register(Form, FormAdmin)
+
+@admin.register(CompletedForm)
+class CompletedFormAdmin(admin.ModelAdmin):
+    list_display = ['form_title', 'user', 'created_at']
+    readonly_fields = ['content']  # Si deseas que el contenido sea de solo lectura
