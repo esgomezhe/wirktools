@@ -59,6 +59,7 @@ function App() {
         forms.length > 0 && (
           <div>
             <h1>{forms[0].title}</h1>
+            <h2>{forms[0].questions[currentQuestionIndex].category}</h2>
             <p>{forms[0].questions[currentQuestionIndex].text}</p>
             {forms[0].questions[currentQuestionIndex].answers.map((answer) => (
               <button
