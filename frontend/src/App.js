@@ -1,4 +1,32 @@
 import React, { useEffect, useState } from 'react';
+import "./App.css"
+import { Bar, Radar } from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  RadialLinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Filler,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+
+ChartJS.register(
+  RadialLinearScale,
+  PointElement,
+  LineElement,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Filler,
+  Tooltip,
+  Legend
+);
 
 function App() {
   const [forms, setForms] = useState([]);
@@ -56,8 +84,11 @@ function App() {
   const calculateCategoryAverages = () => {
     const categoryScores = {};
     const categoryCounts = {};
-
+  
     answers.forEach(({ category, value }) => {
+      // Si la categoría es la que deseamos excluir, simplemente continuamos con la siguiente iteración
+      if (category === "Complejidad") return;
+  
       if (categoryScores[category]) {
         categoryScores[category] += value;
         categoryCounts[category] += 1;
@@ -66,10 +97,16 @@ function App() {
         categoryCounts[category] = 1;
       }
     });
-
+  
+    // Encuentra el máximo puntaje promedio actual
+    const maxAverageScore = Math.max(...Object.keys(categoryScores).map(
+      category => categoryScores[category] / categoryCounts[category]
+    ));
+  
+    // Normaliza los puntajes al máximo de 5
     return Object.keys(categoryScores).map(category => ({
       category,
-      average: categoryScores[category] / categoryCounts[category],
+      average: (categoryScores[category] / categoryCounts[category]) / maxAverageScore * 5,
     }));
   };
 
@@ -105,6 +142,66 @@ function App() {
     setCurrentQuestionIndex(0);
     setSelectedAnswer(null);
     setAnswers([]);
+  };
+
+  const getBarChartData = () => {
+    const categoryAverages = calculateCategoryAverages();
+    return {
+      labels: categoryAverages.map(ca => ca.category),
+      datasets: [
+        {
+          label: 'Puntaje Promedio',
+          data: categoryAverages.map(ca => ca.average),
+          backgroundColor: 'rgba(54, 162, 235, 0.5)',
+          borderColor: 'rgba(54, 162, 235, 1)',
+          borderWidth: 1,
+        },
+      ],
+    };
+  };
+
+  const barChartOptions = {
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: {
+          stepSize: 1, // Puedes definir el tamaño de paso del eje y si es necesario
+          suggestedMin: 0, // Inicio del eje y
+          suggestedMax: 5, // Fin del eje y
+        },
+      },
+    },
+    // ... (Otras opciones si son necesarias)
+  };
+
+  const getRadarChartData = () => {
+    const categoryAverages = calculateCategoryAverages();
+    return {
+      labels: categoryAverages.map(ca => ca.category),
+      datasets: [
+        {
+          label: 'Puntaje Promedio',
+          data: categoryAverages.map(ca => ca.average),
+          backgroundColor: 'rgba(255, 99, 132, 0.2)',
+          borderColor: 'rgba(255, 99, 132, 1)',
+          borderWidth: 1,
+          pointBackgroundColor: 'rgba(255, 99, 132, 1)',
+        },
+      ],
+    };
+  };
+
+  const radarChartOptions = {
+    scales: {
+      r: {
+        angleLines: {
+          display: true
+        },
+        suggestedMin: 0, // Mínimo sugerido para el eje radial
+        suggestedMax: 5, // Máximo sugerido para el eje radial
+      }
+    },
+    // ... otras opciones que desees configurar ...
   };
 
   return (
@@ -145,6 +242,12 @@ function App() {
               <li key={category}>{category}: {average.toFixed(2)}</li>
             ))}
           </ul>
+          <div className="chart-container">
+            <Bar data={getBarChartData()} options={barChartOptions} />
+          </div>
+          <div className="chart-container">
+            <Radar data={getRadarChartData()} options={radarChartOptions} />
+          </div>
           <button onClick={handleRestart}>Rellenar otro formulario</button>
         </div>
       )}
