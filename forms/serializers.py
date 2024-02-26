@@ -11,7 +11,7 @@ class QuestionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Question
-        fields = ['id', 'text', 'category', 'answers']
+        fields = ['id', 'text', 'category', 'sub_category', 'answers']
 
 class FormSerializer(serializers.ModelSerializer):
     questions = QuestionSerializer(many=True, read_only=True)

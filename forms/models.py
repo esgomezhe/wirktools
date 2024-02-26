@@ -12,6 +12,7 @@ class Question(models.Model):
     form = models.ForeignKey(Form, related_name='questions', on_delete=models.CASCADE)
     text = models.CharField(max_length=255)
     category = models.CharField(max_length=255, blank=True, null=True)
+    sub_category = models.CharField(max_length=255, blank=True, null=True)
 
     def __str__(self):
         return f"{self.text} ({self.category})"
