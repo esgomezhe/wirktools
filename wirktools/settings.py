@@ -18,7 +18,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG')
 
-ALLOWED_HOSTS = os.environ.list('ALLOWED_HOST_DEV')
+ALLOWED_HOSTS = env.list('ALLOWED_HOST_DEV')
 
 # Application definition
 
@@ -28,29 +28,19 @@ DJANGO_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
-    #MyApps
-    'forms',
-    #OtherApps
-    'nested_admin',
-    'rest_framework',
-    'corsheaders',
+    'django.contrib.staticfiles'
 ]
 
 PROJECT_APPS = [
-    'forms',
-    #OtherApps
-    'nested_admin',
-    'rest_framework',
-    'corsheaders',
+    'forms'
 ]
 
 THIRD_PARTY_APPS = [
     'nested_admin',
     'rest_framework',
     'corsheaders',
-    'ckeditor',
-    'ckeditor_uploader'
+    #'ckeditor',
+    #'ckeditor_uploader'
 ]
 
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + THIRD_PARTY_APPS
@@ -140,7 +130,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'es'
 
-TIME_ZONE = 'GMT-5'
+TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
@@ -169,7 +159,7 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/5.0/ref/settings/#media-root
 
 MEDIA_URL = "/media/"
-MEDIA_ROOT = str(BASE_DIR, "media")
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 #CORS_ALLOWED_ORIGINS = [
     #"http://localhost:3000",
@@ -193,7 +183,7 @@ REST_FRAMEWORK = {
 }
 
 if not DEBUG:
-    ALLOWED_HOSTS=env.list('ALLOWED_HOSTS_DEPLOY')
+    ALLOWED_HOSTS = env.list('ALLOWED_HOSTS_DEPLOY')
     CORS_ORIGIN_WHITELIST = env.list('CORS_ORIGIN_WHITELIST_DEPLOY')
     CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS_DEPLOY')
 
