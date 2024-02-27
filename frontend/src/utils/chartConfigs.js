@@ -8,7 +8,6 @@ export const calculateCategoryAverages = (answers) => {
   const categoryCounts = {};
 
   answers.forEach(({ category, value }) => {
-    //Omitimos alguna categoría en especifico, en este caso "Complejidad"
     if (category === "Complejidad") return;
 
     if (categoryScores[category]) {
@@ -20,10 +19,18 @@ export const calculateCategoryAverages = (answers) => {
     }
   });
 
-  return Object.keys(categoryScores).map(category => ({
-    category,
-    average: (categoryScores[category] / categoryCounts[category]) / Math.max(...Object.values(categoryScores)) * 5,
-  }));
+  // Encontrar el número máximo de respuestas entre todas las categorías
+  const maxResponses = Math.max(...Object.values(categoryCounts));
+
+  return Object.keys(categoryScores).map(category => {
+    const average = categoryScores[category] / categoryCounts[category];
+    // Normalizar el promedio en una escala de 1 a 5, donde el valor máximo posible de respuestas se ajusta a 5
+    const normalizedAverage = (average * 5) / maxResponses;
+    return {
+      category,
+      average: normalizedAverage,
+    };
+  });
 };
 
 // Función para calcular el puntaje de Intensidad Digital
