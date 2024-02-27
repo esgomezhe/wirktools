@@ -1,75 +1,27 @@
-import React, { useEffect, useState } from 'react';
 import "./App.css"
-import Question from './components/Question';
-import FormCompletion from './components/FormCompletion';
-import { fetchForms, submitForm } from './utils/formService';
+import { Routes, Route } from 'react-router-dom'
+import Header from "./components/Header";
+// import Formulario from './pages/Formulario';
+// import Home from './pages/Home';
+// import Services from "./pages/Services";
+import { Blog, Formulario, Home, Portfolio, Services, Team, About } from "./pages/AllPages";
+
 
 function App() {
-  const [forms, setForms] = useState([]);
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [selectedAnswer, setSelectedAnswer] = useState(null);
-  const [answers, setAnswers] = useState([]);
-  const [isCompleted, setIsCompleted] = useState(false);
-
-  useEffect(() => {
-    fetchForms().then(data => setForms(data.results));
-  }, []);
-
-  const handleAnswerSelect = (answerId) => {
-    const question = forms[0].questions[currentQuestionIndex];
-    const answer = question.answers.find(a => a.id === answerId);
-    if (!answer) return;
-
-    const newAnswer = {
-      questionId: question.id,
-      answerId: answer.id,
-      value: answer.value,
-      category: question.category,
-    };
-
-    setSelectedAnswer(answerId);
-    setAnswers(current => [...current, newAnswer]);
-  };
-
-  const handleNavigation = (direction) => {
-    if (direction === 'next' && selectedAnswer !== null) {
-      if (currentQuestionIndex < forms[0]?.questions.length - 1) {
-        setCurrentQuestionIndex(current => current + 1);
-        setSelectedAnswer(null);
-      } else {
-        submitForm(forms[0].title, answers)
-          .then(() => setIsCompleted(true))
-          .catch(error => console.error('Error al enviar el formulario:', error));
-      }
-    } else if (direction === 'previous' && currentQuestionIndex > 0) {
-      setCurrentQuestionIndex(current => current - 1);
-      setSelectedAnswer(null);
-      setAnswers(current => current.slice(0, -1));
-    }
-  };
-
-  const handleRestart = () => {
-    setIsCompleted(false);
-    setCurrentQuestionIndex(0);
-    setSelectedAnswer(null);
-    setAnswers([]);
-  };
 
   return (
     <div>
-      {!isCompleted ? (
-        forms.length > 0 && (
-          <Question
-            form={forms[0]}
-            currentQuestionIndex={currentQuestionIndex}
-            selectedAnswer={selectedAnswer}
-            onSelectAnswer={handleAnswerSelect}
-            onNavigate={handleNavigation}
-          />
-        )
-      ) : (
-        <FormCompletion answers={answers} onRestart={handleRestart} />
-      )}
+      <Header />
+      {/* Renderiza el componente del navbar al dar clic */}
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='/formulario' element={<Formulario />} />
+        <Route path='/services' element={<Services />} />
+        <Route path='/portfolio' element={<Portfolio />} />
+        <Route path='/team' element={<Team />} />
+        <Route path='/blog' element={<Blog />} />
+        <Route path='/about' element={<About />} />
+      </Routes>
     </div>
   );
 }
