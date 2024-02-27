@@ -38,7 +38,15 @@
 }
 
 .chart-container {
-  max-width: 500px;
-  height: auto;
-  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* Centra horizontalmente */
+  align-items: center; /* Centra verticalmente cuando los elementos están en la misma línea */
+  margin: auto; /* Asegura que el contenedor esté centrado en su contenedor padre */
+}
+
+.chart {
+  flex: 1 1 300px; /* Cada gráfico intentará ocupar al menos 300px de ancho */
+  max-width: calc(100% - 20px); /* Ajusta el ancho máximo para considerar el gap */
+  padding: 20px;
 }

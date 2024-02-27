@@ -1,10 +1,15 @@
 import React from 'react';
 import BarChart from '../charts/BarChart';
 import RadarChart from '../charts/RadarChart';
-import { calculateCategoryAverages } from '../utils/chartConfigs';
+import BubbleChart from '../charts/BubbleChart'; // Asegúrate de tener este componente
+import { calculateCategoryAverages, calculateIntensidadDigitalScore, calculateGestionTransformacionalScore } from '../utils/chartConfigs';
 
 function FormCompletion({ answers, onRestart }) {
   const categoryAverages = calculateCategoryAverages(answers);
+
+  // Calcula los promedios para Intensidad Digital y Gestión Transformacional
+  const intensidadDigitalScore = calculateIntensidadDigitalScore(categoryAverages);
+  const gestionTransformacionalScore = calculateGestionTransformacionalScore(categoryAverages);
 
   return (
     <div>
@@ -16,10 +21,15 @@ function FormCompletion({ answers, onRestart }) {
         ))}
       </ul>
       <div className="chart-container">
-        <BarChart categoryAverages={categoryAverages} />
-      </div>
-      <div className="chart-container">
-        <RadarChart categoryAverages={categoryAverages} />
+        <div className="chart">
+          <BarChart categoryAverages={categoryAverages} />
+        </div>
+        <div className="chart">
+          <RadarChart categoryAverages={categoryAverages} />
+        </div>
+        <div className="chart">
+          <BubbleChart intensidadDigital={intensidadDigitalScore} gestionTransformacional={gestionTransformacionalScore} />
+        </div>
       </div>
       <button onClick={onRestart}>Rellenar otro formulario</button>
     </div>
