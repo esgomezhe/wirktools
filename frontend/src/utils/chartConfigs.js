@@ -1,6 +1,6 @@
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, RadialLinearScale, PointElement, LineElement, Title, Filler, Tooltip, Legend } from 'chart.js';
+import { Chart as ChartJS, ArcElement, CategoryScale, LinearScale, BarElement, RadialLinearScale, PointElement, LineElement, Title, Filler, Tooltip, Legend } from 'chart.js';
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, RadialLinearScale, PointElement, LineElement, Title, Filler, Tooltip, Legend);
+ChartJS.register(ArcElement, CategoryScale, LinearScale, BarElement, RadialLinearScale, PointElement, LineElement, Title, Filler, Tooltip, Legend);
 
 // Agrega las nuevas funciones para calcular los promedios de cada categoría
 export const calculateCategoryAverages = (answers) => {
@@ -20,12 +20,12 @@ export const calculateCategoryAverages = (answers) => {
   });
 
   // Encontrar el número máximo de respuestas entre todas las categorías
-  const maxResponses = Math.max(...Object.values(categoryCounts));
+  const maxResponseValue = 3;
 
   return Object.keys(categoryScores).map(category => {
     const average = categoryScores[category] / categoryCounts[category];
     // Normalizar el promedio en una escala de 1 a 5, donde el valor máximo posible de respuestas se ajusta a 5
-    const normalizedAverage = (average * 5) / maxResponses;
+    const normalizedAverage = (average * 5) / maxResponseValue;
     return {
       category,
       average: normalizedAverage,
@@ -145,3 +145,4 @@ export const optionsForBubbleChart = {
     },
   },
 };
+

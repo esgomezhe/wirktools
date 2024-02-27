@@ -1,7 +1,8 @@
 import React from 'react';
 import BarChart from '../charts/BarChart';
 import RadarChart from '../charts/RadarChart';
-import BubbleChart from '../charts/BubbleChart'; // Asegúrate de tener este componente
+import BubbleChart from '../charts/BubbleChart';
+import PercentageChart from '../charts/PercentageChart';
 import { calculateCategoryAverages, calculateIntensidadDigitalScore, calculateGestionTransformacionalScore } from '../utils/chartConfigs';
 
 function FormCompletion({ answers, onRestart }) {
@@ -13,13 +14,15 @@ function FormCompletion({ answers, onRestart }) {
 
   return (
     <div>
-      <p>¡Formulario completado!</p>
-      <h2>Promedio de Puntajes por Categoría</h2>
-      <ul>
+      <div style={{ textAlign: 'center' }}>
+        <h3>¡Formulario completado!</h3>
+        <h1>Resultados</h1>
+      </div>
+      <div className="chart-container">
         {categoryAverages.map(({ category, average }) => (
-          <li key={category}>{category}: {average.toFixed(2)}</li>
-        ))}
-      </ul>
+                    <PercentageChart key={category} category={category} score={average} maxScore={5} />
+                ))}
+      </div>
       <div className="chart-container">
         <div className="chart">
           <BarChart categoryAverages={categoryAverages} />
@@ -31,7 +34,9 @@ function FormCompletion({ answers, onRestart }) {
           <BubbleChart intensidadDigital={intensidadDigitalScore} gestionTransformacional={gestionTransformacionalScore} />
         </div>
       </div>
-      <button onClick={onRestart}>Rellenar otro formulario</button>
+      <div style={{ textAlign: 'center', margin: '50px' }}>
+        <button onClick={onRestart}>Rellenar otro formulario</button>
+      </div>
     </div>
   );
 }
