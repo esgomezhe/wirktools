@@ -20,7 +20,7 @@ function FormCompletion({ answers, onRestart }) {
       </div>
       <div className="chart-container">
         {categoryAverages.map(({ category, average }) => (
-                    <PercentageChart key={category} category={category} score={average} maxScore={5} />
+                    <PercentageChart key={category} category={category} score={average} />
                 ))}
       </div>
       <div className="chart-container">

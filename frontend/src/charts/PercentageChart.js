@@ -6,17 +6,17 @@ const getCircleColor = (percentage) => {
     return "#2ecc71";
 };
 
-const PercentageChart = ({ category, score, maxScore }) => {
+const PercentageChart = ({ category, score }) => {
     const radius = 15.9155;
     const circumference = 2 * Math.PI * radius;
-    const percentage = (score / maxScore) * 100;
+    const percentage = (score / 5) * 100;
     const strokeLength = (percentage / 100) * circumference;
     const strokeRemainder = circumference - strokeLength;
     const color = getCircleColor(percentage);
 
     return (
         <div style={{ margin: '20px' }}>
-            <div class="survey-container" style={{ textAlign: 'center', marginBottom: '20px' }}>
+            <div className="survey-container" style={{ textAlign: 'center', marginBottom: '20px' }}>
                 <h5 style={{ marginBottom: '5px' }}>{category}:</h5>
                 <div style={{ fontSize: '1.5em', color: '#00ccff' }}>{score.toFixed(2)}/5</div>
             </div>

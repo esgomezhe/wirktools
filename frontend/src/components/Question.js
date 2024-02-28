@@ -4,7 +4,7 @@ function Question({ form, currentQuestionIndex, selectedAnswer, onSelectAnswer, 
   return (
     <div>
       <h1>{form.title}</h1>
-      <h2>{form.questions[currentQuestionIndex].category}</h2>
+      <h2>{form.questions[currentQuestionIndex].category.name}</h2>
       <h3>{form.questions[currentQuestionIndex].sub_category}</h3>
       <p>{form.questions[currentQuestionIndex].text}</p>
       {form.questions[currentQuestionIndex].answers.map((answer) => (

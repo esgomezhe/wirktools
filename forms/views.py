@@ -1,15 +1,12 @@
-from .models import Form, CompletedForm
-from .serializers import FormSerializer, CompletedFormSerializer
+from .models import Form, CompletedForm, Category
+from .serializers import FormSerializer, CompletedFormSerializer, CategorySerializer
 from django.shortcuts import render
-from rest_framework import generics, viewsets, status
-from rest_framework.decorators import action
-from rest_framework.response import Response
+from rest_framework import viewsets
 from rest_framework.permissions import AllowAny
-from django.contrib.auth import authenticate, login, logout
-from django.http import JsonResponse
-from django.views.decorators.csrf import ensure_csrf_cookie, csrf_protect
-from django.views.decorators.http import require_POST
-import json
+
+class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
 
 class FormViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Form.objects.all()

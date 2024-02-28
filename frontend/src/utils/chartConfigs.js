@@ -6,21 +6,27 @@ ChartJS.register(ArcElement, CategoryScale, LinearScale, BarElement, RadialLinea
 export const calculateCategoryAverages = (answers) => {
   const categoryScores = {};
   const categoryCounts = {};
+  let totalAnswersCount = 0; // Para sumar todos los answers_count
 
-  answers.forEach(({ category, value }) => {
-    if (category === "Complejidad") return;
+  answers.forEach(({ category, value, answers_count }) => {
+    totalAnswersCount += answers_count; // Sumar al total de answers_count
+    
+    if (category.name === 'Complejidad') return;
 
-    if (categoryScores[category]) {
-      categoryScores[category] += value;
-      categoryCounts[category] += 1;
+    if (categoryScores[category.name]) {
+      categoryScores[category.name] += value;
+      categoryCounts[category.name] += 1;
     } else {
-      categoryScores[category] = value;
-      categoryCounts[category] = 1;
+      categoryScores[category.name] = value;
+      categoryCounts[category.name] = 1;
     }
   });
 
-  // Encontrar el número máximo de respuestas entre todas las categorías
-  const maxResponseValue = 3;
+  // Calcular el promedio de answers_count para todas las respuestas
+  const averageAnswersCount = totalAnswersCount / answers.length;
+
+  // Usar el promedio de answers_count como maxResponseValue
+  const maxResponseValue = averageAnswersCount;
 
   return Object.keys(categoryScores).map(category => {
     const average = categoryScores[category] / categoryCounts[category];
