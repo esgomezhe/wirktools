@@ -24,18 +24,6 @@ class QuestionSerializer(serializers.ModelSerializer):
         # Retorna el número de respuestas asociadas a la pregunta
         return obj.answers.count()
 
-class FormSerializer(serializers.ModelSerializer):
-    questions = QuestionSerializer(many=True, read_only=True)
-
-    class Meta:
-        model = Form
-        fields = ['id', 'title', 'questions']
-
-class CompletedFormSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CompletedForm
-        fields = ['id', 'user', 'form_title', 'content']
-
 class DiagnosticLevelSerializer(serializers.ModelSerializer):
     class Meta:
         model = DiagnosticLevel
@@ -43,6 +31,7 @@ class DiagnosticLevelSerializer(serializers.ModelSerializer):
 
 class CategoryDiagnosticsSerializer(serializers.ModelSerializer):
     levels = DiagnosticLevelSerializer(many=True, read_only=True)
+    category = CategorySerializer(read_only=True)
 
     class Meta:
         model = CategoryDiagnostics
@@ -54,3 +43,16 @@ class DiagnosticsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Diagnostics
         fields = ['id', 'title', 'categorydiagnostics_set']
+
+class FormSerializer(serializers.ModelSerializer):
+    questions = QuestionSerializer(many=True, read_only=True)
+    diagnostics = DiagnosticsSerializer(many=False, read_only=True)
+
+    class Meta:
+        model = Form
+        fields = ['id', 'title', 'questions', 'diagnostics']
+
+class CompletedFormSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CompletedForm
+        fields = ['id', 'user', 'form_title', 'content']

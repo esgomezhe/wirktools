@@ -39,7 +39,7 @@ THIRD_PARTY_APPS = [
     'nested_admin',
     'rest_framework',
     'corsheaders',
-    #'ckeditor',
+    'ckeditor',
     #'ckeditor_uploader'
 ]
 
@@ -48,13 +48,13 @@ INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + THIRD_PARTY_APPS
 #CKEditor
 CKEDITOR_CONFIGS = {
     'default': {
-        'toolbar': 'Custom',
-        'toolbar_Custom': [
-            ['Bold', 'Italic', 'Underline'],
-            ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
-            ['Link', 'Unlink'],
-            ['RemoveFormat', 'Source']
-        ],
+        'toolbar': 'full',
+        # 'toolbar_Custom': [
+            # ['Bold', 'Italic', 'Underline'],
+            # ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
+            # ['Link', 'Unlink'],
+            # ['RemoveFormat', 'Source']
+        # ],
         'autoParagraph': False
     }
 }
@@ -139,8 +139,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -150,14 +150,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Add project-wide static files directory
 # https://docs.djangoproject.com/en/5.0/ref/settings/#staticfiles-dirs
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "build/static")
-]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
 # Add project-wide static files directory
 # https://docs.djangoproject.com/en/5.0/ref/settings/#media-root
 
-MEDIA_URL = "/media/"
+MEDIA_URL = "media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 #CORS_ALLOWED_ORIGINS = [

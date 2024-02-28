@@ -32,12 +32,12 @@ class CompletedFormAdmin(admin.ModelAdmin):
 
 class DiagnosticLevelInline(nested_admin.NestedStackedInline):
     model = DiagnosticLevel
-    extra = 1  # Número de formularios de niveles vacíos
+    extra = 0
 
 class CategoryDiagnosticsInline(nested_admin.NestedStackedInline):
     model = CategoryDiagnostics
     inlines = [DiagnosticLevelInline]
-    extra = 1  # Número de formularios de diagnósticos vacíos
+    extra = 0
 
 class DiagnosticsAdmin(nested_admin.NestedModelAdmin):
     inlines = [CategoryDiagnosticsInline]
