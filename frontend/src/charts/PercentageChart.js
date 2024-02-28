@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState }  from 'react';
+import Popup from '../components/Popup';
 
 const getCircleColor = (percentage) => {
     if (percentage < 33) return "#e74c3c";
@@ -13,6 +14,8 @@ const PercentageChart = ({ category, score }) => {
     const strokeLength = (percentage / 100) * circumference;
     const strokeRemainder = circumference - strokeLength;
     const color = getCircleColor(percentage);
+    const [isPopupOpen, setIsPopupOpen] = useState(false);
+    const togglePopup = () => setIsPopupOpen(!isPopupOpen);
 
     return (
         <div style={{ margin: '20px' }}>
@@ -33,6 +36,13 @@ const PercentageChart = ({ category, score }) => {
                 <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', fontSize: '2.5em', color: color }}>
                     {Math.round(percentage)}%
                 </div>
+            </div>
+            <div style={{ textAlign: 'center' }}>
+                <button onClick={togglePopup}>Autodiagnostico</button>
+                <Popup isOpen={isPopupOpen} onClose={togglePopup}>
+                    <h2>{category}:</h2>
+                    <p>Este es el contenido de tu pop-up. Aquí puedes poner lo que necesites.</p>
+                </Popup>
             </div>
         </div>
     );

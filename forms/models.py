@@ -38,7 +38,7 @@ class CategoryDiagnostics(models.Model):
 class DiagnosticLevel(models.Model):
     category_diagnostics = models.ForeignKey(CategoryDiagnostics, related_name='levels', on_delete=models.CASCADE, null=True)
     level = models.IntegerField()
-    description = RichTextField()
+    description = RichTextField(blank=True, null=True)
 
     def __str__(self):
         return f"{self.level}"
