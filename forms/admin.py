@@ -1,6 +1,6 @@
 import nested_admin
 from django.contrib import admin
-from .models import Form, Question, Answer, CompletedForm, Category
+from .models import Form, Question, Answer, CompletedForm, Category, Diagnostics, DiagnosticLevel, CategoryDiagnostics
 
 admin.site.register(Category)
 
@@ -29,3 +29,17 @@ admin.site.register(Form, FormAdmin)
 class CompletedFormAdmin(admin.ModelAdmin):
     list_display = ['form_title', 'user', 'created_at']
     readonly_fields = ['content']  # Si deseas que el contenido sea de solo lectura
+
+class DiagnosticLevelInline(nested_admin.NestedStackedInline):
+    model = DiagnosticLevel
+    extra = 1  # Número de formularios de niveles vacíos
+
+class CategoryDiagnosticsInline(nested_admin.NestedStackedInline):
+    model = CategoryDiagnostics
+    inlines = [DiagnosticLevelInline]
+    extra = 1  # Número de formularios de diagnósticos vacíos
+
+class DiagnosticsAdmin(nested_admin.NestedModelAdmin):
+    inlines = [CategoryDiagnosticsInline]
+
+admin.site.register(Diagnostics, DiagnosticsAdmin)

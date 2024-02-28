@@ -9,6 +9,7 @@ export const calculateCategoryAverages = (answers) => {
   let totalAnswersCount = 0; // Para sumar todos los answers_count
 
   answers.forEach(({ category, value, answers_count }) => {
+    
     totalAnswersCount += answers_count; // Sumar al total de answers_count
     
     if (category.name === 'Complejidad') return;

@@ -45,3 +45,31 @@ class CompletedForm(models.Model):
 
     def __str__(self):
         return f"{self.form_title} - {'Anonymous' if self.user is None else self.user.username}"
+    
+class Diagnostics(models.Model):
+    title = models.CharField(max_length=255)
+
+    class Meta:
+        verbose_name_plural = "Diagnostics"
+
+    def __str__(self):
+        return self.title
+    
+class CategoryDiagnostics(models.Model):
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    diagnostics = models.ForeignKey(Diagnostics, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('category', 'diagnostics')
+        verbose_name_plural = "Category Diagnoses"
+
+    def __str__(self):
+        return f"{self.category.name} - {self.diagnostics.title}"
+
+class DiagnosticLevel(models.Model):
+    category_diagnostics = models.ForeignKey(CategoryDiagnostics, related_name='levels', on_delete=models.CASCADE, null=True)
+    level = models.CharField(max_length=255)
+    description = models.TextField()
+
+    def __str__(self):
+        return f"{self.level} - {self.description[:50]}..."  # muestra una parte de la descripción
