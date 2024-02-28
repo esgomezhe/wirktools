@@ -1,6 +1,10 @@
 import "./App.css"
 import { Routes, Route } from 'react-router-dom'
 import Header from "./components/Header";
+import HeroSection from "./components/HeroSection";
+import ServicesSection from "./components/ServicesSection";
+import WhyUsSection from "./components/WhyUsSection";
+import FeacturesSection from "./components/FeaturesSection";
 // import Formulario from './pages/Formulario';
 // import Home from './pages/Home';
 // import Services from "./pages/Services";
@@ -12,6 +16,14 @@ function App() {
   return (
     <div>
       <Header />
+      <HeroSection />
+
+      <main id="main">
+        <ServicesSection />
+        <WhyUsSection />
+        <FeacturesSection />
+      </main>
+
       {/* Renderiza el componente del navbar al dar clic */}
       <Routes>
         <Route path='/' element={<Home />} />
