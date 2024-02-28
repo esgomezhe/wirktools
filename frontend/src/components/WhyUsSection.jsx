@@ -1,14 +1,24 @@
 import React from "react";
 import WhyUs from '../img/why-us.jpg'
+import { useEffect } from 'react';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 
 function WhyUsSection() {
+
+
+  //effect AOS en el componente
+  useEffect(() => {
+    AOS.init({ duration: 1000 });
+  }, [])
   return (
-    <section className="why-us section-bg" data-aos-delay="200">
+
+    <section className="why-us section-bg" data-aos="fade-up" data-aos-delay="200">
       <div className="container">
 
         <div className="row">
-          <div className="col-lg-6 video-box" >
+          <div className="col-lg-6 video-box">
             <img src={WhyUs} className="img-fluid" alt="" />
             <a href="https://www.youtube.com/watch?v=jDDaplaOz7Q" className="venobox play-btn mb-4" data-vbtype="video" data-autoplay="true"></a>
           </div>

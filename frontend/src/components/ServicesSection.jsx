@@ -1,13 +1,22 @@
 import React from "react";
 import { Link } from 'react-router-dom'
+import { useEffect } from 'react';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 function ServicesSection() {
+
+  //effect AOS en el componente
+  useEffect(() => {
+    AOS.init();
+  }, [])
+
   return (
     <section className="services">
       <div className="container">
 
         <div className="row">
-          <div className="col-md-6 col-lg-3 d-flex align-items-stretch aos-init aos-animate" data-aos="fade-up">
+          <div className="col-md-6 col-lg-3 d-flex align-items-stretch " data-aos="fade-up">
             <div className="icon-box icon-box-pink">
               <div className="icon"><i className="bx bxl-dribbble"></i></div>
               <h4 className="title"><Link to="">Marketplace</Link></h4>
@@ -15,7 +24,7 @@ function ServicesSection() {
             </div>
           </div>
 
-          <div className="col-md-6 col-lg-3 d-flex align-items-stretch aos-init aos-animate" data-aos="fade-up"
+          <div className="col-md-6 col-lg-3 d-flex align-items-stretch" data-aos="fade-up"
             data-aos-delay="100">
             <div className="icon-box icon-box-cyan">
               <div className="icon"><i className="bx bx-file"></i></div>
@@ -24,7 +33,7 @@ function ServicesSection() {
             </div>
           </div>
 
-          <div className="col-md-6 col-lg-3 d-flex align-items-stretch aos-init aos-animate" data-aos="fade-up" data-aos-delay="200">
+          <div className="col-md-6 col-lg-3 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="200">
             <div className="icon-box icon-box-green">
               <div className="icon"><i class="bx bx-tachometer"></i></div>
               <h4 className="title"><Link to="">Autodiagnóstico</Link></h4>
@@ -32,7 +41,7 @@ function ServicesSection() {
             </div>
           </div>
 
-          <div className="col-md-6 col-lg-3 d-flex align-items-stretch aos-init aos-animate" data-aos="fade-up" data-aos-delay="200">
+          <div className="col-md-6 col-lg-3 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="200">
             <div className="icon-box icon-box-blue">
               <div className="icon"><i class="bx bx-world"></i></div>
               <h4 className="title"><Link href="">Mentorias</Link></h4>

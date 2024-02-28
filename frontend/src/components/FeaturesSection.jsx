@@ -3,8 +3,16 @@ import Features from '../img/features-1.svg'
 import Features2 from '../img/features-2.svg'
 import Features3 from '../img/features-3.svg'
 import Features4 from '../img/features-4.svg'
+import { useEffect } from 'react';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 function FeacturesSection() {
+
+  useEffect(() => {
+    AOS.init();
+  }, [])
+
   return (
     <section className="features">
       <div className="container">
@@ -15,7 +23,7 @@ function FeacturesSection() {
             todo diseñado para impulsar tu crecimiento empresarial y profesional en un solo lugar.</p>
         </div>
 
-        <div className="row">
+        <div className="row" data-aos="fade-up">
           <div className="col-md-5">
             <img src={Features} className="img-fluid" />
           </div>
@@ -32,7 +40,7 @@ function FeacturesSection() {
           </div>
         </div>
 
-        <div className="row">
+        <div className="row" data-aos="fade-up">
           <div className="col-md-5 order-1 order-md-2">
             <img src={Features2} className="img-fluid" alt="" />
           </div>
@@ -47,7 +55,7 @@ function FeacturesSection() {
           </div>
         </div>
 
-        <div className="row">
+        <div className="row" data-aos="fade-up">
           <div className="col-md-5">
             <img src={Features3} className="img-fluid" alt="" />
           </div>
@@ -62,12 +70,12 @@ function FeacturesSection() {
           </div>
         </div>
 
-        <div className="row">
+        <div className="row" data-aos="fade-up">
           <div className="col-md-5 order-1 order-md-2">
             <img src={Features4} className="img-fluid" alt="" />
           </div>
           <div className="col-md-7 pt-5 order-2 order-md-1">
-            <h3>Sistema de mentorías</h3>
+            <h3>Agendamiento de mentorías</h3>
             <p className="fst-italic">
               Accede a nuestra plataforma de mentorías para recibir guía y asesoramiento de expertos. Fomenta tu desarrollo profesional con la experiencia y
               conocimiento de líderes en la industria.
