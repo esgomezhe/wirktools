@@ -1,8 +1,17 @@
 import nested_admin
 from django.contrib import admin
-from .models import Form, Question, Answer, CompletedForm, Category, Diagnostics, DiagnosticLevel, CategoryDiagnostics
+from .models import Form, Question, Answer, CompletedForm, Category, DiagnosticLevel
 
-admin.site.register(Category)
+# DiagnosticLevelInline se utiliza para editar los niveles de diagnóstico directamente desde el admin de Category
+class DiagnosticLevelInline(nested_admin.NestedStackedInline):
+    model = DiagnosticLevel
+    extra = 0
+
+# CategoryAdmin ahora extiende de NestedModelAdmin en lugar de NestedStackedInline
+# y registra DiagnosticLevelInline para que los niveles de diagnóstico puedan ser editados inline
+@admin.register(Category)
+class CategoryAdmin(nested_admin.NestedModelAdmin):
+    inlines = [DiagnosticLevelInline]
 
 class AnswerInline(nested_admin.NestedStackedInline):
     model = Answer
@@ -20,26 +29,11 @@ class QuestionInline(nested_admin.NestedStackedInline):
     inlines = [AnswerInline]
     extra = 0
 
+@admin.register(Form)
 class FormAdmin(nested_admin.NestedModelAdmin):
     inlines = [QuestionInline]
-
-admin.site.register(Form, FormAdmin)
 
 @admin.register(CompletedForm)
 class CompletedFormAdmin(admin.ModelAdmin):
     list_display = ['form_title', 'user', 'created_at']
     readonly_fields = ['content']  # Si deseas que el contenido sea de solo lectura
-
-class DiagnosticLevelInline(nested_admin.NestedStackedInline):
-    model = DiagnosticLevel
-    extra = 0
-
-class CategoryDiagnosticsInline(nested_admin.NestedStackedInline):
-    model = CategoryDiagnostics
-    inlines = [DiagnosticLevelInline]
-    extra = 0
-
-class DiagnosticsAdmin(nested_admin.NestedModelAdmin):
-    inlines = [CategoryDiagnosticsInline]
-
-admin.site.register(Diagnostics, DiagnosticsAdmin)

@@ -1,5 +1,5 @@
-from .models import Form, CompletedForm, Category, Diagnostics
-from .serializers import FormSerializer, CompletedFormSerializer, CategorySerializer, DiagnosticsSerializer
+from .models import Form, CompletedForm, Category
+from .serializers import FormSerializer, CompletedFormSerializer, CategorySerializer
 from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework.permissions import AllowAny
@@ -19,7 +19,3 @@ class CompletedFormViewSet(viewsets.ModelViewSet):
     queryset = CompletedForm.objects.all()
     serializer_class = CompletedFormSerializer
     permission_classes = [AllowAny]  # Permite solicitudes no autenticadas
-
-class DiagnosticsViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Diagnostics.objects.all().prefetch_related('categorydiagnostics_set__levels')
-    serializer_class = DiagnosticsSerializer

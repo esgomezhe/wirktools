@@ -7,7 +7,7 @@ from . import views
 router = DefaultRouter()
 router.register(r'forms', views.FormViewSet)
 router.register(r'completed-forms', views.CompletedFormViewSet)
-router.register(r'diagnostics', views.DiagnosticsViewSet)
+#router.register(r'diagnostics', views.DiagnosticsViewSet)
 
 urlpatterns = [
     path('', views.index, name='index'),

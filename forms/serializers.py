@@ -1,10 +1,16 @@
 from rest_framework import serializers
-from .models import Form, Question, Answer, CompletedForm, Category, Diagnostics, DiagnosticLevel, CategoryDiagnostics
+from .models import Form, Question, Answer, CompletedForm, Category, DiagnosticLevel
+
+class DiagnosticLevelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DiagnosticLevel
+        fields = ['id', 'level', 'description']
 
 class CategorySerializer(serializers.ModelSerializer):
+    levels = DiagnosticLevelSerializer(many=True, read_only=True)
     class Meta:
         model = Category
-        fields = ['id', 'name', 'slug']
+        fields = ['id', 'name', 'slug', 'levels']
 
 class AnswerSerializer(serializers.ModelSerializer):
     class Meta:
@@ -24,33 +30,13 @@ class QuestionSerializer(serializers.ModelSerializer):
         # Retorna el número de respuestas asociadas a la pregunta
         return obj.answers.count()
 
-class DiagnosticLevelSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = DiagnosticLevel
-        fields = ['id', 'level', 'description']
-
-class CategoryDiagnosticsSerializer(serializers.ModelSerializer):
-    levels = DiagnosticLevelSerializer(many=True, read_only=True)
-    category = CategorySerializer(read_only=True)
-
-    class Meta:
-        model = CategoryDiagnostics
-        fields = ['id', 'category', 'levels']
-
-class DiagnosticsSerializer(serializers.ModelSerializer):
-    categorydiagnostics_set = CategoryDiagnosticsSerializer(many=True, read_only=True)
-
-    class Meta:
-        model = Diagnostics
-        fields = ['id', 'title', 'categorydiagnostics_set']
-
 class FormSerializer(serializers.ModelSerializer):
     questions = QuestionSerializer(many=True, read_only=True)
-    diagnostics = DiagnosticsSerializer(many=False, read_only=True)
+    #diagnostics = DiagnosticsSerializer(many=False, read_only=True)
 
     class Meta:
         model = Form
-        fields = ['id', 'title', 'questions', 'diagnostics']
+        fields = ['id', 'title', 'questions']
 
 class CompletedFormSerializer(serializers.ModelSerializer):
     class Meta:

@@ -9,34 +9,14 @@ class Category(models.Model):
     slug = models.SlugField(unique=True, blank=True)
 
     def __str__(self):
-        return self.name
+        return f"{self.name}"
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         super().save(*args, **kwargs)
-
-class Diagnostics(models.Model):
-    title = models.CharField(max_length=255)
-
-    class Meta:
-        verbose_name_plural = "Diagnostics"
-
-    def __str__(self):
-        return self.title
     
-class CategoryDiagnostics(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    diagnostics = models.ForeignKey(Diagnostics, on_delete=models.CASCADE)
-
-    class Meta:
-        unique_together = ('category', 'diagnostics')
-        verbose_name_plural = "Category Diagnoses"
-
-    def __str__(self):
-        return f"{self.category.name} - {self.diagnostics.title}"
-
 class DiagnosticLevel(models.Model):
-    category_diagnostics = models.ForeignKey(CategoryDiagnostics, related_name='levels', on_delete=models.CASCADE, null=True)
+    category_diagnostics = models.ForeignKey(Category, related_name='levels', on_delete=models.CASCADE, null=True)
     level = models.IntegerField()
     description = RichTextField(blank=True, null=True)
 
@@ -45,10 +25,6 @@ class DiagnosticLevel(models.Model):
 
 class Form(models.Model):
     title = models.CharField(max_length=255)
-    diagnostics = models.OneToOneField(Diagnostics, on_delete=models.SET_NULL, null=True, blank=True, related_name='form')
-
-    class Meta:
-        ordering = ['id']
 
     def __str__(self):
         return self.title
