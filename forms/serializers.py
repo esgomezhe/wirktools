@@ -1,10 +1,16 @@
 from rest_framework import serializers
-from .models import Form, Question, Answer, CompletedForm, Category, DiagnosticLevel
+from .models import Form, Question, Answer, CompletedForm, Category, DiagnosticLevel, DiagnosticPlan
+
+class DiagnosticPlanSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DiagnosticPlan
+        fields = ['text']
 
 class DiagnosticLevelSerializer(serializers.ModelSerializer):
+    plans = DiagnosticPlanSerializer(many=True, read_only=True)
     class Meta:
         model = DiagnosticLevel
-        fields = ['id', 'level', 'description']
+        fields = ['level', 'plans']
 
 class CategorySerializer(serializers.ModelSerializer):
     levels = DiagnosticLevelSerializer(many=True, read_only=True)
@@ -21,11 +27,9 @@ class QuestionSerializer(serializers.ModelSerializer):
     answers = AnswerSerializer(many=True, read_only=True)
     category = CategorySerializer(read_only=True)
     answers_count = serializers.SerializerMethodField()
-
     class Meta:
         model = Question
         fields = ['id', 'text', 'category', 'sub_category', 'answers', 'answers_count']
-
     def get_answers_count(self, obj):
         # Retorna el número de respuestas asociadas a la pregunta
         return obj.answers.count()

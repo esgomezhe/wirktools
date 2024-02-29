@@ -32,7 +32,7 @@ function App() {
 
     setSelectedAnswer(answerId);
     setAnswers(current => [...current, newAnswer]);
-  };
+};
 
   const handleNavigation = (direction) => {
     if (direction === 'next' && selectedAnswer !== null) {

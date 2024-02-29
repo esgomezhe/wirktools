@@ -18,10 +18,16 @@ class Category(models.Model):
 class DiagnosticLevel(models.Model):
     category_diagnostics = models.ForeignKey(Category, related_name='levels', on_delete=models.CASCADE, null=True)
     level = models.IntegerField()
-    description = RichTextField(blank=True, null=True)
 
     def __str__(self):
         return f"{self.level}"
+    
+class DiagnosticPlan(models.Model):
+    level_diagnostics = models.ForeignKey(DiagnosticLevel, related_name='plans', on_delete=models.CASCADE, null=True)
+    text = RichTextField(blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.level_diagnostics.level}"
 
 class Form(models.Model):
     title = models.CharField(max_length=255)

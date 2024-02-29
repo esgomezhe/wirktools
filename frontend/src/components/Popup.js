@@ -16,7 +16,8 @@ const Popup = ({ children, isOpen, onClose }) => {
             zIndex: 1000,
             width: '80%',
             maxWidth: '400px',
-            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)'
+            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+            textAlign: 'justify'
         }}>
             {children}
             <button onClick={onClose} style={{ marginTop: '10px' }}>Cerrar</button>

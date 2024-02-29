@@ -1,12 +1,8 @@
-from .models import Form, CompletedForm, Category
-from .serializers import FormSerializer, CompletedFormSerializer, CategorySerializer
+from .models import Form, CompletedForm
+from .serializers import FormSerializer, CompletedFormSerializer
 from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework.permissions import AllowAny
-
-class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Category.objects.all()
-    serializer_class = CategorySerializer
 
 class FormViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Form.objects.all()
