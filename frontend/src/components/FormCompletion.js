@@ -1,32 +1,55 @@
 import React from 'react';
 import BarChart from '../charts/BarChart';
 import RadarChart from '../charts/RadarChart';
-import { calculateCategoryAverages } from '../utils/chartConfigs';
-import '../stylesheets/results.css'
+import BubbleChart from '../charts/BubbleChart';
+import PercentageChart from '../charts/PercentageChart';
+import { calculateCategoryAverages, calculateIntensidadDigitalScore, calculateGestionTransformacionalScore } from '../utils/chartConfigs';
 
 function FormCompletion({ answers, onRestart }) {
   const categoryAverages = calculateCategoryAverages(answers);
 
+  // Calcula los promedios para Intensidad Digital y Gestión Transformacional
+  const intensidadDigitalScore = calculateIntensidadDigitalScore(categoryAverages);
+  const gestionTransformacionalScore = calculateGestionTransformacionalScore(categoryAverages);
+
   return (
     <div>
       <div className='results-text'>
-        <p>¡Formulario completado!</p>
-        <h2>Promedio de Puntajes por Categoría</h2>
+        <h3>¡Formulario completado!</h3>
+        <h1>Resultados</h1>
       </div>
+
       <section className='results'>
-        <ul className='results-category'>
-          {categoryAverages.map(({ category, average }) => (
-            <li key={category}>{category}: {average.toFixed(2)}</li>
-          ))}
-        </ul>
+        {categoryAverages.map(({ category, average }) => (
+          <PercentageChart key={category} category={category} score={average} />
+        ))}
       </section>
       <div className="chart-container">
         <BarChart categoryAverages={categoryAverages} />
+        <div style={{ textAlign: 'center' }}>
+          <h3>¡Formulario completado!</h3>
+          <h1>Resultados</h1>
+        </div>
+        <div className="chart-container">
+          {categoryAverages.map(({ category, average }) => (
+            <PercentageChart key={category} category={category} score={average} />
+          ))}
+        </div>
+        <div className="chart-container">
+          <div className="chart">
+            <BarChart categoryAverages={categoryAverages} />
+          </div>
+          <div className="chart">
+            <RadarChart categoryAverages={categoryAverages} />
+          </div>
+          <div className="chart">
+            <BubbleChart intensidadDigital={intensidadDigitalScore} gestionTransformacional={gestionTransformacionalScore} />
+          </div>
+        </div>
+        <div style={{ textAlign: 'center', margin: '50px' }}>
+          <button onClick={onRestart}>Rellenar otro formulario</button>
+        </div>
       </div>
-      <div className="chart-container">
-        <RadarChart categoryAverages={categoryAverages} />
-      </div>
-      <button onClick={onRestart}>Rellenar otro formulario</button>
     </div>
   );
 }

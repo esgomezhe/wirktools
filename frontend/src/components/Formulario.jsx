@@ -27,6 +27,9 @@ function Formulario() {
       answerId: answer.id,
       value: answer.value,
       category: question.category,
+      answers_count: question.answers_count,
+      questionText: question.text, // Usar el texto de la pregunta
+      answerText: answer.text, // Usar el texto de la respuesta
     };
 
     setSelectedAnswer(answerId);
