@@ -1,5 +1,5 @@
 import Home from './Home';
-import Formulario from './Formulario';
+import Formulario from './FormularioPage';
 import Services from './Services';
 import Portfolio from './Portfolio';
 import Team from './Team';

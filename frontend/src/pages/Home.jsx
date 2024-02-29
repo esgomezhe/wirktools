@@ -1,8 +1,21 @@
 import React from "react";
+import HeroSection from "../components/HeroSection";
+import ServicesSection from "../components/ServicesSection";
+import WhyUsSection from "../components/WhyUsSection";
+import FeacturesSection from "../components/FeaturesSection";
+import Footer from "../components/Footer";
 
 function Home() {
   return (
-    <h4>Home1</h4>
+    <>
+      <HeroSection />
+      <main id="main">
+        <ServicesSection />
+        <WhyUsSection />
+        <FeacturesSection />
+      </main>
+      <Footer />
+    </>
   );
 }
 

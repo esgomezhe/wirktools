@@ -1,12 +1,14 @@
 import React from 'react';
+import '../stylesheets/form.css';
 
 function Question({ form, currentQuestionIndex, selectedAnswer, onSelectAnswer, onNavigate }) {
   return (
-    <div>
+    <div className='formulario'>
       <h1>{form.title}</h1>
-      <p>{form.questions[currentQuestionIndex].text}</p>
+      <p className='pregunta'>{form.questions[currentQuestionIndex].text}</p>
       {form.questions[currentQuestionIndex].answers.map((answer) => (
         <button
+          className='button'
           key={answer.id}
           onClick={() => onSelectAnswer(answer.id)}
           style={{

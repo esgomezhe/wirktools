@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import Question from '../components/Question';
-import FormCompletion from '../components/FormCompletion';
+import Question from './Question';
+import FormCompletion from './FormCompletion';
 import { fetchForms, submitForm } from '../utils/formService';
+import '../stylesheets/form.css';
 
 function Formulario() {
 
@@ -56,7 +57,7 @@ function Formulario() {
   };
 
   return (
-    <div>
+    <div className='container mt-4'>
       {!isCompleted ? (
         forms.length > 0 && (
           <Question
@@ -70,6 +71,8 @@ function Formulario() {
       ) : (
         <FormCompletion answers={answers} onRestart={handleRestart} />
       )}
+
+      <h1 className='m-1'>Hola hehe</h1>
     </div>
   );
 }
