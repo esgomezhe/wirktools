@@ -2,19 +2,24 @@ import React from 'react';
 import BarChart from '../charts/BarChart';
 import RadarChart from '../charts/RadarChart';
 import { calculateCategoryAverages } from '../utils/chartConfigs';
+import '../stylesheets/results.css'
 
 function FormCompletion({ answers, onRestart }) {
   const categoryAverages = calculateCategoryAverages(answers);
 
   return (
     <div>
-      <p>¡Formulario completado!</p>
-      <h2>Promedio de Puntajes por Categoría</h2>
-      <ul>
-        {categoryAverages.map(({ category, average }) => (
-          <li key={category}>{category}: {average.toFixed(2)}</li>
-        ))}
-      </ul>
+      <div className='results-text'>
+        <p>¡Formulario completado!</p>
+        <h2>Promedio de Puntajes por Categoría</h2>
+      </div>
+      <section className='results'>
+        <ul className='results-category'>
+          {categoryAverages.map(({ category, average }) => (
+            <li key={category}>{category}: {average.toFixed(2)}</li>
+          ))}
+        </ul>
+      </section>
       <div className="chart-container">
         <BarChart categoryAverages={categoryAverages} />
       </div>
