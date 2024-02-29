@@ -8,7 +8,8 @@ function Question({ form, currentQuestionIndex, selectedAnswer, onSelectAnswer, 
     <div className='formulario-container'>
       <div className='formulario'>
         <h1>{form.title}</h1>
-        <p className='pregunta'>{form.questions[currentQuestionIndex].text}</p>
+        <p className='formulario-p'>{form.questions[currentQuestionIndex].category}</p>
+        <p className='formulario-p text'>{form.questions[currentQuestionIndex].text}</p>
 
         <div className='formulario-buttons'>
           {form.questions[currentQuestionIndex].answers.map((answer) => (

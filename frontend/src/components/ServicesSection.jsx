@@ -35,7 +35,7 @@ function ServicesSection() {
 
           <div className="col-md-6 col-lg-3 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="200">
             <div className="icon-box icon-box-green">
-              <div className="icon"><i class="bx bx-tachometer"></i></div>
+              <div className="icon"><i className="bx bx-tachometer"></i></div>
               <h4 className="title"><Link to="">Autodiagnóstico</Link></h4>
               <p className="description">Nuestra herramienta de Autodiagnóstico está diseñada para proporcionarte una evaluación rápida y personalizada. Descubre puntos fuertes, áreas para mejorar y recibe recomendaciones personalizadas para tu empresa.</p>
             </div>
@@ -43,7 +43,7 @@ function ServicesSection() {
 
           <div className="col-md-6 col-lg-3 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="200">
             <div className="icon-box icon-box-blue">
-              <div className="icon"><i class="bx bx-world"></i></div>
+              <div className="icon"><i className="bx bx-world"></i></div>
               <h4 className="title"><Link href="">Mentorias</Link></h4>
               <p className="description">Con nuestro sistema de agendamiento de mentorías, te conectamos con líderes y profesionales de la industria para sesiones personalizadas. Es la oportunidad perfecta para recibir orientación, resolver dudas y planificar tu camino al éxito con el apoyo de expertos.</p>
             </div>
@@ -56,3 +56,7 @@ function ServicesSection() {
 }
 
 export default ServicesSection;
+
+
+
+
