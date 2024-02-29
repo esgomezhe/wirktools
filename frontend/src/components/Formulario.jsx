@@ -3,6 +3,7 @@ import Question from './Question';
 import FormCompletion from './FormCompletion';
 import { fetchForms, submitForm } from '../utils/formService';
 import '../stylesheets/form.css';
+import Footer from './Footer';
 
 function Formulario() {
 
@@ -57,23 +58,25 @@ function Formulario() {
   };
 
   return (
-    <div className='container mt-4'>
-      {!isCompleted ? (
-        forms.length > 0 && (
-          <Question
-            form={forms[0]}
-            currentQuestionIndex={currentQuestionIndex}
-            selectedAnswer={selectedAnswer}
-            onSelectAnswer={handleAnswerSelect}
-            onNavigate={handleNavigation}
-          />
-        )
-      ) : (
-        <FormCompletion answers={answers} onRestart={handleRestart} />
-      )}
+    <>
+      <div className='mt-4 mb-4'>
+        {!isCompleted ? (
+          forms.length > 0 && (
+            <Question
+              form={forms[0]}
+              currentQuestionIndex={currentQuestionIndex}
+              selectedAnswer={selectedAnswer}
+              onSelectAnswer={handleAnswerSelect}
+              onNavigate={handleNavigation}
+            />
+          )
+        ) : (
+          <FormCompletion answers={answers} onRestart={handleRestart} />
+        )}
+      </div>
+      <Footer />
+    </>
 
-      <h1 className='m-1'>Hola hehe</h1>
-    </div>
   );
 }
 
