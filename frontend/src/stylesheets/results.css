@@ -6,14 +6,11 @@
 
 
 .results-category {
-    border: 1px solid red;
     display: grid;
     color: white;
     grid-template-columns: repeat(4, 1fr);
+    list-style: none;
 }
-
-
-
 
 .results-text {
     background-color: #6DA336;
@@ -27,3 +24,15 @@
 .results-text:hover {
     background-color: #12176B;
 }
+
+.results-category-item {
+    border: 1px solid blue;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* .item-p {
+    text-align: center;
+} */
