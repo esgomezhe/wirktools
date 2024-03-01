@@ -1,19 +1,25 @@
 .results {
     background-color: transparent;
     background-image: linear-gradient(180deg, #1E5E66 0%, #1B3C65 100%);
-    border: 1px solid blue;
+    margin-bottom: 20px;
 }
 
-
 .results-category {
-    border: 1px solid red;
     display: grid;
     color: white;
     grid-template-columns: repeat(4, 1fr);
+    height: 400px;
+    gap: 20px;
 }
 
+.results-category-item {
+    list-style: none;
+}
 
-
+.results-category-item:hover {
+    background-color: transparent;
+    background-image: linear-gradient(180deg, #1E5E66 0%, #21508B 100%);
+}
 
 .results-text {
     background-color: #6DA336;

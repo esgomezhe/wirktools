@@ -16,7 +16,7 @@ function FormCompletion({ answers, onRestart }) {
       <section className='results'>
         <ul className='results-category'>
           {categoryAverages.map(({ category, average }) => (
-            <li key={category}>{category}: {average.toFixed(2)}</li>
+            <li className='results-category-item' key={category}>{category}: {average.toFixed(2)}</li>
           ))}
         </ul>
       </section>
