@@ -3,6 +3,7 @@
     background-color: rgb(236, 233, 179);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     margin: 0 auto;
+    margin-top: 20px;
 
 }
 
@@ -12,6 +13,13 @@
     border-radius: 20px;
     text-align: center;
     margin: 0 auto;
+    color: #12176B;
+}
+
+.formulario h2 {
+    background: rgba(246, 248, 255, 68%);
+    border-radius: 22px;
+    padding: 5px;
 }
 
 .formulario-p {
@@ -34,7 +42,7 @@
     display: flex;
 }
 
-button {
+.buttons-question {
     flex: 1;
     appearance: none;
     border: 0.125em solid #1A1A1A;
@@ -51,7 +59,7 @@ button {
     min-height: 2.75em;
     min-width: 0;
     outline: none;
-    /* padding: 1em 2.3em; */
+    padding: 10px;
     text-align: center;
     text-decoration: none;
     transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
@@ -61,18 +69,18 @@ button {
     will-change: transform;
 }
 
-button:disabled {
+.buttons-question:disabled {
     pointer-events: none;
 }
 
-button:hover {
+.buttons-question:hover {
     color: #65D7B7;
     background-color: #12176B;
     box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
     transform: translateY(-2px);
 }
 
-button:active {
+.buttons-question:active {
     box-shadow: none;
     transform: translateY(0);
 }

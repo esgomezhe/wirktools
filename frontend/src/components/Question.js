@@ -8,14 +8,14 @@ function Question({ form, currentQuestionIndex, selectedAnswer, onSelectAnswer, 
     <div className='formulario-container'>
       <div className='formulario'>
         <h1>{form.title}</h1>
-        <p className='formulario-p'>{form.questions[currentQuestionIndex].category}</p>
         <h2>{form.questions[currentQuestionIndex].category.name}</h2>
         <h3>{form.questions[currentQuestionIndex].sub_category}</h3>
         <p className='formulario-p text'>{form.questions[currentQuestionIndex].text}</p>
 
+
         <div className='formulario-buttons'>
           {form.questions[currentQuestionIndex].answers.map((answer) => (
-            <button
+            <button className='buttons-question'
               key={answer.id}
               onClick={() => onSelectAnswer(answer.id)}
               style={{
@@ -31,9 +31,9 @@ function Question({ form, currentQuestionIndex, selectedAnswer, onSelectAnswer, 
 
         <div className='formulario-buttons'>
           {currentQuestionIndex > 0 && (
-            <button onClick={() => onNavigate('previous')}>Atrás</button>
+            <button className='buttons-question' onClick={() => onNavigate('previous')}>Atrás</button>
           )}
-          <button onClick={() => onNavigate('next')}>
+          <button className='buttons-question' onClick={() => onNavigate('next')}>
             {currentQuestionIndex < form.questions.length - 1 ? "Siguiente" : "Finalizar"}
           </button>
         </div>

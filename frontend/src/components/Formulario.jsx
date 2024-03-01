@@ -62,7 +62,7 @@ function Formulario() {
 
   return (
     <>
-      <div className='mt-4 mb-4'>
+      <div className='mb-4'>
         {!isCompleted ? (
           forms.length > 0 && (
             <Question

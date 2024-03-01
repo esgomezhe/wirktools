@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Popup from '../components/Popup';
+import '../stylesheets/results.css';
 
 const getCircleColor = (percentage) => {
     if (percentage < 33) return "#e74c3c";
@@ -36,7 +37,7 @@ const PercentageChart = ({ category, score }) => {
     const planToShow = findPlanForScore(score, category.levels);
 
     return (
-        <div style={{ margin: '20px' }}>
+        <div className='results-category'>
             <div className="survey-container" style={{ textAlign: 'center', marginBottom: '20px' }}>
                 <h5 style={{ marginBottom: '5px' }}>{category.name}:</h5>
                 <div style={{ fontSize: '1.5em', color: '#00ccff' }}>{score.toFixed(2)}/5</div>
@@ -56,7 +57,7 @@ const PercentageChart = ({ category, score }) => {
                 </div>
             </div>
             <div style={{ textAlign: 'center' }}>
-                <button onClick={togglePopup}>Autodiagnóstico</button>
+                <button className='results-button' onClick={togglePopup}>Autodiagnóstico</button>
                 <Popup isOpen={isPopupOpen} onClose={togglePopup}>
                     <h2>{category.name}:</h2>
                     {/* Ajuste para mostrar el texto del plan para el nivel 1 */}
