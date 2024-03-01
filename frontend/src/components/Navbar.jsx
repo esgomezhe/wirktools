@@ -1,35 +1,66 @@
 import React from "react";
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+
+const menuItems = [
+  { to: '/', label: 'Home', className: 'active' },
+  { to: '/formulario', label: 'Formulario' },
+  { to: '/about', label: 'About' },
+  { to: '/services', label: 'Services' },
+  { to: '/portfolio', label: 'Portfolio' },
+  { to: '/team', label: 'Team' },
+  { to: '/blog', label: 'Blog' },
+  {
+    to: '#',
+    label: (
+      <>
+        <span>Drop Down</span>
+        <i className="bi bi-chevron-down"></i>
+      </>
+    ),
+    subMenu: [
+      { to: '#', label: 'Drop Down 1' },
+      {
+        to: '#',
+        label: (
+          <>
+            <span>Deep Drop Down</span>
+            <i className="bi bi-chevron-right"></i>
+          </>
+        ),
+        subMenu: [
+          { to: '#', label: 'Deep Drop Down 1' },
+          { to: '#', label: 'Deep Drop Down 2' },
+          { to: '#', label: 'Deep Drop Down 3' },
+          { to: '#', label: 'Deep Drop Down 4' },
+          { to: '#', label: 'Deep Drop Down 5' },
+        ],
+      },
+      { to: '#', label: 'Drop Down 2' },
+      { to: '#', label: 'Drop Down 3' },
+      { to: '#', label: 'Drop Down 4' },
+    ],
+  },
+  { to: '/contact', label: 'Contact Us' },
+];
 
 function Navbar() {
   return (
     <nav id="navbar" className="navbar">
       <ul>
-        <li><Link className="active" to='/' > Home</Link></li>
-        <li><Link to='/formulario' > Formulario</Link></li>
-        <li><Link to='/about' > About</Link></li>
-        <li><Link to='/services' > Services</Link></li>
-        <li><Link to='/portfolio' > Portfolio</Link></li>
-        <li><Link to='/team' > Team</Link></li>
-        <li><Link to='/blog' > Blog</Link></li>
-        <li className="dropdown"><Link to='#' > <span>Drop Down</span><i className="bi bi-chevron-down"></i></Link>
-          <ul>
-            <li><Link to='#' >Drop Down 1</Link></li>
-            <li className="dropdown"><Link to='#' ><span>Deep Drop Down</span><i className="bi bi-chevron-right"></i></Link>
+        {menuItems.map((item, index) => (
+          <li key={index} className={item.className}>
+            <Link to={item.to}>{item.label}</Link>
+            {item.subMenu && (
               <ul>
-                <li><Link to='#' >Deep Drop Down 1</Link></li>
-                <li><Link to='#' >Deep Drop Down 2</Link></li>
-                <li><Link to='#' >Deep Drop Down 3</Link></li>
-                <li><Link to='#' >Deep Drop Down 4</Link></li>
-                <li><Link to='#' >Deep Drop Down 5</Link></li>
+                {item.subMenu.map((subItem, subIndex) => (
+                  <li key={subIndex}>
+                    <Link to={subItem.to}>{subItem.label}</Link>
+                  </li>
+                ))}
               </ul>
-            </li>
-            <li><Link to='#' >Drop Down 2</Link></li>
-            <li><Link to='#' >Drop Down 3</Link></li>
-            <li><Link to='#' >Drop Down 4</Link></li>
-          </ul>
-        </li>
-        <li><Link to='/contact' > Contact Us</Link></li>
+            )}
+          </li>
+        ))}
       </ul>
       <i className="bi bi-list mobile-nav-toggle"></i>
     </nav>
