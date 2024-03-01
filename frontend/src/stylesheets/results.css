@@ -10,6 +10,7 @@
     grid-template-columns: repeat(4, 1fr);
     height: 400px;
     gap: 20px;
+    list-style: none;
 }
 
 .results-category-item {
@@ -33,3 +34,15 @@
 .results-text:hover {
     background-color: #12176B;
 }
+
+.results-category-item {
+    border: 1px solid blue;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* .item-p {
+    text-align: center;
+} */

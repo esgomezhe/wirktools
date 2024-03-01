@@ -1,6 +1,27 @@
 from django.db import models
 from django.conf import settings
+from ckeditor.fields import RichTextField
+from django.utils.text import slugify
 from django.contrib.auth.models import User
+
+class Category(models.Model):
+    name = models.CharField(max_length=255, unique=True)
+    slug = models.SlugField(unique=True, blank=True)
+
+    def __str__(self):
+        return f"{self.name}"
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+    
+class DiagnosticLevel(models.Model):
+    category_diagnostics = models.ForeignKey(Category, related_name='levels', on_delete=models.CASCADE, null=True)
+    level = models.IntegerField()
+    description = RichTextField(blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.level}"
 
 class Form(models.Model):
     title = models.CharField(max_length=255)
@@ -11,10 +32,11 @@ class Form(models.Model):
 class Question(models.Model):
     form = models.ForeignKey(Form, related_name='questions', on_delete=models.CASCADE)
     text = models.CharField(max_length=255)
-    category = models.CharField(max_length=255, blank=True, null=True)
+    category = models.ForeignKey(Category, related_name='questions', on_delete=models.SET_NULL, null=True, blank=True)
+    sub_category = models.CharField(max_length=255, blank=True, null=True)
 
     def __str__(self):
-        return f"{self.text} ({self.category})"
+        return f"{self.text} ({self.category}) [{self.sub_category}]"
 
 class Answer(models.Model):
     question = models.ForeignKey(Question, related_name='answers', on_delete=models.CASCADE)
@@ -22,7 +44,7 @@ class Answer(models.Model):
     value = models.IntegerField()
 
     def __str__(self):
-        return f"{self.text} ({self.value})"
+        return f"{self.text} ({self.value})"    
     
 class CompletedForm(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, default=None)
