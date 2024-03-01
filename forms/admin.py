@@ -1,14 +1,16 @@
 import nested_admin
 from django.contrib import admin
-from .models import Form, Question, Answer, CompletedForm, Category, DiagnosticLevel
+from .models import Form, Question, Answer, CompletedForm, Category, DiagnosticLevel, DiagnosticPlan
 
-# DiagnosticLevelInline se utiliza para editar los niveles de diagnóstico directamente desde el admin de Category
-class DiagnosticLevelInline(nested_admin.NestedStackedInline):
-    model = DiagnosticLevel
+class DiagnosticPlanInline(nested_admin.NestedStackedInline):
+    model = DiagnosticPlan
     extra = 0
 
-# CategoryAdmin ahora extiende de NestedModelAdmin en lugar de NestedStackedInline
-# y registra DiagnosticLevelInline para que los niveles de diagnóstico puedan ser editados inline
+class DiagnosticLevelInline(nested_admin.NestedStackedInline):
+    model = DiagnosticLevel
+    inlines = [DiagnosticPlanInline]
+    extra = 0
+
 @admin.register(Category)
 class CategoryAdmin(nested_admin.NestedModelAdmin):
     inlines = [DiagnosticLevelInline]

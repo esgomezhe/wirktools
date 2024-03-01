@@ -18,37 +18,24 @@ function FormCompletion({ answers, onRestart }) {
         <h3>¡Formulario completado!</h3>
         <h1>Resultados</h1>
       </div>
-
-      <section className='results'>
+      <section className=" results chart-container">
         {categoryAverages.map(({ category, average }) => (
-          <PercentageChart key={category} category={category} score={average} />
+          <PercentageChart key={category.slug} category={category} score={average} />
         ))}
       </section>
       <div className="chart-container">
-        <BarChart categoryAverages={categoryAverages} />
-        <div style={{ textAlign: 'center' }}>
-          <h3>¡Formulario completado!</h3>
-          <h1>Resultados</h1>
+        <div className="chart">
+          <BarChart categoryAverages={categoryAverages} />
         </div>
-        <div className="chart-container">
-          {categoryAverages.map(({ category, average }) => (
-            <PercentageChart key={category} category={category} score={average} />
-          ))}
+        <div className="chart">
+          <RadarChart categoryAverages={categoryAverages} />
         </div>
-        <div className="chart-container">
-          <div className="chart">
-            <BarChart categoryAverages={categoryAverages} />
-          </div>
-          <div className="chart">
-            <RadarChart categoryAverages={categoryAverages} />
-          </div>
-          <div className="chart">
-            <BubbleChart intensidadDigital={intensidadDigitalScore} gestionTransformacional={gestionTransformacionalScore} />
-          </div>
+        <div className="chart">
+          <BubbleChart intensidadDigital={intensidadDigitalScore} gestionTransformacional={gestionTransformacionalScore} />
         </div>
-        <div style={{ textAlign: 'center', margin: '50px' }}>
-          <button onClick={onRestart}>Rellenar otro formulario</button>
-        </div>
+      </div>
+      <div style={{ textAlign: 'center', margin: '50px' }}>
+        <button onClick={onRestart}>Rellenar otro formulario</button>
       </div>
     </div>
   );

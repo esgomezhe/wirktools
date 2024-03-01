@@ -6,35 +6,34 @@ ChartJS.register(ArcElement, CategoryScale, LinearScale, BarElement, RadialLinea
 export const calculateCategoryAverages = (answers) => {
   const categoryScores = {};
   const categoryCounts = {};
-  let totalAnswersCount = 0; // Para sumar todos los answers_count
+  let totalAnswersCount = 0;
+  const categoriesDetails = {}; // Almacenar detalles de las categorías
 
   answers.forEach(({ category, value, answers_count }) => {
-    
-    totalAnswersCount += answers_count; // Sumar al total de answers_count
+    totalAnswersCount += answers_count;
     
     if (category.name === 'Complejidad') return;
 
-    if (categoryScores[category.name]) {
-      categoryScores[category.name] += value;
-      categoryCounts[category.name] += 1;
+    const categoryName = category.name; // Usar el nombre de la categoría como clave
+
+    if (categoryScores[categoryName]) {
+      categoryScores[categoryName] += value;
+      categoryCounts[categoryName] += 1;
     } else {
-      categoryScores[category.name] = value;
-      categoryCounts[category.name] = 1;
+      categoryScores[categoryName] = value;
+      categoryCounts[categoryName] = 1;
+      categoriesDetails[categoryName] = category; // Almacenar el objeto category completo
     }
   });
 
-  // Calcular el promedio de answers_count para todas las respuestas
   const averageAnswersCount = totalAnswersCount / answers.length;
-
-  // Usar el promedio de answers_count como maxResponseValue
   const maxResponseValue = averageAnswersCount;
 
-  return Object.keys(categoryScores).map(category => {
-    const average = categoryScores[category] / categoryCounts[category];
-    // Normalizar el promedio en una escala de 1 a 5, donde el valor máximo posible de respuestas se ajusta a 5
+  return Object.keys(categoryScores).map(categoryName => {
+    const average = categoryScores[categoryName] / categoryCounts[categoryName];
     const normalizedAverage = (average * 5) / maxResponseValue;
     return {
-      category,
+      category: categoriesDetails[categoryName], // Devolver el objeto category completo
       average: normalizedAverage,
     };
   });
@@ -43,15 +42,16 @@ export const calculateCategoryAverages = (answers) => {
 // Función para calcular el puntaje de Intensidad Digital
 export const calculateIntensidadDigitalScore = (categoryAverages) => {
   const categories = ['Capacidades Digitales', 'Experiencia del Cliente', 'Resultados', 'Tecnologías Digitales Emergentes'];
-  const filteredAverages = categoryAverages.filter(cat => categories.includes(cat.category));
+  // Acceder a cat.category.name para la comparación
+  const filteredAverages = categoryAverages.filter(cat => categories.includes(cat.category.name));
   const total = filteredAverages.reduce((acc, curr) => acc + curr.average, 0);
   return filteredAverages.length > 0 ? total / filteredAverages.length : 0;
 };
 
-// Función para calcular el puntaje de Gestión Transformacional
 export const calculateGestionTransformacionalScore = (categoryAverages) => {
   const categories = ['Estrategia Digital', 'Cultura Digital', 'Innovación y Colaboración', 'Gobierno Digital'];
-  const filteredAverages = categoryAverages.filter(cat => categories.includes(cat.category));
+  // Acceder a cat.category.name para la comparación
+  const filteredAverages = categoryAverages.filter(cat => categories.includes(cat.category.name));
   const total = filteredAverages.reduce((acc, curr) => acc + curr.average, 0);
   return filteredAverages.length > 0 ? total / filteredAverages.length : 0;
 };
@@ -61,7 +61,7 @@ export const getBarChartData = (categoryAverages) => {
     // Retorna la configuración del gráfico de barras
     return {
       data: {
-        labels: categoryAverages.map(ca => ca.category),
+        labels: categoryAverages.map(ca => ca.category.name),
         datasets: [
           {
             label: 'Puntaje Promedio',
@@ -87,7 +87,7 @@ export const getRadarChartData = (categoryAverages) => {
     // Retorna la configuración del gráfico radar
     return {
       data: {
-        labels: categoryAverages.map(ca => ca.category),
+        labels: categoryAverages.map(ca => ca.category.name),
         datasets: [
           {
             label: 'Puntaje Promedio',
@@ -152,4 +152,3 @@ export const optionsForBubbleChart = {
     },
   },
 };
-
