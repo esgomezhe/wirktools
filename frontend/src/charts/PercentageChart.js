@@ -40,7 +40,7 @@ const PercentageChart = ({ category, score }) => {
         <div className='results-category'>
             <div className="survey-container" style={{ textAlign: 'center', marginBottom: '20px' }}>
                 <h5 style={{ marginBottom: '5px' }}>{category.name}:</h5>
-                <div style={{ fontSize: '1.5em', color: '#00ccff' }}>{score.toFixed(2)}/5</div>
+                <div style={{ fontSize: '1.5em', color: '#00ccff' }}>{score.toFixed()}/5</div>
             </div>
             <div className="circle-container" style={{ position: 'relative', width: '150px', height: '150px', margin: '20px auto' }}>
                 <svg viewBox="0 0 36 36" className="circular-chart">

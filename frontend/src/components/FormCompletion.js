@@ -35,8 +35,8 @@ function FormCompletion({ answers, onRestart }) {
           <BubbleChart intensidadDigital={intensidadDigitalScore} gestionTransformacional={gestionTransformacionalScore} />
         </div>
       </div>
-      <div style={{ textAlign: 'center', margin: '50px' }}>
-        <button onClick={onRestart}>Rellenar otro formulario</button>
+      <div className='restart-form'>
+        <button className='results-button restart' onClick={onRestart}>Rellenar otro formulario</button>
       </div>
     </div>
   );
