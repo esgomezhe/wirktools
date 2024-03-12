@@ -8,8 +8,8 @@ function Question({ form, currentQuestionIndex, selectedAnswer, onSelectAnswer, 
     <div className='formulario-container'>
       <div className='formulario'>
         <h1>{form.title}</h1>
-        <h2>{form.questions[currentQuestionIndex].category.name}</h2>
-        <h3>{form.questions[currentQuestionIndex].sub_category}</h3>
+        <h3>{form.questions[currentQuestionIndex].category.name}</h3>
+        <h4>{form.questions[currentQuestionIndex].sub_category}</h4>
         <p className='formulario-p text'>{form.questions[currentQuestionIndex].text}</p>
 
 
