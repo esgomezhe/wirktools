@@ -2232,7 +2232,7 @@ section {
   color: #fff;
   line-height: 1;
   padding: 8px 0;
-  margin-right: 4px;
+  margin-right: 7px;
   border-radius: 50%;
   text-align: center;
   width: 36px;
@@ -2338,6 +2338,7 @@ section {
   display: flex;
   justify-content: space-between;
 }
+
 .answer {
   cursor: pointer;
   padding: 10px;
@@ -2347,9 +2348,11 @@ section {
   text-align: center;
   transition: background-color 0.3s ease;
 }
+
 .answer.selected {
   background-color: #9ec3ff;
 }
+
 #submit-button {
   padding: 10px 20px;
   margin-top: 20px;

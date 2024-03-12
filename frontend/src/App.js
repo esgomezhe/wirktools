@@ -1,8 +1,5 @@
 import "./App.css"
 import { Routes, Route } from 'react-router-dom'
-// import Formulario from './pages/Formulario';
-// import Home from './pages/Home';
-// import Services from "./pages/Services";
 import { Blog, Home, Formulario, Portfolio, Services, Team, About } from "./pages/AllPages";
 import Header from "./components/Header";
 
