@@ -56,7 +56,7 @@ const PercentageChart = ({ category, score }) => {
                     {Math.round(percentage)}%
                 </div>
             </div>
-            <div style={{ textAlign: 'center' }}>
+            <div className='button-container'>
                 <button className='results-button' onClick={togglePopup}>Autodiagnóstico</button>
                 <Popup isOpen={isPopupOpen} onClose={togglePopup}>
                     <h2>{category.name}:</h2>
