@@ -40,6 +40,7 @@ THIRD_PARTY_APPS = [
     'rest_framework',
     'corsheaders',
     'ckeditor',
+    'import_export',
     #'ckeditor_uploader'
 ]
 
