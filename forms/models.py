@@ -53,8 +53,8 @@ class Answer(models.Model):
         return f"{self.text} ({self.value})"    
     
 class CompletedForm(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, default=None)
-    form_title = models.CharField(max_length=255)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, default=None, editable=False)
+    form_title = models.CharField(max_length=255, editable=False)
     content = models.JSONField()  # Almacena preguntas, respuestas seleccionadas y valores
     created_at = models.DateTimeField(auto_now_add=True)
 
