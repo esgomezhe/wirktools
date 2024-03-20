@@ -59,9 +59,9 @@ const PercentageChart = ({ category, score }) => {
             <div className='button-container'>
                 <button className='results-button' onClick={togglePopup}>Autodiagnóstico</button>
                 <Popup isOpen={isPopupOpen} onClose={togglePopup}>
-                    <h2>{category.name}:</h2>
+                    <h2 style={{ color: 'black' }}>{category.name}:</h2>
                     {/* Ajuste para mostrar el texto del plan para el nivel 1 */}
-                    <div dangerouslySetInnerHTML={{ __html: planToShow }}></div>
+                    <div style={{ color: 'black' }} dangerouslySetInnerHTML={{ __html: planToShow }}></div>
                 </Popup>
             </div>
         </div>
