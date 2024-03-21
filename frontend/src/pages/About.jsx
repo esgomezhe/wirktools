@@ -1,8 +1,9 @@
 import React from "react";
+import Header from "./components_home/Header"
 
 function About() {
     return (
-        <h1>About</h1>
+        <Header />
     );
 }
 

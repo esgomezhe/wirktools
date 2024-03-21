@@ -1,16 +1,15 @@
-import "./App.css"
-import { Routes, Route } from 'react-router-dom'
-import { Blog, Home, Formulario, Portfolio, Services, Team, About } from "./pages/AllPages";
+import React from 'react';
+import { Routes, Route, useLocation } from 'react-router-dom';
+import { Home, Formulario, Portfolio, Services, Team, Blog, About } from "./pages/AllPages";
 import Header from "./components/Header";
 
-
 function App() {
+  const location = useLocation();
+  const showHeader = ['/', '/formulario'].includes(location.pathname);
 
   return (
-
     <>
-      <Header />
-      {/* Renderiza el componente del navbar al dar clic */}
+      {showHeader && <Header />}
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/formulario' element={<Formulario />} />
@@ -25,5 +24,7 @@ function App() {
 }
 
 export default App;
+
+
 
 
