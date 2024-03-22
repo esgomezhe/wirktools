@@ -16,19 +16,20 @@ function Formulario() {
   // Recuperar el estado guardado cuando el componente se monta
   useEffect(() => {
     fetchForms().then(data => setForms(data.results));
-
-    // Recuperar respuestas guardadas
+  
     const savedAnswers = localStorage.getItem('formAnswers');
     if (savedAnswers) {
       setAnswers(JSON.parse(savedAnswers));
     }
-
-    // Recuperar el índice de la última pregunta contestada
+  
     const savedQuestionIndex = localStorage.getItem('currentQuestionIndex');
     if (savedQuestionIndex) {
       setCurrentQuestionIndex(JSON.parse(savedQuestionIndex));
     }
-  }, []);
+  
+    const isFormCompleted = localStorage.getItem('isFormCompleted');
+  setIsCompleted(JSON.parse(isFormCompleted));
+}, []);
 
   const handleAnswerSelect = (answerId) => {
     const question = forms[0].questions[currentQuestionIndex];
@@ -63,9 +64,9 @@ function Formulario() {
       } else {
         submitForm(forms[0].title, answers).then(() => {
           setIsCompleted(true);
-          // Limpiar localStorage al completar el formulario
-          localStorage.removeItem('formAnswers');
-          localStorage.removeItem('currentQuestionIndex');
+          localStorage.setItem('formAnswers', JSON.stringify(answers));
+          localStorage.setItem('isFormCompleted', 'true');
+          localStorage.removeItem('currentQuestionIndex'); // Limpiar índice actual ya que el formulario está completado.
         }).catch(error => console.error('Error al enviar el formulario:', error));
       }
     } else if (direction === 'previous' && currentQuestionIndex > 0) {
@@ -86,9 +87,9 @@ function Formulario() {
     setCurrentQuestionIndex(0);
     setSelectedAnswer(null);
     setAnswers([]);
-    // Limpiar localStorage al reiniciar
     localStorage.removeItem('formAnswers');
     localStorage.removeItem('currentQuestionIndex');
+    localStorage.removeItem('isFormCompleted'); // Limpiar el estado de completado
   };
 
   return (
