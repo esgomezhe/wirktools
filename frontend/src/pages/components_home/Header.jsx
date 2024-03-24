@@ -2,19 +2,15 @@ import React from "react";
 import "../stylesheets/header.css";
 
 function Header() {
-    return (
-        <>
-            <header>
-                <div className="header">
+  return (
+    <>
+      <header>
+        <div className="header">
 
-                </div>
-            </header>
-
-            <section className="section">
-
-            </section>
-        </>
-    );
+        </div>
+      </header>
+    </>
+  );
 }
 
 export default Header;
