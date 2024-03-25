@@ -10,7 +10,7 @@ function MainContent() {
         <section className="section-title">
           <div>
             <h1 className="title">Bienvenidos a nuestra herramienta de autodiagnóstico</h1>
-            <h4 className="description">Descubre tu nivel de madurez digital</h4>
+            <h4 className="description-title">Descubre tu nivel de madurez digital</h4>
           </div>
         </section>
 

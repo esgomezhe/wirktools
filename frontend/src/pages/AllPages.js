@@ -5,5 +5,6 @@ import Portfolio from './Portfolio';
 import Team from './Team';
 import Blog from './Blog';
 import About from './About';
+import FormularioQ from './FormularioQ';
 
-export { Home, Formulario, Services, Portfolio, Team, Blog, About, };
+export { Home, Formulario, Services, Portfolio, Team, Blog, About, FormularioQ };
