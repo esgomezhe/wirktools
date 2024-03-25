@@ -33,54 +33,52 @@ function MainContent() {
               <p>
                 Las dimensiones a evaluar son:
               </p>
-
-              <section className="categorys ">
-                <ul className="categorys-list">
-
-                  <li className="categorys-list-element">
-                    <span><CheckCircleSolid color="#F2661F" /></span>
-                    <p> <span>Estrategia digital:</span> Evalúa si la empresa tiene una estrategia clara y coherente para la transformación digital, si la estrategia está alineada con los objetivos de negocio y si se están tomando medidas para implementar la estrategia.</p>
-                  </li>
-
-                  <li className="category-list-element">
-                    <span><CheckCircleSolid color="#F2661F" /></span>
-                    <p> <span>Cultura digital:</span> Evalúa si la empresa tiene una cultura digital sólida y una mentalidad de innovación, si los empleados están comprometidos con la transformación digital y si la empresa está promoviendo la colaboración y el aprendizaje continuo.</p>
-                  </li>
-
-                  <li className="categorys-list-element" >
-                    <span><CheckCircleSolid color="#F2661F" /></span>
-                    <p> <span>Capacidades digitales:</span> Evalúa si la empresa tiene las habilidades y el talento necesarios para llevar a cabo la transformación digital, si se están invirtiendo en la formación y el desarrollo de los empleados y si la empresa tiene una estructura organizativa adecuada para la transformación digital.</p>
-                  </li>
-
-                  <li className="categorys-list-element">
-                    <span><CheckCircleSolid color="#F2661F" /></span>
-                    <p> <span>Experiencia del cliente:</span> Evalúa si la empresa está utilizando la tecnología para mejorar la experiencia del cliente, si se están adoptando nuevas tecnologías para mejorar la interacción con los clientes y si se están midiendo los resultados y tomando medidas para mejorar continuamente.</p>
-                  </li>
-                </ul>
-              </section>
             </div>
+            <section className="categorys">
+              <ul className="categorys-list">
+
+                <li className="categorys-list-element">
+                  <span className="checkbox"><CheckCircleSolid color="#F2661F" /></span>
+                  <p> <span className="checkbox">Estrategia digital:</span> Evalúa si la empresa tiene una estrategia clara y coherente para la transformación digital, si la estrategia está alineada con los objetivos de negocio y si se están tomando medidas para implementar la estrategia.</p>
+                </li>
+
+                <li className="categorys-list-element">
+                  <span className="checkbox"><CheckCircleSolid color="#F2661F" /></span>
+                  <p> <span>Cultura digital:</span> Evalúa si la empresa tiene una cultura digital sólida y una mentalidad de innovación, si los empleados están comprometidos con la transformación digital y si la empresa está promoviendo la colaboración y el aprendizaje continuo.</p>
+                </li>
+
+                <li className="categorys-list-element" >
+                  <span className="checkbox"><CheckCircleSolid color="#F2661F" /></span>
+                  <p> <span>Capacidades digitales:</span> Evalúa si la empresa tiene las habilidades y el talento necesarios para llevar a cabo la transformación digital, si se están invirtiendo en la formación y el desarrollo de los empleados y si la empresa tiene una estructura organizativa adecuada para la transformación digital.</p>
+                </li>
+
+                <li className="categorys-list-element">
+                  <span className="checkbox"><CheckCircleSolid color="#F2661F" /></span>
+                  <p> <span>Experiencia del cliente:</span> Evalúa si la empresa está utilizando la tecnología para mejorar la experiencia del cliente, si se están adoptando nuevas tecnologías para mejorar la interacción con los clientes y si se están midiendo los resultados y tomando medidas para mejorar continuamente.</p>
+                </li>
+              </ul>
+            </section>
           </section>
 
           <section className="categorys">
             <ul className="categorys-list">
-
               <li className="categorys-list-element">
-                <span><CheckCircleSolid color="#F2661F" /></span>
+                <span className="checkbox"><CheckCircleSolid color="#F2661F" /></span>
                 <p> <span>Innovación y colaboración:</span>  Evalúa si la empresa está fomentando la innovación y la colaboración, si se están implementando prácticas ágiles para el desarrollo de productos y servicios, si se están adoptando nuevas tecnologías y si se están explorando nuevas formas de colaboración con socios y proveedores.</p>
               </li>
 
-              <li className="category-list-element">
-                <span><CheckCircleSolid color="#F2661F" /></span>
+              <li className="categorys-list-element">
+                <span className="checkbox"><CheckCircleSolid color="#F2661F" /></span>
                 <p> <span>Gobierno digital:</span> Evalúa si la empresa tiene una estructura de gobierno adecuada para la transformación digital, si se están estableciendo políticas y normas claras para el uso de la tecnología y si se están tomando medidas para mitigar los riesgos asociados con la transformación digital</p>
               </li>
 
               <li className="categorys-list-element">
-                <span><CheckCircleSolid color="#F2661F" /></span>
+                <span className="checkbox"><CheckCircleSolid color="#F2661F" /></span>
                 <p> <span>Tecnologías digitales emergentes:</span> Evalúa si la empresa está adoptando tecnologías emergentes como la inteligencia artificial, la nube, el blockchain y la robótica, si se están explorando nuevas oportunidades de negocio y si se están preparando para los desafíos que pueden presentarse.</p>
               </li>
 
               <li className="categorys-list-element" >
-                <span><CheckCircleSolid color="#F2661F" /></span>
+                <span className="checkbox"><CheckCircleSolid color="#F2661F" /></span>
                 <p> <span>Resultados de negocio:</span> Evalúa si la empresa está logrando resultados positivos a través de la transformación digital, si se están midiendo los resultados y si se están tomando medidas para mejorar continuamente.</p>
               </li>
             </ul>
