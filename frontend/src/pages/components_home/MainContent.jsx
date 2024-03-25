@@ -2,6 +2,25 @@ import React from "react";
 import "../stylesheets/main.css";
 import { CheckCircleSolid, TransitionRightSolid } from "iconoir-react"
 
+const CategoryElement = ({ category, text }) => (
+  <li className="categorys-list-element">
+    <span className="checkbox"><CheckCircleSolid color="#F2661F" /></span>
+    <p> <span className="checkbox">{category}</span>{text}</p>
+  </li>
+)
+
+const Services = ({ classCard, classText, text }) => (
+  <a href="#" className="service">
+    <div
+      className={classCard}>
+      <div className="overlay"></div>
+    </div>
+    <div className={classText}>
+      <h4>{text}</h4>
+    </div>
+  </a>
+)
+
 function MainContent() {
   return (
     <main className="main">
@@ -25,64 +44,51 @@ function MainContent() {
               <p>
                 Sin embargo, la transformación digital no es un proceso fácil y puede presentar desafíos para las empresas. Por esta razón, es importante que las empresas comprendan su nivel de madurez digital actual y tengan una visión clara de las áreas que deben mejorar para lograr una transformación digital exitosa.
               </p>
-
               <p>
                 Nuestra herramienta de diagnóstico del nivel de madurez en la transformación digital de medianas y grandes empresas es muy completa y profunda, ya que evalúa las dimensiones clave que deben ser consideradas para una transformación digital exitosa.
               </p>
-
               <p>
                 Las dimensiones a evaluar son:
               </p>
             </div>
+
             <section className="categorys">
               <ul className="categorys-list">
-
-                <li className="categorys-list-element">
-                  <span className="checkbox"><CheckCircleSolid color="#F2661F" /></span>
-                  <p> <span className="checkbox">Estrategia digital:</span> Evalúa si la empresa tiene una estrategia clara y coherente para la transformación digital, si la estrategia está alineada con los objetivos de negocio y si se están tomando medidas para implementar la estrategia.</p>
-                </li>
-
-                <li className="categorys-list-element">
-                  <span className="checkbox"><CheckCircleSolid color="#F2661F" /></span>
-                  <p> <span>Cultura digital:</span> Evalúa si la empresa tiene una cultura digital sólida y una mentalidad de innovación, si los empleados están comprometidos con la transformación digital y si la empresa está promoviendo la colaboración y el aprendizaje continuo.</p>
-                </li>
-
-                <li className="categorys-list-element" >
-                  <span className="checkbox"><CheckCircleSolid color="#F2661F" /></span>
-                  <p> <span>Capacidades digitales:</span> Evalúa si la empresa tiene las habilidades y el talento necesarios para llevar a cabo la transformación digital, si se están invirtiendo en la formación y el desarrollo de los empleados y si la empresa tiene una estructura organizativa adecuada para la transformación digital.</p>
-                </li>
-
-                <li className="categorys-list-element">
-                  <span className="checkbox"><CheckCircleSolid color="#F2661F" /></span>
-                  <p> <span>Experiencia del cliente:</span> Evalúa si la empresa está utilizando la tecnología para mejorar la experiencia del cliente, si se están adoptando nuevas tecnologías para mejorar la interacción con los clientes y si se están midiendo los resultados y tomando medidas para mejorar continuamente.</p>
-                </li>
+                <CategoryElement
+                  category={"Estrategia digital:"}
+                  text={"Evalúa si la empresa tiene una estrategia clara y coherente para la transformación digital, si la estrategia está alineada con los objetivos de negocio y si se están tomando medidas para implementar la estrategia."}
+                />
+                <CategoryElement
+                  category={"Cultura digital:"}
+                  text={"Evalúa si la empresa tiene una cultura digital sólida y una mentalidad de innovación, si los empleados están comprometidos con la transformación digital y si la empresa está promoviendo la colaboración y el aprendizaje continuo."}
+                />
+                <CategoryElement
+                  category={"Capacidades digitales:"}
+                  text={"Evalúa si la empresa tiene las habilidades y el talento necesarios para llevar a cabo la transformación digital, si se están invirtiendo en la formación y el desarrollo de los empleados y si la empresa tiene una estructura organizativa adecuada para la transformación digital."}
+                />
+                <CategoryElement
+                  category={"Experiencia del cliente:"}
+                  text={"Evalúa si la empresa está utilizando la tecnología para mejorar la experiencia del cliente, si se están adoptando nuevas tecnologías para mejorar la interacción con los clientes y si se están midiendo los resultados y tomando medidas para mejorar continuamente."} />
               </ul>
             </section>
           </section>
 
           <section className="categorys">
             <ul className="categorys-list">
-              <li className="categorys-list-element">
-                <span className="checkbox"><CheckCircleSolid color="#F2661F" /></span>
-                <p> <span>Innovación y colaboración:</span>  Evalúa si la empresa está fomentando la innovación y la colaboración, si se están implementando prácticas ágiles para el desarrollo de productos y servicios, si se están adoptando nuevas tecnologías y si se están explorando nuevas formas de colaboración con socios y proveedores.</p>
-              </li>
-
-              <li className="categorys-list-element">
-                <span className="checkbox"><CheckCircleSolid color="#F2661F" /></span>
-                <p> <span>Gobierno digital:</span> Evalúa si la empresa tiene una estructura de gobierno adecuada para la transformación digital, si se están estableciendo políticas y normas claras para el uso de la tecnología y si se están tomando medidas para mitigar los riesgos asociados con la transformación digital</p>
-              </li>
-
-              <li className="categorys-list-element">
-                <span className="checkbox"><CheckCircleSolid color="#F2661F" /></span>
-                <p> <span>Tecnologías digitales emergentes:</span> Evalúa si la empresa está adoptando tecnologías emergentes como la inteligencia artificial, la nube, el blockchain y la robótica, si se están explorando nuevas oportunidades de negocio y si se están preparando para los desafíos que pueden presentarse.</p>
-              </li>
-
-              <li className="categorys-list-element" >
-                <span className="checkbox"><CheckCircleSolid color="#F2661F" /></span>
-                <p> <span>Resultados de negocio:</span> Evalúa si la empresa está logrando resultados positivos a través de la transformación digital, si se están midiendo los resultados y si se están tomando medidas para mejorar continuamente.</p>
-              </li>
+              <CategoryElement
+                category={"Innovación y colaboración:"}
+                text={"Evalúa si la empresa está fomentando la innovación y la colaboración, si se están implementando prácticas ágiles para el desarrollo de productos y servicios, si se están adoptando nuevas tecnologías y si se están explorando nuevas formas de colaboración con socios y proveedores."}
+              />
+              <CategoryElement
+                category={"Gobierno digital:"}
+                text={"Evalúa si la empresa tiene una estructura de gobierno adecuada para la transformación digital, si se están estableciendo políticas y normas claras para el uso de la tecnología y si se están tomando medidas para mitigar los riesgos asociados con la transformación digital"} />
+              <CategoryElement
+                category={"Tecnologías digitales emergentes:"}
+                text={"Evalúa si la empresa está adoptando tecnologías emergentes como la inteligencia artificial, la nube, el blockchain y la robótica, si se están explorando nuevas oportunidades de negocio y si se están preparando para los desafíos que pueden presentarse."} />
+              <CategoryElement
+                category={"Resultados de negocio:"}
+                text={"Evalúa si la empresa está logrando resultados positivos a través de la transformación digital, si se están midiendo los resultados y si se están tomando medidas para mejorar continuamente."} />
             </ul>
-
             <div className="conclusion-container">
               <p>
                 Al evaluar estas dimensiones, nuestra herramienta proporciona una imagen completa del nivel de madurez digital de la empresa y ayuda a identificar las áreas en las que se pueden realizar mejoras. Esperamos que esta herramienta sea útil para todas las empresas que estén interesadas en mejorar su capacidad de transformación digital.
@@ -100,48 +106,26 @@ function MainContent() {
         </div>
 
         <section className="services-container">
-
-          <a href="#" className="service">
-
-            <div
-              className="service-image bg-1">
-              <div className="overlay"></div>
-            </div>
-            <div className="service-type hov-b">
-              <h4>Medianas y grandes empresas</h4>
-            </div>
-
-          </a>
-
-          <a href="#" className="service">
-            <div
-              className="service-image bg-2">
-              <div className="overlay"></div>
-            </div>
-            <div className="service-type hov-b">
-              <h4>micros y pequeñas empresas</h4>
-            </div>
-          </a>
-
-          <a href="#" className="service">
-            <div
-              className="service-image bg-3">
-              <div className="overlay"></div>
-            </div>
-            <div className="service-type hov-g">
-              <h4>economía popular, asociativa y comunitaria</h4>
-            </div>
-          </a>
-
-          <a href="#" className="service">
-            <div
-              className="service-image bg-4">
-              <div className="overlay"></div>
-            </div>
-            <div className="service-type hov-aq">
-              <h4>excelencia clínica</h4>
-            </div>
-          </a>
+          <Services
+            classCard={'service-image bg-1'}
+            classText={'service-type hov-b'}
+            text={'medianas y grandes empresas'}
+          />
+          <Services
+            classCard={'service-image bg-2'}
+            classText={'service-type hov-b'}
+            text={'micros y pequeñas empresas'}
+          />
+          <Services
+            classCard={'service-image bg-3'}
+            classText={'service-type hov-g'}
+            text={'economía popular, asociativa y comunitaria'}
+          />
+          <Services
+            classCard={'service-image bg-4'}
+            classText={'service-type hov-aq'}
+            text={'excelencia clínica'}
+          />
         </section>
 
         <div className="more-information-container">
@@ -150,14 +134,10 @@ function MainContent() {
               conoce más sobre cámara de comercio de cali
             </span><TransitionRightSolid />
           </a>
-
         </div>
-
       </div>
     </main>
   );
 }
 
 export default MainContent;
-
-
