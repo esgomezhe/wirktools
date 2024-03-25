@@ -19,7 +19,7 @@ To install WIRKTOOLS by hand type the following commands:
    ```
 2. Install Django and other required packages
    ```
-   pip install -r requeriments.txt
+   pip install -r requirements.txt
    ```
 3. Install React and other required packages
    ```
