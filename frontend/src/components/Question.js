@@ -3,7 +3,6 @@ import '../stylesheets/form.css';
 
 function Question({ form, currentQuestionIndex, selectedAnswer, onSelectAnswer, onNavigate }) {
 
-
   return (
     <div className='formulario-container'>
       <div className='formulario'>
