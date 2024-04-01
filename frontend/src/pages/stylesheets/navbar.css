@@ -1,0 +1,96 @@
+.navbar-container {
+  margin-right: 75px;
+}
+
+.navbar-menu {
+  display: flex;
+  gap: 20px;
+  padding: 16px 0 0 0;
+  list-style: none;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.navbar-item {
+  cursor: pointer;
+}
+
+/* Linea debajo de los elementos al pasar el mouse */
+.navbar-item:hover::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 2px;
+  margin-top: 6px;
+  background-color: #050505;
+}
+
+/* Hover en el container navbar-item (li) aplicado a los elementos */
+.navbar-item:hover .navbar-link {
+  color: #050505;
+}
+
+/* Home */
+.navbar-item.active {
+  width: 80px;
+  text-align: center;
+}
+
+.navbar-item.active::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 2px;
+  margin-top: 6px;
+  background-color: #050505;
+}
+
+/* Elementos navbar */
+.navbar-link {
+  text-decoration: none;
+  color: #EF0074;
+  text-transform: capitalize;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Color Home siempre activo */
+.navbar-link.active {
+  color: #050505;
+}
+
+/* Dropdown de herramienta e iniciativa */
+.navbar-dropdown {
+  position: relative;
+}
+
+.dropdown-content {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #fff;
+  border-top: none;
+  margin-top: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.3s ease-in-out;
+}
+
+.dropdown-content.open {
+  max-height: 200px;
+}
+
+/* Caja donde esta almacenado formulario de caracterizacion */
+.dropdown-item {
+  display: block;
+  padding: 10px;
+  text-decoration: none;
+  color: #333;
+  font-size: 15px;
+  text-transform: capitalize;
+}
+
+.dropdown-item:hover {
+  background-color: #f0f0f0;
+}

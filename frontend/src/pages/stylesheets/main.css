@@ -28,6 +28,7 @@
 .title {
   color: white;
   text-transform: uppercase;
+  font-weight: normal;
 }
 
 .description-title {
@@ -37,6 +38,7 @@
   font-style: oblique;
   font-weight: 500;
   font-size: 25px;
+  font-weight: normal;
 }
 
 /* Estilos informacion principal */
