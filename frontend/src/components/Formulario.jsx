@@ -5,7 +5,6 @@ import { fetchForms, submitForm } from '../utils/formService';
 import '../stylesheets/form.css';
 import Footer from './Footer';
 
-
 function Formulario() {
   const [forms, setForms] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -111,7 +110,6 @@ function Formulario() {
       </div>
       <Footer />
     </>
-
   );
 }
 

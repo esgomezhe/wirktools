@@ -3,7 +3,6 @@ import '../stylesheets/form.css';
 
 function Question({ form, currentQuestionIndex, selectedAnswer, onSelectAnswer, onNavigate }) {
 
-
   return (
     <div className='formulario-container'>
       <div className='formulario'>
@@ -11,8 +10,6 @@ function Question({ form, currentQuestionIndex, selectedAnswer, onSelectAnswer, 
         <h3>{form.questions[currentQuestionIndex].category.name}</h3>
         <h4>{form.questions[currentQuestionIndex].sub_category}</h4>
         <p className='formulario-p text'>{form.questions[currentQuestionIndex].text}</p>
-
-
         <div className='formulario-buttons'>
           {form.questions[currentQuestionIndex].answers.map((answer) => (
             <button className='buttons-question'
@@ -27,8 +24,6 @@ function Question({ form, currentQuestionIndex, selectedAnswer, onSelectAnswer, 
             </button>
           ))}
         </div>
-
-
         <div className='formulario-buttons'>
           {currentQuestionIndex > 0 && (
             <button className='buttons-question' onClick={() => onNavigate('previous')}>Atrás</button>
@@ -39,7 +34,6 @@ function Question({ form, currentQuestionIndex, selectedAnswer, onSelectAnswer, 
         </div>
       </div>
     </div>
-
   );
 }
 

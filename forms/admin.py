@@ -79,7 +79,6 @@ def export_as_excel(modeladmin, request, queryset):
     wb.save(response)
     return response
 
-
 @admin.register(CompletedForm)
 class CompletedFormAdmin(admin.ModelAdmin):
     list_display = ['form_title', 'user', 'created_at']
