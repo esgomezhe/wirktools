@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../stylesheets/caracterizacion.css';
 
-function DigitalTransformationForm({ onFormSubmit }) {
+function Caracterizacion({ onFormSubmit }) {
   const [formData, setFormData] = useState({
     entrepreneurName: '',
     companyType: '',
@@ -228,4 +228,4 @@ function DigitalTransformationForm({ onFormSubmit }) {
   );
 }
 
-export default DigitalTransformationForm;
+export default Caracterizacion;

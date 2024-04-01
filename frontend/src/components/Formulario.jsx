@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import DigitalTransformationForm from './DigitalTransformationForm';
 import Question from './Question';
+import Caracterizacion from './Caracterizacion';
 import FormCompletion from './FormCompletion';
 import { fetchForms, submitForm } from '../utils/formService';
 import '../stylesheets/form.css';
@@ -12,9 +12,8 @@ function Formulario() {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [answers, setAnswers] = useState([]);
   const [isCompleted, setIsCompleted] = useState(false);
-  const [digitalFormSubmitted, setDigitalFormSubmitted] = useState(false);
+  const [isCharacterizationComplete, setIsCharacterizationComplete] = useState(false); // Nuevo estado
 
-  // Recuperar el estado guardado cuando el componente se monta
   useEffect(() => {
     fetchForms().then(data => setForms(data.results));
   
@@ -29,21 +28,10 @@ function Formulario() {
     }
   
     const isFormCompleted = localStorage.getItem('isFormCompleted');
-  setIsCompleted(JSON.parse(isFormCompleted));
+    setIsCompleted(JSON.parse(isFormCompleted));
 
-  const digitalForm = localStorage.getItem('digitalFormSubmitted');
-    if (digitalForm) {
-      setDigitalFormSubmitted(JSON.parse(digitalForm));
-    }
-}, []);
-
-  const handleDigitalFormSubmit = (formData) => {
-    console.log('Digital Transformation Form Data:', formData);
-    // Here you can handle the digital transformation form data
-    // For example, you can send it to your backend or set some state
-    setDigitalFormSubmitted(true);
-    localStorage.setItem('digitalFormSubmitted', 'true');
-  };
+    // Considerar agregar lógica para verificar si el formulario de caracterización ha sido completado
+  }, []);
 
   const handleAnswerSelect = (answerId) => {
     const question = forms[0].questions[currentQuestionIndex];
@@ -63,9 +51,8 @@ function Formulario() {
     setSelectedAnswer(answerId);
     setAnswers(current => {
       const updatedAnswers = [...current, newAnswer];
-      // Guardar respuestas actualizadas en localStorage
       localStorage.setItem('formAnswers', JSON.stringify(updatedAnswers));
-      localStorage.setItem('currentQuestionIndex', JSON.stringify(currentQuestionIndex + 1)); // Guardar el índice de la siguiente pregunta
+      localStorage.setItem('currentQuestionIndex', JSON.stringify(currentQuestionIndex + 1));
       return updatedAnswers;
     });
   };
@@ -80,16 +67,15 @@ function Formulario() {
           setIsCompleted(true);
           localStorage.setItem('formAnswers', JSON.stringify(answers));
           localStorage.setItem('isFormCompleted', 'true');
-          localStorage.removeItem('currentQuestionIndex'); // Limpiar índice actual ya que el formulario está completado.
+          localStorage.removeItem('currentQuestionIndex');
         }).catch(error => console.error('Error al enviar el formulario:', error));
       }
     } else if (direction === 'previous' && currentQuestionIndex > 0) {
       setCurrentQuestionIndex(current => current - 1);
       setSelectedAnswer(null);
-      // Guardar el índice de la pregunta actual en localStorage al navegar hacia atrás
       localStorage.setItem('currentQuestionIndex', JSON.stringify(currentQuestionIndex - 1));
       setAnswers(current => {
-        const updatedAnswers = current.slice(0, -1); // Remover la última respuesta
+        const updatedAnswers = current.slice(0, -1);
         localStorage.setItem('formAnswers', JSON.stringify(updatedAnswers));
         return updatedAnswers;
       });
@@ -103,30 +89,34 @@ function Formulario() {
     setAnswers([]);
     localStorage.removeItem('formAnswers');
     localStorage.removeItem('currentQuestionIndex');
-    localStorage.removeItem('isFormCompleted'); // Limpiar el estado de completado
+    localStorage.removeItem('isFormCompleted');
+    // Considerar también reiniciar el estado relacionado con el formulario de caracterización si es necesario
+  };
+
+  const renderFormContent = () => {
+    if (!isCompleted) {
+      if (!isCharacterizationComplete) {
+        return <Caracterizacion onFormSubmit={() => setIsCharacterizationComplete(true)} />;
+      } else if (forms.length > 0) {
+        return (
+          <Question
+            form={forms[0]}
+            currentQuestionIndex={currentQuestionIndex}
+            selectedAnswer={selectedAnswer}
+            onSelectAnswer={handleAnswerSelect}
+            onNavigate={handleNavigation}
+          />
+        );
+      }
+    } else {
+      return <FormCompletion answers={answers} onRestart={handleRestart} />;
+    }
   };
 
   return (
     <>
       <div>
-        {!isCompleted ? (
-          !digitalFormSubmitted ? (
-            // Render the Digital Transformation Form if it hasn't been submitted yet
-            <DigitalTransformationForm onFormSubmit={handleDigitalFormSubmit} />
-          ) : forms.length > 0 && (
-            // Render the Question component after the digital form has been submitted
-            <Question
-              form={forms[0]}
-              currentQuestionIndex={currentQuestionIndex}
-              selectedAnswer={selectedAnswer}
-              onSelectAnswer={handleAnswerSelect}
-              onNavigate={handleNavigation}
-            />
-          )
-        ) : (
-          // Render the Form Completion component once the form is completed
-          <FormCompletion answers={answers} onRestart={handleRestart} />
-        )}
+        {renderFormContent()}
       </div>
       <Footer />
     </>
