@@ -30,15 +30,15 @@ function Formulario() {
       setCurrentQuestionIndex(JSON.parse(savedQuestionIndex));
     }
 
-    const isFormCompleted = localStorage.getItem('isFormCompleted');
-    if (isFormCompleted) {
-      setIsCompleted(JSON.parse(isFormCompleted));
-    }
-
     const savedCaracterizacionData = localStorage.getItem('caracterizacionData');
     if (savedCaracterizacionData) {
       setCaracterizacionData(JSON.parse(savedCaracterizacionData));
       setIsCaracterizacionCompleted(true);
+    }
+
+    const isFormCompleted = localStorage.getItem('isFormCompleted');
+    if (isFormCompleted && JSON.parse(isFormCompleted) === true) {
+      setIsCompleted(true);
     }
   }, []);
 
@@ -79,7 +79,7 @@ function Formulario() {
         setSelectedAnswer(null);
       } else {
         const submissionData = {
-          content: answers,
+          answers: answers,
           info: caracterizacionData
         };
         submitForm(forms[0].title, submissionData).then(() => {
@@ -117,23 +117,21 @@ function Formulario() {
 
   return (
     <>
-      <div>
-        {!isCaracterizacionCompleted ? (
-          <Caracterizacion onFormSubmit={handleCaracterizacionSubmit} />
-        ) : !isCompleted ? (
-          forms.length > 0 && (
-            <Question
-              form={forms[0]}
-              currentQuestionIndex={currentQuestionIndex}
-              selectedAnswer={selectedAnswer}
-              onSelectAnswer={handleAnswerSelect}
-              onNavigate={handleNavigation}
-            />
-          )
-        ) : (
-          <FormCompletion answers={answers} onRestart={handleRestart} />
-        )}
-      </div>
+      {!isCompleted && !isCaracterizacionCompleted ? (
+        <Caracterizacion onFormSubmit={handleCaracterizacionSubmit} />
+      ) : !isCompleted && isCaracterizacionCompleted ? (
+        forms.length > 0 && (
+          <Question
+            form={forms[0]}
+            currentQuestionIndex={currentQuestionIndex}
+            selectedAnswer={selectedAnswer}
+            onSelectAnswer={handleAnswerSelect}
+            onNavigate={handleNavigation}
+          />
+        )
+      ) : (
+        <FormCompletion answers={answers} onRestart={handleRestart} />
+      )}
       <Footer />
     </>
   );
