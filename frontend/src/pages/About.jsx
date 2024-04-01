@@ -1,9 +1,8 @@
 import React from "react";
-import Header from "./components_home/Header"
+import Header from "../components/Header"
 import Main from "./components_home/MainContent"
 
-
-function About() {
+function HomeCCC() {
   return (
     <div>
       <Header />
@@ -12,4 +11,4 @@ function About() {
   );
 }
 
-export default About;
+export default HomeCCC;

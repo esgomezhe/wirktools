@@ -1,10 +1,10 @@
 import React from "react";
-import LandingPageForm from "../components/LandingPageForm";
+import Formulario from "../components/Formulario";
 
 function FormularioPage() {
-  return (
-    <LandingPageForm />
-  );
+    return (
+        <Formulario />
+    );
 };
 
 export default FormularioPage;

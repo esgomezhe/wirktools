@@ -76,15 +76,16 @@ function Navbar() {
     <nav id="navbar" className="navbar">
       <ul>
         <li><Link className="active" to='/'>Home</Link></li>
-        <li className="dropdown"><Link to='#'><span>Formulario</span> <i className="bi bi-chevron-down"></i></Link>
+        <li className="dropdown"><Link to='#'><span>Herramienta de Autodiagnostico</span> <i className="bi bi-chevron-down"></i></Link>
           <ul>
-            <li><Link to='/formularioQ'>Formulario</Link></li>
-            <li><Link to='/formularioQ'>Formulario 2</Link></li>
-            <li><Link to='/formularioQ'>Formulario 3</Link></li>
-            <li><Link to='/formularioQ'>Formulario 4</Link></li>
+            <li><Link to='/formulario'>Medianas y Grandes Empresas</Link></li>
+            <li><Link to='/formulario'>Micros y Pequeñas Empresas</Link></li>
+            <li><Link to='/formulario'>Economía Popular, Asociativa y Comunitaria</Link></li>
+            <li><Link to='/formulario'>Excelencia Clínica</Link></li>
           </ul>
         </li>
-        <li><Link to='/about'>About</Link></li>
+        { /* 
+        <li><Link to='/about'>Transformación Digital</Link></li>
         <li><Link to='/services'>Services</Link></li>
         <li><Link to='/portfolio'>Portfolio</Link></li>
         <li><Link to='/team'>Team</Link></li>
@@ -107,6 +108,7 @@ function Navbar() {
           </ul>
         </li>
         <li><Link to='/contact'>Contact Us</Link></li>
+        */ }
       </ul>
       <i className="bi bi-list mobile-nav-toggle"></i>
     </nav>
