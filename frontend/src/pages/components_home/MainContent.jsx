@@ -10,7 +10,7 @@ const CategoryElement = ({ category, text }) => (
 )
 
 const Services = ({ classCard, classText, text }) => (
-  <a href="#" className="service">
+  <a href="/formulario" className="service">
     <div
       className={classCard}>
       <div className="overlay"></div>
@@ -129,7 +129,7 @@ function MainContent() {
         </section>
 
         <div className="more-information-container">
-          <a href="#" className="more-information">
+          <a href="https://www.ccc.org.co/" className="more-information">
             <span className="more-information-text">
               conoce más sobre cámara de comercio de cali
             </span><TransitionRightSolid />

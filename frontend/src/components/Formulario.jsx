@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import DigitalTransformationForm from './DigitalTransformationForm';
 import Question from './Question';
 import FormCompletion from './FormCompletion';
 import { fetchForms, submitForm } from '../utils/formService';
@@ -11,6 +12,7 @@ function Formulario() {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [answers, setAnswers] = useState([]);
   const [isCompleted, setIsCompleted] = useState(false);
+  const [digitalFormSubmitted, setDigitalFormSubmitted] = useState(false);
 
   // Recuperar el estado guardado cuando el componente se monta
   useEffect(() => {
@@ -28,7 +30,20 @@ function Formulario() {
   
     const isFormCompleted = localStorage.getItem('isFormCompleted');
   setIsCompleted(JSON.parse(isFormCompleted));
+
+  const digitalForm = localStorage.getItem('digitalFormSubmitted');
+    if (digitalForm) {
+      setDigitalFormSubmitted(JSON.parse(digitalForm));
+    }
 }, []);
+
+  const handleDigitalFormSubmit = (formData) => {
+    console.log('Digital Transformation Form Data:', formData);
+    // Here you can handle the digital transformation form data
+    // For example, you can send it to your backend or set some state
+    setDigitalFormSubmitted(true);
+    localStorage.setItem('digitalFormSubmitted', 'true');
+  };
 
   const handleAnswerSelect = (answerId) => {
     const question = forms[0].questions[currentQuestionIndex];
@@ -95,7 +110,11 @@ function Formulario() {
     <>
       <div>
         {!isCompleted ? (
-          forms.length > 0 && (
+          !digitalFormSubmitted ? (
+            // Render the Digital Transformation Form if it hasn't been submitted yet
+            <DigitalTransformationForm onFormSubmit={handleDigitalFormSubmit} />
+          ) : forms.length > 0 && (
+            // Render the Question component after the digital form has been submitted
             <Question
               form={forms[0]}
               currentQuestionIndex={currentQuestionIndex}
@@ -105,6 +124,7 @@ function Formulario() {
             />
           )
         ) : (
+          // Render the Form Completion component once the form is completed
           <FormCompletion answers={answers} onRestart={handleRestart} />
         )}
       </div>
