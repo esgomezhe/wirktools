@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import Question from './Question';
 import Caracterizacion from './Caracterizacion';
+import Question from './Question';
 import FormCompletion from './FormCompletion';
 import { fetchForms, submitForm } from '../utils/formService';
 import '../stylesheets/form.css';
@@ -11,27 +11,42 @@ function Formulario() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [answers, setAnswers] = useState([]);
+  const [caracterizacionData, setCaracterizacionData] = useState({});
   const [isCompleted, setIsCompleted] = useState(false);
-  const [isCharacterizationComplete, setIsCharacterizationComplete] = useState(false); // Nuevo estado
+  const [isCaracterizacionCompleted, setIsCaracterizacionCompleted] = useState(false);
 
   useEffect(() => {
-    fetchForms().then(data => setForms(data.results));
-  
+    fetchForms().then(data => {
+      setForms(data.results);
+    });
+
     const savedAnswers = localStorage.getItem('formAnswers');
     if (savedAnswers) {
       setAnswers(JSON.parse(savedAnswers));
     }
-  
+
     const savedQuestionIndex = localStorage.getItem('currentQuestionIndex');
     if (savedQuestionIndex) {
       setCurrentQuestionIndex(JSON.parse(savedQuestionIndex));
     }
-  
-    const isFormCompleted = localStorage.getItem('isFormCompleted');
-    setIsCompleted(JSON.parse(isFormCompleted));
 
-    // Considerar agregar lógica para verificar si el formulario de caracterización ha sido completado
+    const isFormCompleted = localStorage.getItem('isFormCompleted');
+    if (isFormCompleted) {
+      setIsCompleted(JSON.parse(isFormCompleted));
+    }
+
+    const savedCaracterizacionData = localStorage.getItem('caracterizacionData');
+    if (savedCaracterizacionData) {
+      setCaracterizacionData(JSON.parse(savedCaracterizacionData));
+      setIsCaracterizacionCompleted(true);
+    }
   }, []);
+
+  const handleCaracterizacionSubmit = (data) => {
+    setCaracterizacionData(data);
+    setIsCaracterizacionCompleted(true);
+    localStorage.setItem('caracterizacionData', JSON.stringify(data));
+  };
 
   const handleAnswerSelect = (answerId) => {
     const question = forms[0].questions[currentQuestionIndex];
@@ -63,11 +78,16 @@ function Formulario() {
         setCurrentQuestionIndex(current => current + 1);
         setSelectedAnswer(null);
       } else {
-        submitForm(forms[0].title, answers).then(() => {
+        const submissionData = {
+          content: answers,
+          info: caracterizacionData
+        };
+        submitForm(forms[0].title, submissionData).then(() => {
           setIsCompleted(true);
           localStorage.setItem('formAnswers', JSON.stringify(answers));
           localStorage.setItem('isFormCompleted', 'true');
           localStorage.removeItem('currentQuestionIndex');
+          localStorage.removeItem('caracterizacionData');
         }).catch(error => console.error('Error al enviar el formulario:', error));
       }
     } else if (direction === 'previous' && currentQuestionIndex > 0) {
@@ -87,36 +107,32 @@ function Formulario() {
     setCurrentQuestionIndex(0);
     setSelectedAnswer(null);
     setAnswers([]);
+    setIsCaracterizacionCompleted(false);
+    setCaracterizacionData({});
     localStorage.removeItem('formAnswers');
     localStorage.removeItem('currentQuestionIndex');
     localStorage.removeItem('isFormCompleted');
-    // Considerar también reiniciar el estado relacionado con el formulario de caracterización si es necesario
-  };
-
-  const renderFormContent = () => {
-    if (!isCompleted) {
-      if (!isCharacterizationComplete) {
-        return <Caracterizacion onFormSubmit={() => setIsCharacterizationComplete(true)} />;
-      } else if (forms.length > 0) {
-        return (
-          <Question
-            form={forms[0]}
-            currentQuestionIndex={currentQuestionIndex}
-            selectedAnswer={selectedAnswer}
-            onSelectAnswer={handleAnswerSelect}
-            onNavigate={handleNavigation}
-          />
-        );
-      }
-    } else {
-      return <FormCompletion answers={answers} onRestart={handleRestart} />;
-    }
+    localStorage.removeItem('caracterizacionData');
   };
 
   return (
     <>
       <div>
-        {renderFormContent()}
+        {!isCaracterizacionCompleted ? (
+          <Caracterizacion onFormSubmit={handleCaracterizacionSubmit} />
+        ) : !isCompleted ? (
+          forms.length > 0 && (
+            <Question
+              form={forms[0]}
+              currentQuestionIndex={currentQuestionIndex}
+              selectedAnswer={selectedAnswer}
+              onSelectAnswer={handleAnswerSelect}
+              onNavigate={handleNavigation}
+            />
+          )
+        ) : (
+          <FormCompletion answers={answers} onRestart={handleRestart} />
+        )}
       </div>
       <Footer />
     </>
