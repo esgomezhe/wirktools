@@ -4,10 +4,9 @@ import Main from "./components_home/MainContent"
 
 function HomeCCC() {
   return (
-    <div>
-      <Header />
+    <>
       <Main />
-    </div>
+    </>
   );
 }
 
