@@ -4,7 +4,6 @@ import Question from './Question';
 import FormCompletion from './FormCompletion';
 import { fetchForms, submitForm } from '../utils/formService';
 import '../stylesheets/form.css';
-import Footer from './Footer';
 
 function FormularioUnidadesNegocio() {
   const [forms, setForms] = useState([]);
@@ -132,7 +131,6 @@ function FormularioUnidadesNegocio() {
       ) : (
         <FormCompletion answers={answers} onRestart={handleRestart} />
       )}
-      <Footer />
     </>
   );
 }
