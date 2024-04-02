@@ -278,20 +278,62 @@ function Caracterizacion({ onFormSubmit }) {
             </select>
           </div>
           <div>
-            <label htmlFor="registeredInCCC" className="form-label">Se encuentra matriculado en CCC *</label>
-            <select
-              id="registeredInCCC"
-              name="registeredInCCC"
+            <label htmlFor="operationStartYear" className="form-label">Año en el que inició operaciones *</label>
+            <input
+              type="date"
+              id="operationStartYear"
+              name="operationStartYear"
               required
-              className="form-select"
-              value={formData.registeredInCCC}
+              className="form-input"
+              value={formData.operationStartYear}
               onChange={handleChange}
-            >
-              <option value="">Seleccione una opción</option>
-              <option value="si">Sí</option>
-              <option value="no">No</option>
-            </select>
+            />
           </div>
+        </div>
+
+        <div className="form-row">
+          <div>
+              <label htmlFor="registeredInCCC" className="form-label">Se encuentra matriculado en CCC *</label>
+              <select
+                id="registeredInCCC"
+                name="registeredInCCC"
+                required
+                className="form-select"
+                value={formData.registeredInCCC}
+                onChange={handleChange}
+              >
+                <option value="">Seleccione una opción</option>
+                <option value="si">Sí</option>
+                <option value="no">No</option>
+              </select>
+          </div>
+        </div>
+
+        <div className="form-row">
+          <div>
+              <label htmlFor="mainOfficeDepartment" className="form-label">Departamento donde se ubica la sede principal de la empresa *</label>
+              <input
+                type="text"
+                id="mainOfficeDepartment"
+                name="mainOfficeDepartment"
+                required
+                className="form-input"
+                value={formData.mainOfficeDepartment}
+                onChange={handleChange}
+              />
+          </div>
+          <div>
+              <label htmlFor="mainOfficeMunicipality" className="form-label">Municipio donde se ubica la sede principal de la empresa *</label>
+              <input
+                type="text"
+                id="mainOfficeMunicipality"
+                name="mainOfficeMunicipality"
+                required
+                className="form-input"
+                value={formData.mainOfficeMunicipality}
+                onChange={handleChange}
+              />
+            </div>
         </div>
 
         <div className="form-row">
@@ -328,9 +370,6 @@ function Caracterizacion({ onFormSubmit }) {
               <option value="otro">Otro</option>
             </select>
           </div>
-        </div>
-
-        <div className="form-row">
           <div>
             <label htmlFor="productType" className="form-label">¿Qué tipo de productos y/o servicios ofrece tu empresa? *</label>
             <select
