@@ -45,6 +45,7 @@ function Navbar() {
           onMouseLeave={handleMouseLeave}
           className="navbar-item"
         >
+          { /*
           <div className="navbar-dropdown">
             <span className="navbar-link">iniciativa cluster <i className="bi bi-chevron-down" /></span>
             <div className={`dropdown-content ${openDropdown === 2 ? 'open' : ''}`}>
@@ -53,6 +54,7 @@ function Navbar() {
               </Link>
             </div>
           </div>
+          */}
         </li>
       </ul>
     </nav>

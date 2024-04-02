@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import '../stylesheets/footer.css'
-import { FacebookTag, Twitter, Instagram, Linkedin, Youtube, Facebook } from 'iconoir-react'
+import { Twitter, Instagram, Linkedin, Youtube, Facebook } from 'iconoir-react'
 
 function Footer() {
   return (
@@ -24,10 +24,10 @@ function Footer() {
 
           <div className='footer-options'>
             <span className='footer-options--span'>mapa del sitio:</span>
-            <Link to='#' className='footer-options--link'>home</Link>
-            <Link to='#' className='footer-options--link'>medianas y grandes empresas</Link>
-            <Link to='#' className='footer-options--link'>micro y pequeñas empresas</Link>
-            <Link to='#' className='footer-options--link'>economía popular, asociativa y <br />comunitaria</Link>
+            <Link to='/' className='footer-options--link'>home</Link>
+            <Link to='/' className='footer-options--link'>medianas y grandes empresas</Link>
+            <Link to='/formularioMicro' className='footer-options--link'>micro y pequeñas empresas</Link>
+            <Link to='/formularioUnidades' className='footer-options--link'>unidades de neggocio productivo</Link>
           </div>
 
           <div className='footer-logos'>
@@ -51,13 +51,13 @@ function Footer() {
         <div className='footer-socialmedia'>
           <span>Síguenos en: </span>
           <div className='socialmedia-links'>
-            <a href="#" className='social-link'><Facebook /></a>
-            <a href="#" className='social-link'><Twitter /></a>
-            <a href="#" className='social-link'><Youtube /></a>
-            <a href="#" className='social-link'><Instagram /></a>
-            <a href="#" className='social-link'><Linkedin /></a>
+            <a href="https://www.facebook.com/CamaraComercioCali" className='social-link'><Facebook /></a>
+            <a href="https://twitter.com/camaracali" className='social-link'><Twitter /></a>
+            <a href="https://www.youtube.com/user/camaradecomerciocali" className='social-link'><Youtube /></a>
+            <a href="https://www.instagram.com/camaracali/" className='social-link'><Instagram /></a>
+            <a href="https://www.linkedin.com/company/camara-de-comercio-de-cali/" className='social-link'><Linkedin /></a>
           </div>
-          <p>Wirk Consulting © 2023. Todos los derechos reservados</p>
+          <p>Wirk Consulting © 2024. Todos los derechos reservados</p>
         </div>
       </footer>
     </>

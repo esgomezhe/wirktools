@@ -48,7 +48,7 @@ function FormularioUnidadesNegocio() {
   };
 
   const handleAnswerSelect = (answerId) => {
-    const question = forms[0].questions[currentQuestionIndex];
+    const question = forms[1].questions[currentQuestionIndex];
     const answer = question.answers.find(a => a.id === answerId);
     if (!answer) return;
 
@@ -73,7 +73,7 @@ function FormularioUnidadesNegocio() {
 
   const handleNavigation = (direction) => {
     if (direction === 'next' && selectedAnswer !== null) {
-      if (currentQuestionIndex < forms[0]?.questions.length - 1) {
+      if (currentQuestionIndex < forms[1]?.questions.length - 1) {
         setCurrentQuestionIndex(current => current + 1);
         setSelectedAnswer(null);
       } else {
@@ -121,7 +121,7 @@ function FormularioUnidadesNegocio() {
       ) : !isCompleted && isCaracterizacionCompleted ? (
         forms.length > 0 && (
           <Question
-            form={forms[0]}
+            form={forms[1]}
             currentQuestionIndex={currentQuestionIndex}
             selectedAnswer={selectedAnswer}
             onSelectAnswer={handleAnswerSelect}
