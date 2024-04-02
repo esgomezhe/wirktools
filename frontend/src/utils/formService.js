@@ -7,13 +7,13 @@ export const fetchForms = async () => {
   return response.json();
 };
   
-export const submitForm = async (formTitle, answers) => {
-  // Tu implementación de fetch para enviar un formulario completado
+export const submitForm = async (formTitle, userName, email, dataToSubmit) => {
+  // Asumiendo que `dataToSubmit` ya contiene las propiedades `answers` e `info` adecuadamente estructuradas
   const completedFormData = {
     form_title: formTitle,
-    content: {
-      answers,
-    },
+    user: userName,
+    email: email,
+    content: dataToSubmit, // Directamente utilizamos `dataToSubmit` que ya tiene la estructura correcta
   };
   
   const response = await fetch('http://localhost:8000/completed-forms/', {
