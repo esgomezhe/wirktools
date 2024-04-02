@@ -9,7 +9,7 @@ function App() {
 
   return (
     <>
-      {showHeader && <Header />}
+      {/* {showHeader && <Header />} */}
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/formulario' element={<Formulario />} />
