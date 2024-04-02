@@ -2,7 +2,6 @@ from django.db import models
 from django.conf import settings
 from ckeditor.fields import RichTextField
 from django.utils.text import slugify
-from django.contrib.auth.models import User
 
 class Category(models.Model):
     name = models.CharField(max_length=255, unique=True)
@@ -53,10 +52,11 @@ class Answer(models.Model):
         return f"{self.text} ({self.value})"    
     
 class CompletedForm(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='completed_forms', null=True, blank=True)
+    user = models.CharField(max_length=255, null=True, blank=True)
+    email = models.CharField(max_length=255, null=True, blank=True)
     form_title = models.CharField(max_length=255)
     content = models.JSONField()
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.form_title} - {'Anonymous' if self.user is None else self.user.username}"
+        return f"{self.form_title} - {self.user} - {self.email}"

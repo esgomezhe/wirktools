@@ -45,4 +45,4 @@ class FormSerializer(serializers.ModelSerializer):
 class CompletedFormSerializer(serializers.ModelSerializer):
     class Meta:
         model = CompletedForm
-        fields = ['id', 'user', 'form_title', 'content']
+        fields = ['id', 'user', 'email','form_title', 'content']

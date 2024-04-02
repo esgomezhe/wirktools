@@ -3,7 +3,7 @@ import '../stylesheets/caracterizacion.css';
 
 function Caracterizacion({ onFormSubmit }) {
   const [formData, setFormData] = useState({
-    entrepreneurName: '',
+    userName: '',
     companyType: '',
     identificationType: '',
     identificationNumber: '',
@@ -39,14 +39,14 @@ function Caracterizacion({ onFormSubmit }) {
       <form onSubmit={handleSubmit} noValidate>
         <div className="form-row">
           <div>
-            <label htmlFor="entrepreneurName" className="form-label">Nombre del emprendedor/empresario *</label>
+            <label htmlFor="userName" className="form-label">Nombre del emprendedor/empresario *</label>
             <input
               type="text"
-              id="entrepreneurName"
-              name="entrepreneurName"
+              id="userName"
+              name="userName"
               required
               className="form-input"
-              value={formData.entrepreneurName}
+              value={formData.userName}
               onChange={handleChange}
             />
           </div>
