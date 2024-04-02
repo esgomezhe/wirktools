@@ -6,7 +6,7 @@ import { fetchForms, submitForm } from '../utils/formService';
 import '../stylesheets/form.css';
 import Footer from './Footer';
 
-function Formulario() {
+function FormularioUnidadesNegocio() {
   const [forms, setForms] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
@@ -82,7 +82,7 @@ function Formulario() {
           answers: answers,
           info: caracterizacionData
         };
-        submitForm(forms[0].title, caracterizacionData.userName, caracterizacionData.email, submissionData).then(() => {
+        submitForm(forms[1].title, caracterizacionData.userName, caracterizacionData.email, submissionData).then(() => {
           setIsCompleted(true);
           localStorage.setItem('formAnswers', JSON.stringify(answers));
           localStorage.setItem('isFormCompleted', 'true');
@@ -137,4 +137,4 @@ function Formulario() {
   );
 }
 
-export default Formulario;
+export default FormularioUnidadesNegocio;
