@@ -30,8 +30,11 @@ function Navbar() {
           <div className="navbar-dropdown">
             <span className="navbar-link">herramienta de autodiagnóstico <i className="bi bi-chevron-down" /></span>
             <div className={`dropdown-content ${openDropdown === 1 ? 'open' : ''}`}>
-              <Link to="/formularioQ" className="dropdown-item">
-                formulario de caracterizacion
+              <Link to="/formularioMicro" className="dropdown-item">
+                micros y pequeñas empresas
+              </Link>
+              <Link to="/formularioUnidades" className="dropdown-item">
+                unidades de negocio productivo
               </Link>
             </div>
           </div>
@@ -42,6 +45,7 @@ function Navbar() {
           onMouseLeave={handleMouseLeave}
           className="navbar-item"
         >
+          { /*
           <div className="navbar-dropdown">
             <span className="navbar-link">iniciativa cluster <i className="bi bi-chevron-down" /></span>
             <div className={`dropdown-content ${openDropdown === 2 ? 'open' : ''}`}>
@@ -50,6 +54,7 @@ function Navbar() {
               </Link>
             </div>
           </div>
+          */}
         </li>
       </ul>
     </nav>

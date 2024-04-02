@@ -104,7 +104,19 @@ def export_as_excel(modeladmin, request, queryset):
         "disability": "Discapacidad",
         "email": "Correo Electrónico",
         "phoneNumber": "Teléfono",
-        "highestEducationLevel": "Nivel Educativo Máximo"
+        "highestEducationLevel": "Nivel Educativo Máximo",
+        "companyName": "Nombre de Empresa",
+        "companyNIT": "NIT de Empresa",
+        "previousBusiness": "¿Ha creado otra empresa anteriormente?",
+        "operationStartYear": "Año de Inicio de Operaciones",
+        "registeredInCCC": "Registrado en CCC",
+        "mainOfficeDepartment": "Departamento de la Sede Principal",
+        "mainOfficeMunicipality": "Municipio de la Sede Principal",
+        "businessSector": "Sector Principal de la Empresa",
+        "productType": "Tipo de Productos/Servicios Ofrecidos",
+        "clientFocus": "Enfoque del Cliente",
+        "marketReach": "Alcance del Mercado",
+        "businessSize": "Tamaño de la Empresa",
     }
 
     for obj in queryset:

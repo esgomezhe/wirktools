@@ -10,7 +10,7 @@ const CategoryElement = ({ category, text }) => (
 )
 
 const Services = ({ classCard, classText, text }) => (
-  <a href="/formulario" className="service">
+  <a href="/formularioMicro" className="service">
     <div
       className={classCard}>
       <div className="overlay"></div>

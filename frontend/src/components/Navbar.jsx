@@ -78,10 +78,10 @@ function Navbar() {
         <li><Link className="active" to='/'>Home</Link></li>
         <li className="dropdown"><Link to='#'><span>Herramienta de Autodiagnostico</span> <i className="bi bi-chevron-down"></i></Link>
           <ul>
-            { /*<li><Link to='/formulario'>Medianas y Grandes Empresas</Link></li> */ }
+            <li><Link to='/formulario'>Medianas y Grandes Empresas</Link></li>
             <li><Link to='/formulario'>Micros y Pequeñas Empresas</Link></li>
-            <li><Link to='/formulario'>Unidades de Negocio Productivo</Link></li>
-            { /*<li><Link to='/formulario'>Excelencia Clínica</Link></li>*/ }
+            <li><Link to='/formulario'>Economía Popular, Asociativa y Comunitaria</Link></li>
+            <li><Link to='/formulario'>Excelencia Clínica</Link></li>
           </ul>
         </li>
         { /* 

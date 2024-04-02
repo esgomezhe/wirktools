@@ -14,6 +14,18 @@ function Caracterizacion({ onFormSubmit }) {
     email: '',
     phoneNumber: '',
     highestEducationLevel: '',
+    companyName: '',
+    companyNIT: '',
+    previousBusiness: '',
+    operationStartYear: '',
+    registeredInCCC: '',
+    mainOfficeDepartment: '',
+    mainOfficeMunicipality: '',
+    businessSector: '',
+    productType: '',
+    clientFocus: '',
+    marketReach: '',
+    businessSize: '',
   });
 
   const handleChange = (event) => {
@@ -218,6 +230,215 @@ function Caracterizacion({ onFormSubmit }) {
               <option value="universitario_pregrado">Universitario (pregrado)</option>
               <option value="especialización_maestría">Especialización o maestría</option>
               <option value="doctorado_postdoctorado">Doctorado o postdoctorado</option>
+            </select>
+          </div>
+        </div>
+
+        <div className="form-row">
+          <div>
+            <label htmlFor="companyName" className="form-label">Nombre de empresa *</label>
+            <input
+              type="text"
+              id="companyName"
+              name="companyName"
+              required
+              className="form-input"
+              value={formData.companyName}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <label htmlFor="companyNIT" className="form-label">NIT de empresa *</label>
+            <input
+              type="text"
+              id="companyNIT"
+              name="companyNIT"
+              required
+              className="form-input"
+              value={formData.companyNIT}
+              onChange={handleChange}
+            />
+          </div>
+        </div>
+
+        <div className="form-row">
+          <div>
+            <label htmlFor="previousBusiness" className="form-label">Antes de este emprendimiento/negocio/empresa, ¿Habías creado otra empresa? *</label>
+            <select
+              id="previousBusiness"
+              name="previousBusiness"
+              required
+              className="form-select"
+              value={formData.previousBusiness}
+              onChange={handleChange}
+            >
+              <option value="">Seleccione una opción</option>
+              <option value="si">Sí</option>
+              <option value="no">No</option>
+            </select>
+          </div>
+          <div>
+            <label htmlFor="operationStartYear" className="form-label">Año en el que inició operaciones *</label>
+            <input
+              type="date"
+              id="operationStartYear"
+              name="operationStartYear"
+              required
+              className="form-input"
+              value={formData.operationStartYear}
+              onChange={handleChange}
+            />
+          </div>
+        </div>
+
+        <div className="form-row">
+          <div>
+              <label htmlFor="registeredInCCC" className="form-label">Se encuentra matriculado en CCC *</label>
+              <select
+                id="registeredInCCC"
+                name="registeredInCCC"
+                required
+                className="form-select"
+                value={formData.registeredInCCC}
+                onChange={handleChange}
+              >
+                <option value="">Seleccione una opción</option>
+                <option value="si">Sí</option>
+                <option value="no">No</option>
+              </select>
+          </div>
+        </div>
+
+        <div className="form-row">
+          <div>
+              <label htmlFor="mainOfficeDepartment" className="form-label">Departamento donde se ubica la sede principal de la empresa *</label>
+              <input
+                type="text"
+                id="mainOfficeDepartment"
+                name="mainOfficeDepartment"
+                required
+                className="form-input"
+                value={formData.mainOfficeDepartment}
+                onChange={handleChange}
+              />
+          </div>
+          <div>
+              <label htmlFor="mainOfficeMunicipality" className="form-label">Municipio donde se ubica la sede principal de la empresa *</label>
+              <input
+                type="text"
+                id="mainOfficeMunicipality"
+                name="mainOfficeMunicipality"
+                required
+                className="form-input"
+                value={formData.mainOfficeMunicipality}
+                onChange={handleChange}
+              />
+            </div>
+        </div>
+
+        <div className="form-row">
+          <div>
+            <label htmlFor="businessSector" className="form-label">¿Cuál es el sector principal en el que se encuentra tu empresa? *</label>
+            <select
+              id="businessSector"
+              name="businessSector"
+              required
+              className="form-select"
+              value={formData.businessSector}
+              onChange={handleChange}
+            >
+              <option value="">Seleccione sector principal</option>
+              <option value="agricultura">Agricultura</option>
+              <option value="arte">Arte</option>
+              <option value="entretenimiento">Entretenimiento</option>
+              <option value="comunicacion_informacion">Comunicación e información</option>
+              <option value="construccion">Construcción</option>
+              <option value="alimentos_empacados">Alimentos empacados listos para consumir y bebidas no alcohólicas</option>
+              <option value="comercio_mayorista_minorista">Comercio al por mayor y al por menor de mercancías</option>
+              <option value="proteina_blanca">Proteína blanca (productoras de pollo, cerdo y huevo)</option>
+              <option value="energia">Energía</option>
+              <option value="otros_servicios">Otros servicios</option>
+              <option value="servicios_financieros_empresariales">Servicios financieros y empresariales</option>
+              <option value="software_hardware">Software y hardware</option>
+              <option value="transporte">Transporte</option>
+              <option value="x_tech">X-Tech</option>
+              <option value="salud">Salud</option>
+              <option value="belleza_cuidado_personal">Belleza y cuidado personal</option>
+              <option value="sistema_moda">Sistema moda (Confección, Marroquinería)</option>
+              <option value="hoteles_servicios_hosteleria">Hoteles y servicios de hostelería y operadores turísticos</option>
+              <option value="restaurantes">Restaurantes</option>
+              <option value="otro">Otro</option>
+            </select>
+          </div>
+          <div>
+            <label htmlFor="productType" className="form-label">¿Qué tipo de productos y/o servicios ofrece tu empresa? *</label>
+            <select
+              id="productType"
+              name="productType"
+              required
+              className="form-select"
+              value={formData.productType}
+              onChange={handleChange}
+            >
+              <option value="productos_bienes_fisicos">Productos o bienes físicos (Ej: carteras, artesanías, zapatos, etc.)</option>
+              <option value="productos_bienes_no_fisicos">Productos o bienes no físicos (Ej: Desarrollo de Software, contenido multimedia, etc.)</option>
+              <option value="servicios">Servicios (Ej: Servicios de publicidad, diseño, etc.)</option>
+            </select>
+          </div>
+        </div>
+
+        <div className="form-row">
+          <div>
+            <label htmlFor="clientFocus" className="form-label">¿Cuál es el tipo de cliente en el que se enfoca tu empresa? *</label>
+            <select
+              id="clientFocus"
+              name="clientFocus"
+              required
+              className="form-select"
+              value={formData.clientFocus}
+              onChange={handleChange}
+            >
+              <option value="">Seleccione el tipo de cliente</option>
+              <option value="B2B">Su principal cliente es otra empresa (B2B)</option>
+              <option value="B2C">Sus principales clientes son consumidores o el usuario final (B2C)</option>
+              <option value="B2G">Sus principales clientes son entes u organizaciones del gobierno (B2G)</option>
+            </select>
+          </div>
+          <div>
+            <label htmlFor="marketReach" className="form-label">¿Cuál es el tipo de mercado al que llega actualmente tu emprendimiento? *</label>
+            <select
+              id="marketReach"
+              name="marketReach"
+              required
+              className="form-select"
+              value={formData.marketReach}
+              onChange={handleChange}
+            >
+              <option value="">Seleccione el alcance de mercado</option>
+              <option value="local">Local (ciudad/municipio)</option>
+              <option value="regional">Regional (departamento / región del país)</option>
+              <option value="nacional">Nacional</option>
+              <option value="nacional_internacional">Nacional e internacional</option>
+              <option value="solo_internacional">Solo internacional</option>
+            </select>
+          </div>
+        </div>
+
+        <div className="form-row">
+          <div>
+            <label htmlFor="businessSize" className="form-label">¿De qué tamaño es tu empresa? *</label>
+            <select
+              id="businessSize"
+              name="businessSize"
+              required
+              className="form-select"
+              value={formData.businessSize}
+              onChange={handleChange}
+            >
+              <option value="">Seleccione el tamaño de la empresa</option>
+              <option value="unidad_productiva">Unidad Productiva Ventas anuales entre $1 - $ 800.000.000</option>
+              <option value="micro_mediana">Micro y Mediana. Ventas anuales entre $801.000.000. - $14.000.000.000</option>
+              <option value="mediana_grande">Mediana y Grande $14.000.000.001- $74.000.000.000</option>
             </select>
           </div>
         </div>

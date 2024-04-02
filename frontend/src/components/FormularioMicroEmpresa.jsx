@@ -4,9 +4,8 @@ import Question from './Question';
 import FormCompletion from './FormCompletion';
 import { fetchForms, submitForm } from '../utils/formService';
 import '../stylesheets/form.css';
-import Footer from './Footer';
 
-function Formulario() {
+function FormularioMicroEmpresa() {
   const [forms, setForms] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
@@ -132,9 +131,8 @@ function Formulario() {
       ) : (
         <FormCompletion answers={answers} onRestart={handleRestart} />
       )}
-      <Footer />
     </>
   );
 }
 
-export default Formulario;
+export default FormularioMicroEmpresa;
