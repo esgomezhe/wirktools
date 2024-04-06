@@ -4,6 +4,9 @@ import '../stylesheets/form.css';
 // Añadir isSubmitting a las props desestructuradas
 function Question({ form, currentQuestionIndex, selectedAnswer, onSelectAnswer, onNavigate, isSubmitting }) {
 
+  // Calcular el porcentaje de progreso
+  const progress = Math.floor((currentQuestionIndex / form.questions.length) * 100);
+
   return (
     <div className='formulario-container'>
       <div className='formulario'>
@@ -26,6 +29,7 @@ function Question({ form, currentQuestionIndex, selectedAnswer, onSelectAnswer, 
             </button>
           ))}
         </div>
+
         <div className='formulario-buttons'>
           {currentQuestionIndex > 0 && (
             <button className='buttons-question' onClick={() => onNavigate('previous')}>Atrás</button>
@@ -35,6 +39,12 @@ function Question({ form, currentQuestionIndex, selectedAnswer, onSelectAnswer, 
             {currentQuestionIndex < form.questions.length - 1 ? "Siguiente" : "Finalizar"}
           </button>
         </div>
+
+        {/* Barra de progreso */}
+        <div class="progress">
+          <div className="progress-bar" role="progressbar" style={{ width: `${progress}%` }} aria-valuenow={progress} aria-valuemin="0" aria-valuemax="100">{`${progress}%`}</div>
+        </div>
+
       </div>
     </div>
   );
