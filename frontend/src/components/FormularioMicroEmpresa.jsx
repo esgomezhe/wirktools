@@ -13,6 +13,7 @@ function FormularioMicroEmpresa() {
   const [caracterizacionData, setCaracterizacionData] = useState({});
   const [isCompleted, setIsCompleted] = useState(false);
   const [isCaracterizacionCompleted, setIsCaracterizacionCompleted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false); // Estado para controlar el envío
 
   useEffect(() => {
     fetchForms().then(data => {
@@ -77,17 +78,25 @@ function FormularioMicroEmpresa() {
         setCurrentQuestionIndex(current => current + 1);
         setSelectedAnswer(null);
       } else {
+        setIsSubmitting(true); // Deshabilitar el botón de envío
         const submissionData = {
           answers: answers,
           info: caracterizacionData
         };
-        submitForm(forms[0].title, caracterizacionData.userName, caracterizacionData.email, submissionData).then(() => {
-          setIsCompleted(true);
-          localStorage.setItem('formAnswers', JSON.stringify(answers));
-          localStorage.setItem('isFormCompleted', 'true');
-          localStorage.removeItem('currentQuestionIndex');
-          localStorage.removeItem('caracterizacionData');
-        }).catch(error => console.error('Error al enviar el formulario:', error));
+        submitForm(forms[0].title, caracterizacionData.userName, caracterizacionData.email, submissionData)
+          .then(() => {
+            setIsCompleted(true);
+            localStorage.setItem('formAnswers', JSON.stringify(answers));
+            localStorage.setItem('isFormCompleted', 'true');
+            localStorage.removeItem('currentQuestionIndex');
+            localStorage.removeItem('caracterizacionData');
+          })
+          .catch(error => {
+            console.error('Error al enviar el formulario:', error);
+          })
+          .finally(() => {
+            setIsSubmitting(false); // Habilitar el botón de envío
+          });
       }
     } else if (direction === 'previous' && currentQuestionIndex > 0) {
       setCurrentQuestionIndex(current => current - 1);
@@ -126,6 +135,7 @@ function FormularioMicroEmpresa() {
             selectedAnswer={selectedAnswer}
             onSelectAnswer={handleAnswerSelect}
             onNavigate={handleNavigation}
+            isSubmitting={isSubmitting}
           />
         )
       ) : (

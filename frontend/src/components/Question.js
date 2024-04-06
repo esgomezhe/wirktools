@@ -1,7 +1,8 @@
 import React from 'react';
 import '../stylesheets/form.css';
 
-function Question({ form, currentQuestionIndex, selectedAnswer, onSelectAnswer, onNavigate }) {
+// Añadir isSubmitting a las props desestructuradas
+function Question({ form, currentQuestionIndex, selectedAnswer, onSelectAnswer, onNavigate, isSubmitting }) {
 
   return (
     <div className='formulario-container'>
@@ -15,6 +16,7 @@ function Question({ form, currentQuestionIndex, selectedAnswer, onSelectAnswer, 
             <button className='buttons-question'
               key={answer.id}
               onClick={() => onSelectAnswer(answer.id)}
+              disabled={isSubmitting} // Deshabilitar las opciones de respuesta cuando se está enviando el formulario
               style={{
                 backgroundColor: selectedAnswer === answer.id ? "#253D90" : "",
                 color: selectedAnswer === answer.id ? "#65D7B7" : "",
@@ -28,7 +30,8 @@ function Question({ form, currentQuestionIndex, selectedAnswer, onSelectAnswer, 
           {currentQuestionIndex > 0 && (
             <button className='buttons-question' onClick={() => onNavigate('previous')}>Atrás</button>
           )}
-          <button className='buttons-question' onClick={() => onNavigate('next')}>
+          {/* Deshabilitar el botón de navegación cuando isSubmitting sea true */}
+          <button className='buttons-question' onClick={() => onNavigate('next')} disabled={isSubmitting}>
             {currentQuestionIndex < form.questions.length - 1 ? "Siguiente" : "Finalizar"}
           </button>
         </div>

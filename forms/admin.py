@@ -44,7 +44,6 @@ def export_as_csv(modeladmin, request, queryset):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename=completed_forms.csv'
     writer = csv.writer(response)
-    writer.writerow(['User', 'Form Title', 'Created At', 'Category Name', 'Question Text', 'Answer Text'])
 
     info_questions = {
         "userName": "Nombre",
@@ -60,23 +59,33 @@ def export_as_csv(modeladmin, request, queryset):
         "highestEducationLevel": "Nivel Educativo Máximo"
     }
 
+    if not queryset.exists():
+        writer.writerow(['No hay datos para mostrar.'])
+        return response
+
+    # Usar las preguntas de 'answers' del primer objeto para definir el orden
+    first_obj_answers = queryset.first().content.get('answers', [])
+    ordered_answer_questions = [ans['questionText'] for ans in first_obj_answers]
+
+    # Construir cabeceras
+    headers = ['User', 'Form Title', 'Created At'] + list(info_questions.values()) + ordered_answer_questions
+    writer.writerow(headers)
+
+    # Construcción de cada fila considerando el orden de 'answers'
     for obj in queryset:
-        user = obj.user
-        form_title = obj.form_title
-        created_at = obj.created_at.strftime("%Y-%m-%d %H:%M:%S")
+        row = [obj.user, obj.form_title, obj.created_at.strftime("%Y-%m-%d %H:%M:%S")]
 
-        # Primero, exporta la información de 'info'
+        # Añadir datos de 'info'
         info_data = obj.content.get('info', {})
-        for key, question in info_questions.items():
-            answer_text = info_data.get(key, "")
-            writer.writerow([user, form_title, created_at, "Caracterización", question, answer_text])
+        for key in info_questions:
+            row.append(info_data.get(key, "N/A"))
 
-        # Luego, exporta las respuestas de 'answers'
-        for ans in obj.content.get('answers', []):
-            category_name = ans['category']['name']
-            question_text = ans['questionText']
-            answer_text = ans['answerText']
-            writer.writerow([user, form_title, created_at, category_name, question_text, answer_text])
+        # Preparar y añadir datos de 'answers' según el orden establecido
+        answers_data = {ans['questionText']: ans.get('value', 'N/A') for ans in obj.content.get('answers', [])}
+        for question in ordered_answer_questions:
+            row.append(answers_data.get(question, "N/A"))
+
+        writer.writerow(row)
 
     return response
 
@@ -88,9 +97,6 @@ def export_as_excel(modeladmin, request, queryset):
     response['Content-Disposition'] = 'attachment; filename=completed_forms.xlsx'
     wb = openpyxl.Workbook()
     ws = wb.active
-
-    # Encabezados de la hoja de Excel
-    ws.append(['User', 'Form Title', 'Created At', 'Category Name', 'Question Text', 'Answer Text'])
 
     # Mapeo de los campos 'info' a preguntas legibles
     info_questions = {
@@ -119,27 +125,39 @@ def export_as_excel(modeladmin, request, queryset):
         "businessSize": "Tamaño de la Empresa",
     }
 
+    if not queryset.exists():
+        ws.append(['No hay datos para mostrar.'])
+        wb.save(response)
+        return response
+
+    # Usar las preguntas de 'answers' del primer objeto para definir el orden
+    first_obj_answers = queryset.first().content.get('answers', [])
+    ordered_answer_questions = [ans['questionText'] for ans in first_obj_answers]
+
+    # Construir cabeceras
+    headers = ['User', 'Form Title', 'Created At'] + list(info_questions.values()) + ordered_answer_questions
+    ws.append(headers)
+
+    # Construcción de cada fila considerando el orden de 'answers'
     for obj in queryset:
-        user = obj.user
-        form_title = obj.form_title
-        created_at = obj.created_at.strftime("%Y-%m-%d %H:%M:%S")
+        row = [obj.user, obj.form_title, obj.created_at.strftime("%Y-%m-%d %H:%M:%S")]
 
-        # Exporta los datos de 'info' como si fueran respuestas adicionales
+        # Añadir datos de 'info'
         info_data = obj.content.get('info', {})
-        for key, question in info_questions.items():
-            answer_text = info_data.get(key, "N/A")
-            ws.append([user, form_title, created_at, "Caracterización", question, answer_text])
+        for key in info_questions.keys():
+            row.append(info_data.get(key, "N/A"))
 
-        # Exporta las respuestas estándar de 'answers'
-        for ans in obj.content.get('answers', []):
-            category_name = ans.get('category', {}).get('name', 'N/A')
-            question_text = ans.get('questionText', 'N/A')
-            answer_text = ans.get('answerText', 'N/A')
-            ws.append([user, form_title, created_at, category_name, question_text, answer_text])
+        # Preparar y añadir datos de 'answers' según el orden establecido
+        answers_data = {ans['questionText']: ans.get('value', 'N/A') for ans in obj.content.get('answers', [])}
+        for question in ordered_answer_questions:
+            row.append(answers_data.get(question, "N/A"))
 
-    for column_cells in ws.columns:
-        length = max(len(str(cell.value)) for cell in column_cells if cell.value)
-        ws.column_dimensions[column_cells[0].column_letter].width = length
+        ws.append(row)
+    # Ajustar el ancho de las columnas
+    for column in ws.columns:
+        max_length = max(len(str(cell.value)) for cell in column)
+        adjusted_width = (max_length + 2)
+        ws.column_dimensions[column[0].column_letter].width = adjusted_width
 
     wb.save(response)
     return response

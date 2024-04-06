@@ -78,8 +78,7 @@ ROOT_URLCONF = 'wirktools.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, "templates"),],
-        #'DIRS': [os.path.join(BASE_DIR, "build"),],
+        'DIRS': [os.path.join(BASE_DIR, "frontend/build"),],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -151,7 +150,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Add project-wide static files directory
 # https://docs.djangoproject.com/en/5.0/ref/settings/#staticfiles-dirs
 
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "frontend/build/static")]
 
 # Add project-wide static files directory
 # https://docs.djangoproject.com/en/5.0/ref/settings/#media-root
@@ -163,7 +162,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
     #"http://localhost:3000",
 #]
 
-CORS_ORIGIN_WHITELIST = env.list('CORS_ORIGIN_WHITELIST_DEV')
+CORS_ALLOWED_ORIGINS = env.list('CORS_ALLOWED_ORIGINS_DEV')
 CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS_DEV')
 
 EMAIL_BACKEND='django.core.mail.backends.console.EmailBackend'
@@ -182,7 +181,7 @@ REST_FRAMEWORK = {
 
 if not DEBUG:
     ALLOWED_HOSTS = env.list('ALLOWED_HOSTS_DEPLOY')
-    CORS_ORIGIN_WHITELIST = env.list('CORS_ORIGIN_WHITELIST_DEPLOY')
+    CORS_ALLOWED_ORIGINS = env.list('CORS_ALLOWED_ORIGINS_DEPLOY')
     CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS_DEPLOY')
 
 
@@ -190,3 +189,6 @@ if not DEBUG:
         "default": env.db("DATABASE_URL"),
     }
     DATABASES["default"]["ATOMIC_REQUESTS"] = True
+
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 1000000
+CORS_ALLOW_ALL_ORIGINS = True

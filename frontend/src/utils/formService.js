@@ -1,6 +1,6 @@
 export const fetchForms = async () => {
   // Tu implementación de fetch para obtener los formularios
-  const response = await fetch('http://localhost:8000/forms/');
+  const response = await fetch('http://62.72.5.242:8000/api/forms/');
   if (!response.ok) {
     throw new Error('Network response was not ok');
   }
@@ -16,7 +16,7 @@ export const submitForm = async (formTitle, userName, email, dataToSubmit) => {
     content: dataToSubmit, // Directamente utilizamos `dataToSubmit` que ya tiene la estructura correcta
   };
   
-  const response = await fetch('http://localhost:8000/completed-forms/', {
+  const response = await fetch('http://62.72.5.242:8000/api/completed-forms/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
