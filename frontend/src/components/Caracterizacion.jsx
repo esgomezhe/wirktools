@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import '../stylesheets/caracterizacion.css';
+import { useNavigate } from "react-router-dom";
 
 function Caracterizacion({ onFormSubmit }) {
   const [formData, setFormData] = useState({
@@ -36,9 +37,17 @@ function Caracterizacion({ onFormSubmit }) {
     }));
   };
 
+  const navigate = useNavigate();
+
   const handleSubmit = (event) => {
     event.preventDefault();
     onFormSubmit(formData);
+
+    if (formData.companyType === 'micro_pequeñas') {
+      navigate('/formularioMicro');
+    } else if (formData.companyType === 'unidad_negocio_productivo') {
+      navigate('/formularioUnidades');
+    }
   };
 
   return (
@@ -73,10 +82,10 @@ function Caracterizacion({ onFormSubmit }) {
               onChange={handleChange}
             >
               <option value="">Seleccione tipo de empresa</option>
-              { /* <option value="medianas_grandes">Medianas y Grandes Empresas</option> */ }
+              { /* <option value="medianas_grandes">Medianas y Grandes Empresas</option> */}
               <option value="micro_pequeñas">Micro y Pequeñas Empresas</option>
               <option value="unidad_negocio_productivo">Unidades de Negocio Productivo</option>
-              { /* <option value="excelencia_clinica">Excelencia Clínica</option> */ }
+              { /* <option value="excelencia_clinica">Excelencia Clínica</option> */}
             </select>
           </div>
         </div>
@@ -293,47 +302,47 @@ function Caracterizacion({ onFormSubmit }) {
 
         <div className="form-row">
           <div>
-              <label htmlFor="registeredInCCC" className="form-label">Se encuentra matriculado en CCC *</label>
-              <select
-                id="registeredInCCC"
-                name="registeredInCCC"
-                required
-                className="form-select"
-                value={formData.registeredInCCC}
-                onChange={handleChange}
-              >
-                <option value="">Seleccione una opción</option>
-                <option value="si">Sí</option>
-                <option value="no">No</option>
-              </select>
+            <label htmlFor="registeredInCCC" className="form-label">Se encuentra matriculado en CCC *</label>
+            <select
+              id="registeredInCCC"
+              name="registeredInCCC"
+              required
+              className="form-select"
+              value={formData.registeredInCCC}
+              onChange={handleChange}
+            >
+              <option value="">Seleccione una opción</option>
+              <option value="si">Sí</option>
+              <option value="no">No</option>
+            </select>
           </div>
         </div>
 
         <div className="form-row">
           <div>
-              <label htmlFor="mainOfficeDepartment" className="form-label">Departamento donde se ubica la sede principal de la empresa *</label>
-              <input
-                type="text"
-                id="mainOfficeDepartment"
-                name="mainOfficeDepartment"
-                required
-                className="form-input"
-                value={formData.mainOfficeDepartment}
-                onChange={handleChange}
-              />
+            <label htmlFor="mainOfficeDepartment" className="form-label">Departamento donde se ubica la sede principal de la empresa *</label>
+            <input
+              type="text"
+              id="mainOfficeDepartment"
+              name="mainOfficeDepartment"
+              required
+              className="form-input"
+              value={formData.mainOfficeDepartment}
+              onChange={handleChange}
+            />
           </div>
           <div>
-              <label htmlFor="mainOfficeMunicipality" className="form-label">Municipio donde se ubica la sede principal de la empresa *</label>
-              <input
-                type="text"
-                id="mainOfficeMunicipality"
-                name="mainOfficeMunicipality"
-                required
-                className="form-input"
-                value={formData.mainOfficeMunicipality}
-                onChange={handleChange}
-              />
-            </div>
+            <label htmlFor="mainOfficeMunicipality" className="form-label">Municipio donde se ubica la sede principal de la empresa *</label>
+            <input
+              type="text"
+              id="mainOfficeMunicipality"
+              name="mainOfficeMunicipality"
+              required
+              className="form-input"
+              value={formData.mainOfficeMunicipality}
+              onChange={handleChange}
+            />
+          </div>
         </div>
 
         <div className="form-row">
