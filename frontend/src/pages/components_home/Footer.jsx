@@ -17,9 +17,9 @@ function Footer() {
           </div>
 
           <div className='footer-contact'>
-            <p><span className='footer-contact--span'>call center:</span> +57 (602) 8861300</p>
-            <p><span className='footer-contact--span'>Email:</span> transformatedigital@ccc.org.co</p>
-            <p><span className='footer-contact--span'>notificaciones judiciales:<br /></span>notificacionesjudiciales@ccc.org.co</p>
+            <p><span className='footer-contact--span'>call center:</span> <a href="tel:(602)8861300">+57 (602) 8861300</a></p>
+            <p><span className='footer-contact--span'>Email:</span><a href="mailto:transformatedigital@ccc.org.co">transformatedigital@ccc.org.co</a></p>
+            <p><span className='footer-contact--span'>notificaciones judiciales:<br /></span> <a href="mailto:notificacionesjudiciales@ccc.org.co">notificacionesjudiciales@ccc.org.co</a></p>
           </div>
 
           <div className='footer-options'>

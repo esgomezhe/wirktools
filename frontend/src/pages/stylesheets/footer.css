@@ -30,11 +30,11 @@
   font-weight: 700;
 }
 
-.footer-contact p {
+.footer-contact a {
   color: #c36;
 }
 
-.footer-contact p:hover {
+.footer-contact a:hover {
   cursor: pointer;
   color: #336;
 }
