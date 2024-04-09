@@ -78,7 +78,7 @@ ROOT_URLCONF = 'wirktools.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, "frontend/build"),],
+        'DIRS': [os.path.join(BASE_DIR, "frontend/public"),],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -150,7 +150,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Add project-wide static files directory
 # https://docs.djangoproject.com/en/5.0/ref/settings/#staticfiles-dirs
 
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "frontend/build/static")]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
 # Add project-wide static files directory
 # https://docs.djangoproject.com/en/5.0/ref/settings/#media-root

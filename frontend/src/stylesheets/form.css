@@ -47,10 +47,26 @@
 
 .formulario-buttons {
     display: flex;
+    flex-direction: column;
+}
+
+.formulario-buttons.next {
+    padding-top: 20px;
+    flex-direction: row;
+}
+
+@media (min-width: 768px) {
+    .formulario-buttons {
+        flex-direction: row;
+    }
+
+    .formulario-buttons.next {
+        padding-top: 0;
+    }
 }
 
 .buttons-question {
-    flex: 1;
+    flex: auto;
     appearance: none;
     border: 0.125em solid #1A1A1A;
     border-radius: 22px;

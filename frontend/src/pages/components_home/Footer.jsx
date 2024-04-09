@@ -27,7 +27,7 @@ function Footer() {
             <Link to='/' className='footer-options--link'>home</Link>
             <Link to='/' className='footer-options--link'>medianas y grandes empresas</Link>
             <Link to='/formularioMicro' className='footer-options--link'>micro y pequeñas empresas</Link>
-            <Link to='/formularioUnidades' className='footer-options--link'>unidades de neggocio productivo</Link>
+            <Link to='/formularioUnidades' className='footer-options--link'>unidades de negocio productivo</Link>
           </div>
 
           <div className='footer-logos'>
@@ -51,11 +51,11 @@ function Footer() {
         <div className='footer-socialmedia'>
           <span>Síguenos en: </span>
           <div className='socialmedia-links'>
-            <a href="https://www.facebook.com/CamaraComercioCali" className='social-link'><Facebook /></a>
-            <a href="https://twitter.com/camaracali" className='social-link'><Twitter /></a>
-            <a href="https://www.youtube.com/user/camaradecomerciocali" className='social-link'><Youtube /></a>
-            <a href="https://www.instagram.com/camaracali/" className='social-link'><Instagram /></a>
-            <a href="https://www.linkedin.com/company/camara-de-comercio-de-cali/" className='social-link'><Linkedin /></a>
+            <a href="https://www.facebook.com/CamaraComercioCali" className='social-link' target='_blank' rel="noreferrer"><Facebook /></a>
+            <a href="https://twitter.com/camaracali" className='social-link' target='_blank' rel="noreferrer"><Twitter /></a>
+            <a href="https://www.youtube.com/user/camaradecomerciocali" className='social-link' target='_blank' rel="noreferrer"><Youtube /></a>
+            <a href="https://www.instagram.com/camaracali/" className='social-link' target='_blank' rel="noreferrer"><Instagram /></a>
+            <a href="https://www.linkedin.com/company/camara-de-comercio-de-cali/" className='social-link' target='_blank' rel="noreferrer"><Linkedin /></a>
           </div>
           <p>Wirk Consulting © 2024. Todos los derechos reservados</p>
         </div>

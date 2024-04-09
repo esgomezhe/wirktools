@@ -6,17 +6,37 @@
 /* Contenedor logos y navbar */
 .header-container {
   display: flex;
+  flex-direction: column;
   width: 95%;
   margin: 0 auto;
   justify-content: space-between;
+  align-items: center;
+}
+
+@media (min-width:768px) {
+  .header-container {
+    flex-direction: row;
+  }
 }
 
 .header-logo {
   display: flex;
   align-items: center;
+  flex-direction: column;
   gap: 50px;
 }
 
 .header-image {
-  height: 40px;
+  max-width: 100%;
+}
+
+@media (min-width: 768px) {
+  .header-logo {
+    flex-direction: row;
+  }
+
+  .header-image {
+    height: 40px;
+    max-width: max-content;
+  }
 }

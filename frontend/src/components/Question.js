@@ -30,7 +30,7 @@ function Question({ form, currentQuestionIndex, selectedAnswer, onSelectAnswer, 
           ))}
         </div>
 
-        <div className='formulario-buttons'>
+        <div className='formulario-buttons next'>
           {currentQuestionIndex > 0 && (
             <button className='buttons-question' onClick={() => onNavigate('previous')}>Atrás</button>
           )}
@@ -41,7 +41,7 @@ function Question({ form, currentQuestionIndex, selectedAnswer, onSelectAnswer, 
         </div>
 
         {/* Barra de progreso */}
-        <div class="progress">
+        <div className="progress">
           <div className="progress-bar" role="progressbar" style={{ width: `${progress}%` }} aria-valuenow={progress} aria-valuemin="0" aria-valuemax="100">{`${progress}%`}</div>
         </div>
 

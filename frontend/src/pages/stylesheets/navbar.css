@@ -1,18 +1,31 @@
 .navbar-container {
-  margin-right: 75px;
+  margin-right: 0;
+}
+
+@media (min-width: 768px) {
+  .navbar-container {
+    margin-right: 75px;
+  }
+
 }
 
 .navbar-menu {
   display: flex;
+  flex-direction: column;
   gap: 20px;
   padding: 16px 0 0 0;
   list-style: none;
   font-size: 15px;
   font-weight: 600;
+  align-items: center;
 }
 
-.navbar-item {
-  cursor: pointer;
+@media (min-width: 768px) {
+  .navbar-menu {
+    flex-direction: row;
+    align-items: initial;
+  }
+
 }
 
 /* Linea debajo de los elementos al pasar el mouse */
