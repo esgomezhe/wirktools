@@ -1,31 +1,56 @@
 .navbar-container {
-  margin-right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-right: 75px;
 }
 
-@media (min-width: 768px) {
+@media only screen and (max-width: 992px) {
   .navbar-container {
-    margin-right: 75px;
+    flex-direction: column-reverse;
+    width: 100%;
+    margin-right: 0;
   }
-
 }
 
 .navbar-menu {
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   gap: 20px;
   padding: 16px 0 0 0;
-  list-style: none;
   font-size: 15px;
   font-weight: 600;
-  align-items: center;
 }
 
-@media (min-width: 768px) {
+/* Navbar tipo hamburger */
+@media only screen and (max-width: 992px) {
   .navbar-menu {
-    flex-direction: row;
-    align-items: initial;
+    position: relative;
+    display: none;
+    align-items: center;
+    flex-direction: column;
+    background-color: #fff;
+    width: 100%;
+    border-radius: 10px;
+    text-align: center;
+    transition: 0.3s;
+    box-shadow:
+      0 10px 27px rgba(0, 0, 0, 0.05);
   }
 
+  .navbar-menu.active {
+    display: flex;
+  }
+}
+
+.navbar-item {
+  list-style: none;
+}
+
+@media only screen and (max-width: 992px) {
+  .navbar-item {
+    margin: 0;
+  }
 }
 
 /* Linea debajo de los elementos al pasar el mouse */
@@ -106,4 +131,40 @@
 
 .dropdown-item:hover {
   background-color: #f0f0f0;
+}
+
+/* Hamburger */
+.navbar-hamburger {
+  display: none;
+}
+
+/* Barras del hamburger */
+.bar {
+  display: block;
+  width: 25px;
+  height: 3px;
+  margin: 5px auto;
+  -webkit-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+  background-color: #EF0074;
+}
+
+@media only screen and (max-width: 992px) {
+  .navbar-hamburger {
+    display: block;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+
+  .navbar-hamburger.active .bar:nth-child(2) {
+    opacity: 0;
+  }
+
+  .navbar-hamburger.active .bar:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+  }
+
+  .navbar-hamburger.active .bar:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+  }
 }

@@ -5,7 +5,7 @@ import { CheckCircleSolid, TransitionRightSolid } from "iconoir-react"
 const CategoryElement = ({ category, text }) => (
   <li className="categorys-list-element">
     <span className="checkbox"><CheckCircleSolid color="#F2661F" /></span>
-    <p> <span className="checkbox">{category}</span>{text}</p>
+    <p> <span>{category}</span>{text}</p>
   </li>
 )
 
@@ -55,19 +55,19 @@ function MainContent() {
             <section className="categorys">
               <ul className="categorys-list">
                 <CategoryElement
-                  category={"Estrategia digital:"}
+                  category={"Estrategia digital: "}
                   text={"Evalúa si la empresa tiene una estrategia clara y coherente para la transformación digital, si la estrategia está alineada con los objetivos de negocio y si se están tomando medidas para implementar la estrategia."}
                 />
                 <CategoryElement
-                  category={"Cultura digital:"}
+                  category={"Cultura digital: "}
                   text={"Evalúa si la empresa tiene una cultura digital sólida y una mentalidad de innovación, si los empleados están comprometidos con la transformación digital y si la empresa está promoviendo la colaboración y el aprendizaje continuo."}
                 />
                 <CategoryElement
-                  category={"Capacidades digitales:"}
+                  category={"Capacidades digitales: "}
                   text={"Evalúa si la empresa tiene las habilidades y el talento necesarios para llevar a cabo la transformación digital, si se están invirtiendo en la formación y el desarrollo de los empleados y si la empresa tiene una estructura organizativa adecuada para la transformación digital."}
                 />
                 <CategoryElement
-                  category={"Experiencia del cliente:"}
+                  category={"Experiencia del cliente: "}
                   text={"Evalúa si la empresa está utilizando la tecnología para mejorar la experiencia del cliente, si se están adoptando nuevas tecnologías para mejorar la interacción con los clientes y si se están midiendo los resultados y tomando medidas para mejorar continuamente."} />
               </ul>
             </section>
@@ -76,17 +76,17 @@ function MainContent() {
           <section className="categorys">
             <ul className="categorys-list">
               <CategoryElement
-                category={"Innovación y colaboración:"}
+                category={"Innovación y colaboración: "}
                 text={"Evalúa si la empresa está fomentando la innovación y la colaboración, si se están implementando prácticas ágiles para el desarrollo de productos y servicios, si se están adoptando nuevas tecnologías y si se están explorando nuevas formas de colaboración con socios y proveedores."}
               />
               <CategoryElement
-                category={"Gobierno digital:"}
+                category={"Gobierno digital: "}
                 text={"Evalúa si la empresa tiene una estructura de gobierno adecuada para la transformación digital, si se están estableciendo políticas y normas claras para el uso de la tecnología y si se están tomando medidas para mitigar los riesgos asociados con la transformación digital"} />
               <CategoryElement
-                category={"Tecnologías digitales emergentes:"}
+                category={"Tecnologías digitales emergentes: "}
                 text={"Evalúa si la empresa está adoptando tecnologías emergentes como la inteligencia artificial, la nube, el blockchain y la robótica, si se están explorando nuevas oportunidades de negocio y si se están preparando para los desafíos que pueden presentarse."} />
               <CategoryElement
-                category={"Resultados de negocio:"}
+                category={"Resultados de negocio: "}
                 text={"Evalúa si la empresa está logrando resultados positivos a través de la transformación digital, si se están midiendo los resultados y si se están tomando medidas para mejorar continuamente."} />
             </ul>
             <div className="conclusion-container">

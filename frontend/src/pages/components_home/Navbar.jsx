@@ -13,9 +13,15 @@ function Navbar() {
     setOpenDropdown(null);
   };
 
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   return (
     <nav className="navbar-container">
-      <ul className="navbar-menu">
+      <ul className={`navbar-menu ${isMenuOpen ? "active" : ""}`}>
         <li className="navbar-item active">
           <Link to="/" className="navbar-link active">
             home
@@ -57,6 +63,11 @@ function Navbar() {
           */}
         </li>
       </ul>
+      <div className={`navbar-hamburger ${isMenuOpen ? "active" : ""}`} onClick={toggleMenu}>
+        <span className="bar"></span>
+        <span className="bar"></span>
+        <span className="bar"></span>
+      </div>
     </nav>
   );
 }
