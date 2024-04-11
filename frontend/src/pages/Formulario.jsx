@@ -1,16 +1,16 @@
 import React from "react";
-import FormularioMicroEmpresa from "../components/FormularioMicroEmpresa";
+import FormularioCompleted from "../components/FormularioCompleted";
 import Header from "./components_home/Header";
 import Footer from "./components_home/Footer";
 
-function FormularioMicro() {
+function Formulario() {
   return (
     <>
       <Header />
-      <FormularioMicroEmpresa />
+      <FormularioCompleted />
       <Footer />
     </>
   );
 };
 
-export default FormularioMicro;
+export default Formulario;

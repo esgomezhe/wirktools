@@ -1,6 +1,6 @@
 import React from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
-import { HomeWirk, FormularioMicro, FormularioUnidades, Services, Portfolio, Team, Blog, Home } from "./pages/AllPages";
+import { HomeWirk, Formulario, Services, Portfolio, Team, Blog, Home } from "./pages/AllPages";
 import Header from "./components/Header";
 
 function App() {
@@ -12,8 +12,7 @@ function App() {
       {/* {showHeader && <Header />} */}
       <Routes>
         <Route path='/' element={<Home />} />
-        <Route path='/formularioMicro' element={<FormularioMicro />} />
-        <Route path='/formularioUnidades' element={<FormularioUnidades />} />
+        <Route path='/formulario' element={<Formulario />} />
         <Route path='/services' element={<Services />} />
         <Route path='/portfolio' element={<Portfolio />} />
         <Route path='/team' element={<Team />} />

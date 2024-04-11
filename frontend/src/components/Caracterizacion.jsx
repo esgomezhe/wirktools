@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import '../stylesheets/caracterizacion.css';
-import { useNavigate } from "react-router-dom";
 
 function Caracterizacion({ onFormSubmit }) {
   const [formData, setFormData] = useState({
     userName: '',
-    companyType: '',
+    companyType: '', // micro_pequeñas o unidad_negocio_productivo
     identificationType: '',
     identificationNumber: '',
     birthDate: '',
@@ -33,21 +32,13 @@ function Caracterizacion({ onFormSubmit }) {
     const { name, value } = event.target;
     setFormData(prevFormData => ({
       ...prevFormData,
-      [name]: value
+      [name]: value,
     }));
   };
 
-  const navigate = useNavigate();
-
   const handleSubmit = (event) => {
     event.preventDefault();
-    onFormSubmit(formData);
-
-    if (formData.companyType === 'micro_pequeñas') {
-      navigate('/formularioMicro');
-    } else if (formData.companyType === 'unidad_negocio_productivo') {
-      navigate('/formularioUnidades');
-    }
+    onFormSubmit(formData); // Llama al callback con los datos del formulario
   };
 
   return (

@@ -34,13 +34,10 @@ function Navbar() {
           className="navbar-item"
         >
           <div className="navbar-dropdown">
-            <span className="navbar-link">herramienta de autodiagnóstico <i className="bi bi-chevron-down" /></span>
+            <span className="navbar-link">herramienta de Autodiagnóstico<i className="bi bi-chevron-down" /></span>
             <div className={`dropdown-content ${openDropdown === 1 ? 'open' : ''}`}>
-              <Link to="/formularioMicro" className="dropdown-item">
-                micros y pequeñas empresas
-              </Link>
-              <Link to="/formularioUnidades" className="dropdown-item">
-                unidades de negocio productivo
+              <Link to="/formulario" className="dropdown-item">
+                Caracterización
               </Link>
             </div>
           </div>
