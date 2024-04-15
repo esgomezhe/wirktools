@@ -1,22 +1,16 @@
 import React from "react";
-import HeroSection from "../components/HeroSection";
-import ServicesSection from "../components/ServicesSection";
-import WhyUsSection from "../components/WhyUsSection";
-import FeacturesSection from "../components/FeaturesSection";
-import Footer from "../components/Footer";
+import Header from "../components/components_home/Header"
+import Main from "../components/components_home/MainContent"
+import Footer from "../components/components_home/Footer";
 
-function Home() {
+function HomeCCC() {
   return (
     <>
-      <HeroSection />
-      <main id="main">
-        <ServicesSection />
-        <WhyUsSection />
-        <FeacturesSection />
-      </main>
+      <Header />
+      <Main />
       <Footer />
     </>
   );
 }
 
-export default Home;
+export default HomeCCC;

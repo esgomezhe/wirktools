@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import BarChart from '../charts/BarChart';
-import RadarChart from '../charts/RadarChart';
-import BubbleChart from '../charts/BubbleChart';
-import PercentageChart from '../charts/PercentageChart';
-import { calculateCategoryAverages, calculateIntensidadDigitalScore, calculateGestionTransformacionalScore } from '../utils/chartConfigs';
-import '../stylesheets/results.css';
+import BarChart from '../../charts/BarChart';
+import RadarChart from '../../charts/RadarChart';
+import BubbleChart from '../../charts/BubbleChart';
+import PercentageChart from '../../charts/PercentageChart';
+import { calculateCategoryAverages, calculateIntensidadDigitalScore, calculateGestionTransformacionalScore } from '../../utils/chartConfigs';
+import '../../stylesheets/formCompletion.css';
 
 function FormCompletion({ onRestart }) {
   // Este estado local ahora almacenará las respuestas recuperadas de localStorage si están disponibles.

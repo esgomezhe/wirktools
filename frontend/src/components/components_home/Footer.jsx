@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import '../stylesheets/footer.css'
+import '../../stylesheets/footer.css'
 import { Twitter, Instagram, Linkedin, Youtube, Facebook } from 'iconoir-react'
 
 function Footer() {

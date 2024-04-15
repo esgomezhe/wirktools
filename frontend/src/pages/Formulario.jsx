@@ -1,7 +1,7 @@
 import React from "react";
 import FormularioCompleted from "../components/FormularioCompleted";
-import Header from "./components_home/Header";
-import Footer from "./components_home/Footer";
+import Header from "../components/components_home/Header";
+import Footer from "../components/components_home/Footer";
 
 function Formulario() {
   return (

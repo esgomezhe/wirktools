@@ -1,7 +1,6 @@
 import React from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
-import { HomeWirk, Formulario, Services, Portfolio, Team, Blog, Home } from "./pages/AllPages";
-import Header from "./components/Header";
+import { Formulario, Home } from "./pages/AllPages";
 
 function App() {
   const location = useLocation();
@@ -13,11 +12,6 @@ function App() {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/formulario' element={<Formulario />} />
-        <Route path='/services' element={<Services />} />
-        <Route path='/portfolio' element={<Portfolio />} />
-        <Route path='/team' element={<Team />} />
-        <Route path='/blog' element={<Blog />} />
-        <Route path='/about' element={<HomeWirk />} />
       </Routes>
     </>
   );

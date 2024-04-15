@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import "../stylesheets/navbar.css";
+import "../../stylesheets/navbar.css";
 
 function Navbar() {
   const [openDropdown, setOpenDropdown] = useState(null);
@@ -34,7 +34,7 @@ function Navbar() {
           className="navbar-item"
         >
           <div className="navbar-dropdown">
-            <span className="navbar-link">herramienta de Autodiagnóstico<i className="bi bi-chevron-down" /></span>
+            <span className="navbar-link">herramienta de autodiagnóstico<i className="bi bi-chevron-down" /></span>
             <div className={`dropdown-content ${openDropdown === 1 ? 'open' : ''}`}>
               <Link to="/formulario" className="dropdown-item">
                 Caracterización

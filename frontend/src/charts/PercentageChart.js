@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Popup from '../components/Popup';
-import '../stylesheets/results.css';
+import '../stylesheets/formCompletion.css';
 
 const getCircleColor = (percentage) => {
     if (percentage < 33) return "#e74c3c";

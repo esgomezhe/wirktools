@@ -1,5 +1,5 @@
 import React from 'react';
-import '../stylesheets/form.css';
+import '../../stylesheets/question.css';
 
 // Añadir isSubmitting a las props desestructuradas
 function Question({ form, currentQuestionIndex, selectedAnswer, onSelectAnswer, onNavigate, isSubmitting }) {

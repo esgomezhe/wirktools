@@ -1,5 +1,5 @@
 import React from "react";
-import "../stylesheets/header.css";
+import "../../stylesheets/header.css";
 import Navbar from "./Navbar";
 
 function Header() {
