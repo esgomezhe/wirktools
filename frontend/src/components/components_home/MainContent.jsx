@@ -1,5 +1,5 @@
 import React from "react";
-import "../../stylesheets/main.css";
+import "../../stylesheets/mainContent.css";
 import { CheckCircleSolid, TransitionRightSolid } from "iconoir-react"
 
 const CategoryElement = ({ category, text }) => (

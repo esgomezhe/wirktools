@@ -1,0 +1,46 @@
+.header {
+  background-color: #FFFFFF;
+  box-shadow: 0 4px 27px 0 rgba(0, 0, 0, 0.15);
+  border: solid 1px #e8e8e8;
+  padding: 13px 0;
+  position: fixed;
+  z-index: 1;
+  width: 100%;
+}
+
+.header__container {
+  display: flex;
+  width: 95%;
+  margin: 0 auto;
+  justify-content: space-between;
+  align-items: center;
+
+}
+
+.header--logo {
+  padding-left: 25px;
+}
+
+.header__button {
+  display: inline-block;
+  padding: 11px 21px;
+  background-color: #253D90;
+  color: white;
+  border-radius: 8px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-size: 11px;
+  line-height: 1.18;
+  border: none;
+  transition: all 0.3s ease;
+  letter-spacing: 0.1px;
+}
+
+.header__button:hover {
+  background-color: #12186B;
+  top: 3px;
+}
+
+.header--image {
+  height: 47px;
+}
