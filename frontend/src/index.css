@@ -1,9 +1,13 @@
 body {
   margin: 0;
-  font-family: "Open Sans", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #FAFAFA;
+  font-family: "Poppins", sans-serif;
+}
+
+h3,
+h5 {
+  font-family: "Poppins", sans-serif;
 }
 
 code {

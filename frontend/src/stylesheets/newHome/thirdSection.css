@@ -1,0 +1,120 @@
+.third__section {
+  background-color: rgba(154, 208, 255, 0.37);
+  border-radius: 10px;
+}
+
+.third__section--container {
+  width: 85%;
+  margin: 0 auto;
+}
+
+.third__section--portfolio {
+  display: flex;
+  gap: 15px;
+}
+
+.portfolio__item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 290px;
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+}
+
+.presence {
+  background: linear-gradient(180.07deg, rgba(0, 0, 0, 0) 1.95%, rgba(0, 0, 0, 0.57) 65.69%), url(../../img/presencia.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.sells {
+  background: linear-gradient(180.07deg, rgba(0, 0, 0, 0) 1.95%, rgba(0, 0, 0, 0.12) 65.69%), url(../../img/ventas.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.digitization {
+  background: linear-gradient(180.07deg, rgba(0, 0, 0, 0) 1.95%, rgba(0, 0, 0, 0.12) 65.69%), url(../../img/digitalizacion.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.portfolio__item--span {
+  color: white;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+
+.more__info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  position: absolute;
+  right: 0;
+  background: #12186B;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.portfolio__item:hover .more__info {
+  opacity: 1;
+}
+
+.more__info--container {
+  width: 89%;
+  margin: 0 auto;
+  padding: 0 10px;
+}
+
+.more--title {
+  color: #FAFAFA;
+  text-transform: capitalize;
+  font-weight: 600;
+  font-size: 20px;
+  font-family: "Poppins", sans-serif;
+}
+
+.more-text {
+  color: #fff;
+  font-size: 11.5px;
+  margin-bottom: 6px;
+  font-weight: 300;
+
+}
+
+.more-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.more-list--item {
+  padding-bottom: 3.5px;
+  color: #fff;
+  font-size: 12px;
+  margin-bottom: 3px;
+  font-weight: 300;
+}
+
+.more-list--item:last-child {
+  margin-bottom: 10px;
+}
+
+.button {
+  background: #FAFAFA;
+  border: 1px solid #FAFAFA;
+  border-radius: 10px;
+  color: #12186B;
+  padding: 9px 13px;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+  cursor: pointer;
+}
