@@ -1,9 +1,14 @@
 .hero {
-  background-image: url(../../img/hero_image.jpg);
-  min-height: 505px;
-  background-repeat: no-repeat;
-  background-size: cover;
+  background: url(../../img/hero_image.jpg) no-repeat center/cover;
+  width: auto;
+  height: 325px;
   position: relative;
+}
+
+@media (min-width: 768px) {
+  .hero {
+    min-height: 67vh;
+  }
 }
 
 .hero__content {
@@ -22,15 +27,36 @@
   color: white;
   font-family: "Poppins", sans-serif;
   font-weight: 700;
-  line-height: 46px;
-  font-size: 47px;
+  font-size: 25px;
 }
 
-.hero__content a {
+@media (min-width: 768px) {
+  .hero__content h1 {
+    line-height: 46px;
+    font-size: 47px;
+  }
+}
+
+.hero__content p {
   text-decoration: none;
+  text-align: center;
   color: white;
   font-size: 20px;
   font-weight: 700;
+  width: 63%;
   background-color: #EF0074;
-  padding: 3px 20px;
+  padding: 8px 22px;
+}
+
+@media (min-width: 480px) {
+  .hero__content p {
+    width: 53%;
+  }
+}
+
+@media (min-width: 768px) {
+  .hero__content p {
+    width: auto;
+    padding: 3px 15px;
+  }
 }

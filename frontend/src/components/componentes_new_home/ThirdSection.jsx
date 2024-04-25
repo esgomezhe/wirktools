@@ -9,7 +9,7 @@ function ThirdSection() {
         <div className='third__section--container'>
           <div className='third__section--title'>
             <h3>Conoce las soluciones que tenemos para ti</h3>
-            <p>Conoce una categoría y conoce nuestro portafolio</p>
+            <p>Selecciona una categoría y conoce nuestro portafolio</p>
           </div>
 
           <div className='third__section--portfolio'>

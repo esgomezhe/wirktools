@@ -8,6 +8,38 @@
   margin: 0 auto;
 }
 
+.third__section--title {
+  margin-bottom: 40px;
+  padding-left: 10px;
+  border-left: 2px solid #EF0074;
+}
+
+.third__section--title h3 {
+  color: #12186B;
+  font-weight: 700;
+  font-size: 18px;
+}
+
+@media (min-width: 768px) {
+  .third__section--title h3 {
+    font-size: 26px;
+  }
+
+}
+
+.third__section--title p {
+  font-size: 13px;
+  line-height: 9px;
+  font-weight: 400;
+}
+
+@media (min-width: 768px) {
+  .third__section--title p {
+    font-weight: normal;
+  }
+
+}
+
 .third__section--portfolio {
   display: flex;
   gap: 15px;
@@ -46,8 +78,10 @@
   color: white;
   font-size: 22px;
   font-weight: 700;
+  width: 53%;
+  text-align: center;
+  line-height: 1.18;
 }
-
 
 .more__info {
   display: flex;

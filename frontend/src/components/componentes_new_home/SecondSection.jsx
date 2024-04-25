@@ -53,6 +53,24 @@ function SamplePrevArrow(props) {
   );
 }
 
+const ItemsContent = [
+  { title: 'Estrategia digital', text: 'Se evalúa si la empresa tiene una estrategia clara y coherente para la transformación digital, si está alineada con los objetivos de negocio y si se estan tomando medidas para implementarla.', svg: digital },
+
+  { title: 'Cultura digital', text: 'Evalúa si la empresa posee una cultura sólida de innovación, si los empleados están comprometidos con la transformación digital y se  promueve la colaboración y el aprendizaje continuo.', svg: cultura },
+
+  { title: 'Capacidades digitales', text: 'Verifica si la empresa cuenta con las habilidades y talento necesarios para la transformación digital, si se invierte en la formación y desarrollo de los empleados y si la estructura organizativa es adecuada.', svg: capacidades },
+
+  { title: 'Experiencia del cliente', text: 'Evalúa si la empresa esta aprovechando la tecnologia para mejorar la interacción con los clientes, adoptando nuevas tecnologías y midiendo los resultados para implementar mejoras continuas.', svg: experiencia },
+
+  { title: 'Innovación y colaboración', text: 'Evalúa si la empresa fomenta la innovación, la colaboración y la adopción de nuevas tecnologías, incluyendo la exploración de colaboraciones con socios y proveedores.', svg: innovacion },
+
+  { title: 'Gobierno digital', text: 'Evalúa si la empresa tiene una estructura de gobierno adecuada para la transformación digital, si establece políticas y normas claras para el uso de la tecnología, y la toma medidas para mitigar los riesgos asociados con la transformacion digital.', svg: gobierno },
+
+  { title: 'Tecnologias digitales emergentes', text: 'Evalúa la adopcion de tecnologías emergentes (blockchain,robotica, IA, etc) por parte de la empresa y su preparación para nuevas oportunidades de negocio y desafios futuros.', svg: tecnologia },
+
+  { title: 'Resultados de negocio', text: 'Evalúa el impacto positivo de la transformación digital en la empresa, la medición de resultados y las acciones de mejora continua.', svg: resultados }
+];
+
 function SecondSection() {
 
   var settings = {
@@ -102,54 +120,15 @@ function SecondSection() {
 
         <div className="slider-container">
           <Slider {...settings} style={{ display: 'flex' }}>
-
-            <SectionItems
-              title={'Estrategia digital'}
-              text={'Se evalúa si la empresa tiene una estrategia clara y coherente para la transformación digital, si está alineada con los objetivos de negocio y si se estan tomando medidas para implementarla.'}
-              svg={digital}
-            />
-
-            <SectionItems
-              title={'Cultura digital'}
-              text={'Evalúa si la empresa posee una cultura sólida de innovación, si los empleados están comprometidos con la transformación digital y se  promueve la colaboración y el aprendizaje continuo.'}
-              svg={cultura}
-            />
-
-            <SectionItems
-              title={'Capacidades digitales'}
-              text={'Verifica si la empresa cuenta con las habilidades y talento necesarios para la transformación digital, si se invierte en la formación y desarrollo de los empleados y si la estructura organizativa es adecuada.'}
-              svg={capacidades}
-            />
-
-            <SectionItems
-              title={'Experiencia del cliente'}
-              text={'Evalúa si la empresa esta aprovechando la tecnologia para mejorar la interacción con los clientes, adoptando nuevas tecnologías y midiendo los resultados para implementar mejoras continuas.'}
-              svg={experiencia}
-            />
-
-            <SectionItems
-              title={'Innovación y colaboración'}
-              text={'Evalúa si la empresa fomenta la innovación, la colaboración y la adopción de nuevas tecnologías, incluyendo la exploración de colaboraciones con socios y proveedores.'}
-              svg={innovacion}
-            />
-
-            <SectionItems
-              title={'Gobierno digital'}
-              text={'Evalúa si la empresa tiene una estructura de gobierno adecuada para la transformación digital, si establece políticas y normas claras para el uso de la tecnología, y la toma medidas para mitigar los riesgos asociados con la transformacion digital.'}
-              svg={gobierno}
-            />
-
-            <SectionItems
-              title={'Tecnologias digitales emergentes'}
-              text={'Evalúa la adopcion de tecnologías emergentes (blockchain,robotica, IA, etc) por parte de la empresa y su preparación para nuevas oportunidades de negocio y desafios futuros.'}
-              svg={tecnologia}
-            />
-
-            <SectionItems
-              title={'Resultados de negocio'}
-              text={'Evalúa el impacto positivo de la transformación digital en la empresa, la medición de resultados y las acciones de mejora continua.'}
-              svg={resultados}
-            />
+            {/* Map a cada item del array 'ItemsContent' */}
+            {ItemsContent.map(item => (
+              <SectionItems
+                key={item.title}
+                title={item.title}
+                text={item.text}
+                svg={item.svg}
+              />
+            ))}
           </Slider>
         </div>
       </div>

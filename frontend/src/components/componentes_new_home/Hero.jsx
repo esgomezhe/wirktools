@@ -7,7 +7,7 @@ function Hero() {
       <div className={s.hero}>
         <div className={s.hero__content}>
           <h1>Bienvenidos a nuestra <br /> herramienta de Autodiagnóstico</h1>
-          <a href="">Descubre tu nivel de madurez digital</a>
+          <p>Descubre tu nivel de madurez digital</p>
         </div>
       </div>
     </>

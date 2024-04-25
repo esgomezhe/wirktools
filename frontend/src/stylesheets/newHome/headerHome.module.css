@@ -4,6 +4,7 @@
   border: solid 1px #e8e8e8;
   padding: 13px 0;
   position: fixed;
+  top: 0;
   z-index: 1;
   width: 100%;
 }
