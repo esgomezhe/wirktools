@@ -1,6 +1,13 @@
 .third__section {
   background-color: rgba(154, 208, 255, 0.37);
   border-radius: 10px;
+  padding: 32px 0;
+}
+
+@media (min-width: 768px) {
+  .third__section {
+    padding: 60px 0;
+  }
 }
 
 .third__section--container {
@@ -9,9 +16,15 @@
 }
 
 .third__section--title {
-  margin-bottom: 40px;
+  margin-bottom: 20px;
   padding-left: 10px;
   border-left: 2px solid #EF0074;
+}
+
+@media (min-width: 768px) {
+  .third__section--title {
+    margin-bottom: 40px;
+  }
 }
 
 .third__section--title h3 {
@@ -24,12 +37,10 @@
   .third__section--title h3 {
     font-size: 26px;
   }
-
 }
 
 .third__section--title p {
   font-size: 13px;
-  line-height: 9px;
   font-weight: 400;
 }
 
@@ -37,7 +48,6 @@
   .third__section--title p {
     font-weight: normal;
   }
-
 }
 
 .third__section--portfolio {
@@ -130,11 +140,19 @@
 }
 
 .more-list--item {
+  display: flex;
   padding-bottom: 3.5px;
   color: #fff;
   font-size: 12px;
   margin-bottom: 3px;
   font-weight: 300;
+
+}
+
+@media (min-width: 768px) {
+  .more-list--item {
+    display: block;
+  }
 }
 
 .more-list--item:last-child {
@@ -151,4 +169,21 @@
   font-weight: 700;
   text-align: center;
   cursor: pointer;
+}
+
+/* Estilos hoverContent */
+
+.hoverContent__item {
+  border-radius: 10px;
+  background: #12186B;
+}
+
+.hoverContent__info--container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 290px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 25px 20px;
 }
