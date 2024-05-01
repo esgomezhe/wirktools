@@ -1,16 +1,15 @@
-.footer {
+.footer__page {
   width: 85%;
   margin: 0 auto;
   padding-top: 21px;
 }
 
 @media (min-width: 768px) {
-  .footer {
+  .footer__page {
     width: 100%;
     margin: 0;
     padding-top: 21px;
   }
-
 }
 
 .footer__content {

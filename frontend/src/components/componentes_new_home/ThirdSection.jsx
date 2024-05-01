@@ -1,7 +1,7 @@
 import React from 'react'
 import Slider from "react-slick";
 import '../../stylesheets/newHome/thirdSection.css'
-import arrow from '../../img/arrow_portfolio.svg'
+import arrow from '../../img/svg/arrow_portfolio.svg'
 import { useState, useEffect } from 'react'
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";

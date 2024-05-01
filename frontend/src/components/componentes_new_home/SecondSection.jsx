@@ -6,14 +6,14 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 //svg sliders
-import digital from '../../img/digital.svg'
-import cultura from '../../img/cultura.svg'
-import capacidades from '../../img/capacidades.svg'
-import experiencia from '../../img/experiencia.svg'
-import innovacion from '../../img/innovacion.svg'
-import gobierno from '../../img/gobierno.svg'
-import tecnologia from '../../img/tecnologia.svg'
-import resultados from '../../img/resultados.svg'
+import digital from '../../img/svg/digital.svg'
+import cultura from '../../img/svg/cultura.svg'
+import capacidades from '../../img/svg/capacidades.svg'
+import experiencia from '../../img/svg/experiencia.svg'
+import innovacion from '../../img/svg/innovacion.svg'
+import gobierno from '../../img/svg/gobierno.svg'
+import tecnologia from '../../img/svg/tecnologia.svg'
+import resultados from '../../img/svg/resultados.svg'
 
 // Elemento del slide 
 function SectionItems(props) {

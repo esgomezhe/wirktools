@@ -1,14 +1,15 @@
 import React from 'react'
-import s from '../../stylesheets/newHome/headerHome.module.css'
+import { Link } from "react-router-dom";
+import '../../stylesheets/newHome/headerHome.css'
 
 function Header() {
   return (
-    <header className={s.header}>
-      <div className={s.header__container}>
-        <div className={s['header--logo']}>
-          <img className={s['header--image']} src={require('../../img/logo.jpg')} alt="Camara de comercio de cali" />
+    <header className='header'>
+      <div className='header__container'>
+        <div className='header--logo'>
+          <img className='header--image' src={require('../../img/logo.jpg')} alt="Camara de comercio de cali" />
         </div>
-        <button className={s.header__button}>inicia tu autodiagnóstico</button>
+        <Link to={'/formulario'} className='header__button'>inicia tu autodiagnóstico</Link>
       </div>
     </header>
   )

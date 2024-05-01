@@ -1,15 +1,15 @@
 import React from 'react'
 import '../../stylesheets/newHome/footerHome.css'
 import { Facebook, Instagram, Linkedin, X, Youtube } from 'iconoir-react';
-import CallCenter from '../../img/call_footer.svg'
-import Email from '../../img/email_footer.svg'
-import EmailJudicial from '../../img/email2_footer.svg'
+import CallCenter from '../../img/svg/call_footer.svg'
+import Email from '../../img/svg/email_footer.svg'
+import EmailJudicial from '../../img/svg/email2_footer.svg'
 
 
 function FooterHome() {
   return (
     <>
-      <footer className='footer'>
+      <footer className='footer__page'>
         <div className="footer__content">
           <div className='footer__content--container'>
             <div className="footer__section">
