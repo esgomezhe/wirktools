@@ -1,49 +1,95 @@
 .formulario-container {
   width: 100%;
-  /* height: 100vh; */
+  background: linear-gradient(180deg, #6EB6FC 0%, #5F29B6 100%);
+  padding-bottom: 80px;
+}
+
+.figure__container {
+  position: relative;
+}
+
+.figure__container--image {
+  position: absolute;
+}
+
+.nav__options {
+  position: relative;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  min-height: 500px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  width: 95%;
   margin: 0 auto;
-  background-image: url(../img/hero-bg.jpg);
-  background-size: cover;
-  background-repeat: no-repeat;
+  text-align: center;
+  padding-top: 20px;
+  gap: 5px;
+  z-index: 1;
+}
+
+@media (min-width: 768px) {
+  .nav__options {
+    width: 91%;
+    text-align: left;
+    align-items: start;
+  }
+}
+
+.nav__options--home {
+  display: none;
+  align-items: center;
+  gap: 5px;
+}
+
+@media (min-width: 420px) {
+  .nav__options--home {
+    display: flex;
+  }
+}
+
+.nav__options--text {
+  color: #fff;
+  font-size: 10px;
+  font-weight: 500;
+}
+
+.formulario__type {
+  color: #FAFAFA;
+  margin-top: 10px;
+  margin-bottom: 15px;
+  font-size: 23px;
+  font-weight: 600;
 }
 
 .formulario {
-  width: 95%;
+  position: relative;
+  width: 91%;
   padding: 20px;
-  border-radius: 20px;
-  text-align: center;
-  margin: 0 auto;
+  border-radius: 10px;
+  margin: 0px auto;
+  background-color: #FDFDFF;
   color: #f4f6fb;
+  filter: drop-shadow(0px 4px 15px rgba(0, 0, 0, 0.46));
 }
 
-.formulario h1 {
-  color: white;
-  /* -webkit-text-stroke: 2px #f4f6fb; */
+.progress-bar-greendegree {
+  background: linear-gradient(90deg, #99DD3A 0%, #65D7B7 100%);
 }
 
-.formulario h3 {
-  background: rgba(46, 72, 118, 75%);
-  border-radius: 22px;
-  border: 2px solid #293f63;
-  padding: 5px;
+.formulario__info {
+  margin-top: 20px;
 }
 
-.formulario-p {
-  background: rgba(46, 72, 118, 75%);
-  padding: 10px;
-  border-radius: 22px;
-  border: 2px solid #293f63;
-}
-
-.text {
-  font-size: 22px;
-  color: #f4f6fb;
+.formulario-number {
+  color: #454854;
+  font-size: 14px;
   font-weight: 600;
 }
+
+.formulario-question {
+  font-size: 16px;
+  color: #253D90;
+  font-weight: 700;
+}
+
 
 .formulario-buttons {
   display: flex;
@@ -57,7 +103,7 @@
 
 @media (min-width: 768px) {
   .formulario-buttons {
-    flex-direction: row;
+    flex-direction: column;
   }
 
   .formulario-buttons.next {
@@ -65,30 +111,37 @@
   }
 }
 
+.pick__question {
+  color: #454854;
+  margin-top: 15px;
+  margin-left: 5px;
+  font-size: 13.5px;
+}
+
 .buttons-question {
   flex: auto;
   appearance: none;
-  border: 0.125em solid #1A1A1A;
-  border-radius: 22px;
+  border: 1px solid #D0D0D0;
+  border-radius: 10px;
   box-sizing: border-box;
-  background: rgba(246, 248, 255, 68%);
+  background: #EBF5FF;
   /* color: #3B3B3B; */
   display: inline-block;
-  font-family: Roobert, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 12.5px;
+  font-weight: 400;
   line-height: normal;
   margin: 5px;
   min-height: 2.75em;
   outline: none;
   padding: 10px;
-  text-align: center;
+  text-align: left;
   text-decoration: none;
   transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
   will-change: transform;
+  color: #050505;
 }
 
 .buttons-question:disabled {
@@ -96,13 +149,39 @@
 }
 
 .buttons-question:hover {
-  color: #65D7B7;
-  background-color: #12176B;
-  box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
+  background-color: #9AD0FF;
   transform: translateY(-2px);
 }
 
 .buttons-question:active {
   box-shadow: none;
   transform: translateY(0);
+}
+
+.buttons__neprev {
+  display: flex;
+  width: 100%;
+  margin: 0;
+  justify-content: center;
+}
+
+@media (min-width: 768px) {
+  .buttons__neprev {
+    width: 30%;
+    margin: 0 auto;
+  }
+
+}
+
+.buttons-question.neprev {
+  text-align: center;
+  padding: 5px;
+  color: #12186B;
+  font-weight: 600;
+
+}
+
+.buttons-question.neprev:hover {
+  background-color: #253D90;
+  color: #FFF;
 }
