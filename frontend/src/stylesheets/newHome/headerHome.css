@@ -39,6 +39,11 @@
 .header__button:hover {
   background-color: #12186B;
   top: 3px;
+  transform: translateY(-1px);
+}
+
+a:hover {
+  color: #FFFFFF;
 }
 
 .header--image {

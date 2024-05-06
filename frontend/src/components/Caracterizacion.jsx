@@ -511,14 +511,12 @@ function Caracterizacion({ onFormSubmit }) {
               </div>
             </div>
           </div>
-
-
-
           <div className='data__treatment'>
             <p className='data__treatment--text'>Autoriza a la Cámara de Comercio de Cali como responsable del tratamiento de los datos personales, para la recolección, almacenamiento, uso, transmisión y/o transferencia de los datos personales suministrados en este formulario, para las finalidades dispuestas en la Política de tratamiento de datos personales que puede consultar aquí.</p>
           </div>
-
-          <button type="submit" className="form-submit-button">Continuar con el autodiagnóstico</button>
+          <div className='button__container'>
+            <button type="submit" className="form-submit-button">Continuar con el autodiagnóstico</button>
+          </div>
         </form>
       </div>
 

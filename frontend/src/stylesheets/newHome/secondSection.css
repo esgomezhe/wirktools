@@ -81,3 +81,9 @@
   border-radius: 50%;
   background: linear-gradient(180deg, #F16022 0%, #EF076D 100%);
 }
+
+@media (max-width: 768px) {
+  .arrow {
+    display: none !important;
+  }
+}

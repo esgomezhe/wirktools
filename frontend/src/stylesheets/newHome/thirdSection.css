@@ -187,3 +187,18 @@
   margin: 0 auto;
   padding: 25px 20px;
 }
+
+.slick-prev:before {
+  content: "<";
+}
+
+.slick-next:before {
+  content: ">";
+}
+
+.slick-prev:before,
+.slick-next:before {
+  font-family: 'Poppins', sans-serif;
+  color: #0D2957;
+  font-size: 30px;
+}

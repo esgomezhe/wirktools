@@ -29,25 +29,25 @@ function SectionItems(props) {
   );
 }
 
-// Flecha izquierda del slide
+// Flecha derecha del slide
 function SampleNextArrow(props) {
   const { className, style, onClick } = props;
   return (
     <div
-      className={className}
-      style={{ ...style, display: "block", background: 'red' }}
+      className={`arrow ${className}`}
+      style={{ ...style, display: "flex", width: "40px", height: "40px", background: 'white', justifyContent: "center", alignItems: "center", boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)", borderRadius: "50%", marginRight: '-20px' }}
       onClick={onClick}
     />
   );
 }
 
-// Flecha derecha del slide
+// Flecha izquierda del slide
 function SamplePrevArrow(props) {
   const { className, style, onClick } = props;
   return (
     <div
-      className={className}
-      style={{ ...style, display: "block", background: "green" }}
+      className={`arrow ${className}`}
+      style={{ ...style, display: "flex", width: "40px", height: "40px", background: 'white', justifyContent: "center", alignItems: "center", boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)", borderRadius: "50%", marginLeft: '-20px' }}
       onClick={onClick}
     />
   );
