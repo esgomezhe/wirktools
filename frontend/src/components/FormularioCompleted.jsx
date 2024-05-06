@@ -25,7 +25,7 @@ function FormularioCompleted() {
   }, []);
 
   const handleCaracterizacionSubmit = (data) => {
-    const tipoIndex = data.companyType === 'micro_pequeñas' ? 0 : data.companyType === 'unidad_negocio_productivo' ? 1 : null;
+    const tipoIndex = data.companyType === 'micro_pequeñas' ? 0 : data.companyType === 'unidad_negocio_productivo' ? 1 : data.companyType === 'medianas_grandes' ? 2 : data.companyType === 'excelencia_clinica' ? 3 : null;
     setCurrentFormIndex(tipoIndex);
     setCaracterizacionData(data);
     localStorage.setItem('currentFormIndex', JSON.stringify(tipoIndex));

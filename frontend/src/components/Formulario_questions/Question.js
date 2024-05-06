@@ -25,8 +25,7 @@ function Question({ form, currentQuestionIndex, selectedAnswer, onSelectAnswer, 
           <img src={arrow} alt="arrow" width={16} height={16} />
           <p className='nav__options--text'>{form.title}</p> {/*este texto cambia dependiendo el formulario seleccionado*/}
         </div>
-
-        <h4 className='formulario__type'>Medianas y grandes empresas</h4>
+        <h4 className='formulario__type'>{form.title}</h4>
       </div>
 
       <div className='formulario'>
