@@ -30,19 +30,57 @@ function Caracterizacion({ onFormSubmit }) {
     clientFocus: '',
     marketReach: '',
     businessSize: '',
+    dataConsent: false
   });
 
+  const [errors, setErrors] = useState({});
+
   const handleChange = (event) => {
-    const { name, value } = event.target;
+    const { name, value, type, checked } = event.target;
     setFormData(prevFormData => ({
       ...prevFormData,
-      [name]: value,
+      [name]: type === 'checkbox' ? checked : value
     }));
+    validateField(name, type === 'checkbox' ? checked : value);
+  };
+
+  const validateField = (name, value) => {
+    let tempErrors = { ...errors };
+    switch (name) {
+      case 'email':
+        tempErrors[name] = /\S+@\S+\.\S+/.test(value) ? '' : 'Correo electrónico no válido';
+        break;
+      default:
+        tempErrors[name] = value ? '' : 'Este campo es obligatorio';
+        break;
+    }
+    setErrors(tempErrors);
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    onFormSubmit(formData); // Llama al callback con los datos del formulario
+    if (validateForm() && formData.dataConsent) {
+      onFormSubmit(formData);
+    } else {
+      console.error("Validation errors", errors);
+      if (!formData.dataConsent) {
+        alert('Debe autorizar el tratamiento de los datos personales para continuar.');
+      }
+    }
+  };
+
+  const validateForm = () => {
+    let tempErrors = {};
+    Object.keys(formData).forEach(key => {
+      if (!formData[key] && key !== 'dataConsent') {
+        tempErrors[key] = 'Este campo es obligatorio';
+      }
+    });
+    if (formData.email && !/\S+@\S+\.\S+/.test(formData.email)) {
+      tempErrors.email = 'Correo electrónico no válido';
+    }
+    setErrors(tempErrors);
+    return Object.keys(tempErrors).length === 0;
   };
 
   return (
@@ -73,12 +111,14 @@ function Caracterizacion({ onFormSubmit }) {
 
               <div className="options__information--labels">
                 <div className='options__information--label'>
-                  <label htmlFor="userName" className="form-label">Nombre del emprendedor/empresario *</label>
+                  <label htmlFor="userName" className="form-label">
+                    Nombre del emprendedor/empresario * {errors.userName && <span className="error-message">{errors.userName}</span>}
+                  </label>
                   <input
                     type="text"
                     id="userName"
                     name="userName"
-                    placeholder='Ingresar nombre completo'
+                    placeholder="Ingresar nombre completo"
                     required
                     className="form-input"
                     value={formData.userName}
@@ -87,12 +127,14 @@ function Caracterizacion({ onFormSubmit }) {
                 </div>
 
                 <div className='options__information--label'>
-                  <label htmlFor="identificationNumber" className="form-label">Número de identificación *</label>
+                  <label htmlFor="identificationNumber" className="form-label">
+                    Número de identificación * {errors.identificationNumber && <span className="error-message">{errors.identificationNumber}</span>}
+                  </label>
                   <input
                     type='text'
                     id="identificationNumber"
                     name="identificationNumber"
-                    placeholder='Ingresar número de identificación'
+                    placeholder="Ingresar número de identificación"
                     required
                     className="form-input"
                     value={formData.identificationNumber}
@@ -101,7 +143,9 @@ function Caracterizacion({ onFormSubmit }) {
                 </div>
 
                 <div className='options__information--label'>
-                  <label htmlFor="ethnicGroup" className="form-label">Se autorreconoce o pertenece a alguno de estos grupos étnicos *</label>
+                  <label htmlFor="ethnicGroup" className="form-label">
+                    Se autorreconoce o pertenece a alguno de estos grupos étnicos * {errors.ethnicGroup && <span className="error-message">{errors.ethnicGroup}</span>}
+                  </label>
                   <select
                     id="ethnicGroup"
                     name="ethnicGroup"
@@ -110,7 +154,7 @@ function Caracterizacion({ onFormSubmit }) {
                     value={formData.ethnicGroup}
                     onChange={handleChange}
                   >
-                    <option value="">Seleccione grupo étnico</option>
+                    <option value="" disabled>Seleccione grupo étnico</option>
                     <option value="otro">Otro</option>
                     <option value="afrodescendiente">Afrodescendiente</option>
                     <option value="indígena">Indígena</option>
@@ -121,12 +165,14 @@ function Caracterizacion({ onFormSubmit }) {
                 </div>
 
                 <div className='options__information--label'>
-                  <label htmlFor="phoneNumber" className="form-label">Teléfono/celular de contacto *</label>
+                  <label htmlFor="phoneNumber" className="form-label">
+                    Teléfono/celular de contacto * {errors.phoneNumber && <span className="error-message">{errors.phoneNumber}</span>}
+                  </label>
                   <input
                     type="tel"
                     id="phoneNumber"
                     name="phoneNumber"
-                    placeholder='Ingresar número de contacto'
+                    placeholder="Ingresar número de contacto"
                     required
                     className="form-input"
                     value={formData.phoneNumber}
@@ -138,7 +184,9 @@ function Caracterizacion({ onFormSubmit }) {
               <div className="options__information--labels">
 
                 <div className='options__information--label'>
-                  <label htmlFor="companyType" className="form-label">Tipo de Empresa *</label>
+                  <label htmlFor="companyType" className="form-label">
+                    Tipo de Empresa * {errors.companyType && <span className="error-message">{errors.companyType}</span>}
+                  </label>
                   <select
                     id="companyType"
                     name="companyType"
@@ -147,7 +195,7 @@ function Caracterizacion({ onFormSubmit }) {
                     value={formData.companyType}
                     onChange={handleChange}
                   >
-                    <option value="">Seleccione tipo de empresa</option>
+                    <option value="" disabled>Seleccione tipo de empresa</option>
                     <option value="medianas_grandes">Medianas y Grandes Empresas</option>
                     <option value="micro_pequeñas">Micro y Pequeñas Empresas</option>
                     <option value="unidad_negocio_productivo">Unidades de Negocio Productivo</option>
@@ -156,7 +204,9 @@ function Caracterizacion({ onFormSubmit }) {
                 </div>
 
                 <div className='options__information--label'>
-                  <label htmlFor="birthDate" className="form-label">Fecha de nacimiento *</label>
+                  <label htmlFor="birthDate" className="form-label">
+                    Fecha de nacimiento * {errors.birthDate && <span className="error-message">{errors.birthDate}</span>}
+                  </label>
                   <input
                     type="date"
                     id="birthDate"
@@ -169,7 +219,9 @@ function Caracterizacion({ onFormSubmit }) {
                 </div>
 
                 <div className='options__information--label'>
-                  <label htmlFor="disability" className="form-label">Tiene alguna clase de discapacidad *</label>
+                  <label htmlFor="disability" className="form-label">
+                    Tiene alguna clase de discapacidad * {errors.disability && <span className="error-message">{errors.disability}</span>}
+                  </label>
                   <select
                     id="disability"
                     name="disability"
@@ -178,7 +230,7 @@ function Caracterizacion({ onFormSubmit }) {
                     value={formData.disability}
                     onChange={handleChange}
                   >
-                    <option value="">Seleccione si tiene alguna discapacidad</option>
+                    <option value="" disabled>Seleccione si tiene alguna discapacidad</option>
                     <option value="cognitiva">Cognitiva</option>
                     <option value="mental">Mental</option>
                     <option value="múltiple">Múltiple</option>
@@ -190,7 +242,9 @@ function Caracterizacion({ onFormSubmit }) {
                 </div>
 
                 <div className='options__information--label'>
-                  <label htmlFor="highestEducationLevel" className="form-label">Nivel educativo más alto que has completado *</label>
+                  <label htmlFor="highestEducationLevel" className="form-label">
+                    Nivel educativo más alto que has completado * {errors.highestEducationLevel && <span className="error-message">{errors.highestEducationLevel}</span>}
+                  </label>
                   <select
                     id="highestEducationLevel"
                     name="highestEducationLevel"
@@ -199,7 +253,7 @@ function Caracterizacion({ onFormSubmit }) {
                     value={formData.highestEducationLevel}
                     onChange={handleChange}
                   >
-                    <option value="">Seleccione nivel educativo</option>
+                    <option value="" disabled>Seleccione nivel educativo</option>
                     <option value="primaria">Primaria</option>
                     <option value="secundaria">Secundaria</option>
                     <option value="técnico_tecnológico">Técnico o Tecnológico</option>
@@ -213,7 +267,9 @@ function Caracterizacion({ onFormSubmit }) {
               <div className="options__information--labels">
 
                 <div className='options__information--label'>
-                  <label htmlFor="identificationType" className="form-label">Tipo de documento de identificación *</label>
+                  <label htmlFor="identificationType" className="form-label">
+                    Tipo de documento de identificación * {errors.identificationType && <span className="error-message">{errors.identificationType}</span>}
+                  </label>
                   <select
                     id="identificationType"
                     name="identificationType"
@@ -222,7 +278,7 @@ function Caracterizacion({ onFormSubmit }) {
                     value={formData.identificationType}
                     onChange={handleChange}
                   >
-                    <option value="">Seleccione un documento</option>
+                    <option value="" disabled>Seleccione un tipo de documento</option>
                     <option value="cédula_ciudadanía">Cédula de Ciudadanía</option>
                     <option value="cédula_extranjería">Cédula de Extranjería</option>
                     <option value="pasaporte">Pasaporte</option>
@@ -230,7 +286,9 @@ function Caracterizacion({ onFormSubmit }) {
                 </div>
 
                 <div className='options__information--label'>
-                  <label htmlFor="gender" className="form-label">Género *</label>
+                  <label htmlFor="gender" className="form-label">
+                    Género * {errors.gender && <span className="error-message">{errors.gender}</span>}
+                  </label>
                   <select
                     id="gender"
                     name="gender"
@@ -239,7 +297,7 @@ function Caracterizacion({ onFormSubmit }) {
                     value={formData.gender}
                     onChange={handleChange}
                   >
-                    <option value="">Seleccione género</option>
+                    <option value="" disabled>Seleccione género</option>
                     <option value="masculino">Masculino</option>
                     <option value="femenino">Femenino</option>
                     <option value="no_identifico">No me identifico</option>
@@ -247,12 +305,14 @@ function Caracterizacion({ onFormSubmit }) {
                 </div>
 
                 <div>
-                  <label htmlFor="email" className="form-label">Correo electrónico *</label>
+                  <label htmlFor="email" className="form-label">
+                    Correo electrónico * {errors.email && <span className="error-message">{errors.email}</span>}
+                  </label>
                   <input
                     type="email"
                     id="email"
                     name="email"
-                    placeholder='example@example.com'
+                    placeholder="example@example.com"
                     required
                     className="form-input"
                     value={formData.email}
@@ -272,12 +332,14 @@ function Caracterizacion({ onFormSubmit }) {
               <div className="options__information--labels">
 
                 <div className='options__information--label'>
-                  <label htmlFor="companyName" className="form-label">Nombre de empresa *</label>
+                  <label htmlFor="companyName" className="form-label">
+                    Nombre de empresa * {errors.companyName && <span className="error-message">{errors.companyName}</span>}
+                  </label>
                   <input
                     type="text"
                     id="companyName"
                     name="companyName"
-                    placeholder='Ingrese el nombre de la empresa'
+                    placeholder="Ingrese el nombre de la empresa"
                     required
                     className="form-input"
                     value={formData.companyName}
@@ -286,7 +348,9 @@ function Caracterizacion({ onFormSubmit }) {
                 </div>
 
                 <div className='options__information--label'>
-                  <label htmlFor="operationStartYear" className="form-label">Año en el que inició operaciones *</label>
+                  <label htmlFor="operationStartYear" className="form-label">
+                    Año en el que inició operaciones * {errors.operationStartYear && <span className="error-message">{errors.operationStartYear}</span>}
+                  </label>
                   <input
                     type="date"
                     id="operationStartYear"
@@ -299,12 +363,14 @@ function Caracterizacion({ onFormSubmit }) {
                 </div>
 
                 <div className='options__information--label'>
-                  <label htmlFor="mainOfficeMunicipality" className="form-label">Municipio donde se ubica la sede principal de la empresa *</label>
+                  <label htmlFor="mainOfficeMunicipality" className="form-label">
+                    Municipio donde se ubica la sede principal de la empresa * {errors.mainOfficeMunicipality && <span className="error-message">{errors.mainOfficeMunicipality}</span>}
+                  </label>
                   <input
                     type="text"
                     id="mainOfficeMunicipality"
                     name="mainOfficeMunicipality"
-                    placeholder='Ej: Cali'
+                    placeholder={errors.mainOfficeMunicipality || 'Ej: Cali'}
                     required
                     className="form-input"
                     value={formData.mainOfficeMunicipality}
@@ -313,7 +379,9 @@ function Caracterizacion({ onFormSubmit }) {
                 </div>
 
                 <div className='options__information--label'>
-                  <label htmlFor="marketReach" className="form-label">¿Cuál es el tipo de mercado al que llega actualmente tu emprendimiento? *</label>
+                  <label htmlFor="marketReach" className="form-label">
+                    ¿Cuál es el tipo de mercado al que llega actualmente tu emprendimiento? * {errors.marketReach && <span className="error-message">{errors.marketReach}</span>}
+                  </label>
                   <select
                     id="marketReach"
                     name="marketReach"
@@ -322,7 +390,7 @@ function Caracterizacion({ onFormSubmit }) {
                     value={formData.marketReach}
                     onChange={handleChange}
                   >
-                    <option value="">Seleccione el alcance de mercado</option>
+                    <option value="" disabled>Seleccione el alcance de mercado</option>
                     <option value="local">Local (ciudad/municipio)</option>
                     <option value="regional">Regional (departamento / región del país)</option>
                     <option value="nacional">Nacional</option>
@@ -335,12 +403,14 @@ function Caracterizacion({ onFormSubmit }) {
               <div className="options__information--labels">
 
                 <div className='options__information--label'>
-                  <label htmlFor="companyNIT" className="form-label">NIT de empresa *</label>
+                  <label htmlFor="companyNIT" className="form-label">
+                    NIT de empresa * {errors.companyNIT && <span className="error-message">{errors.companyNIT}</span>}
+                  </label>
                   <input
                     type="text"
                     id="companyNIT"
                     name="companyNIT"
-                    placeholder='Ej: 51059231-9'
+                    placeholder={errors.companyNIT || 'Ej: 51059231-9'}
                     required
                     className="form-input"
                     value={formData.companyNIT}
@@ -349,7 +419,9 @@ function Caracterizacion({ onFormSubmit }) {
                 </div>
 
                 <div className='options__information--label'>
-                  <label htmlFor="registeredInCCC" className="form-label">Se encuentra matriculado en CCC *</label>
+                  <label htmlFor="registeredInCCC" className="form-label">
+                    Se encuentra matriculado en CCC * {errors.registeredInCCC && <span className="error-message">{errors.registeredInCCC}</span>}
+                  </label>
                   <select
                     id="registeredInCCC"
                     name="registeredInCCC"
@@ -358,14 +430,16 @@ function Caracterizacion({ onFormSubmit }) {
                     value={formData.registeredInCCC}
                     onChange={handleChange}
                   >
-                    <option value="">Seleccione una opción</option>
+                    <option value="" disabled>Seleccione una opción</option>
                     <option value="si">Sí</option>
                     <option value="no">No</option>
                   </select>
                 </div>
 
                 <div className='options__information--label'>
-                  <label htmlFor="businessSector" className="form-label">¿Cuál es el sector principal en el que se encuentra tu empresa? *</label>
+                  <label htmlFor="businessSector" className="form-label">
+                    ¿Cuál es el sector principal en el que se encuentra tu empresa? * {errors.businessSector && <span className="error-message">{errors.businessSector}</span>}
+                  </label>
                   <select
                     id="businessSector"
                     name="businessSector"
@@ -374,7 +448,7 @@ function Caracterizacion({ onFormSubmit }) {
                     value={formData.businessSector}
                     onChange={handleChange}
                   >
-                    <option value="">Seleccione sector principal</option>
+                    <option value="" disabled>Seleccione sector principal</option>
                     <option value="agricultura">Agricultura</option>
                     <option value="arte">Arte</option>
                     <option value="entretenimiento">Entretenimiento</option>
@@ -399,7 +473,9 @@ function Caracterizacion({ onFormSubmit }) {
                 </div>
 
                 <div className='options__information--label'>
-                  <label htmlFor="businessSize" className="form-label">¿De qué tamaño es tu empresa? *</label>
+                  <label htmlFor="businessSize" className="form-label">
+                    ¿De qué tamaño es tu empresa? * {errors.businessSize && <span className="error-message">{errors.businessSize}</span>}
+                  </label>
                   <select
                     id="businessSize"
                     name="businessSize"
@@ -408,7 +484,7 @@ function Caracterizacion({ onFormSubmit }) {
                     value={formData.businessSize}
                     onChange={handleChange}
                   >
-                    <option value="">Seleccione el tamaño de la empresa</option>
+                    <option value="" disabled>Seleccione el tamaño de la empresa</option>
                     <option value="unidad_productiva">Unidad Productiva Ventas anuales entre $1 - $ 800.000.000</option>
                     <option value="micro_mediana">Micro y Mediana. Ventas anuales entre $801.000.000. - $14.000.000.000</option>
                     <option value="mediana_grande">Mediana y Grande $14.000.000.001- $74.000.000.000</option>
@@ -419,7 +495,9 @@ function Caracterizacion({ onFormSubmit }) {
               <div className="options__information--labels">
 
                 <div className='options__information--label'>
-                  <label htmlFor="previousBusiness" className="form-label">Antes de este emprendimiento/negocio/empresa, ¿Habías creado otra empresa? *</label>
+                  <label htmlFor="previousBusiness" className="form-label">
+                    Antes de este emprendimiento/negocio/empresa, ¿Habías creado otra empresa? * {errors.previousBusiness && <span className="error-message">{errors.previousBusiness}</span>}
+                  </label>
                   <select
                     id="previousBusiness"
                     name="previousBusiness"
@@ -428,19 +506,21 @@ function Caracterizacion({ onFormSubmit }) {
                     value={formData.previousBusiness}
                     onChange={handleChange}
                   >
-                    <option value="">Seleccione una opción</option>
+                    <option value="" disabled>Seleccione una opción</option>
                     <option value="si">Sí</option>
                     <option value="no">No</option>
                   </select>
                 </div>
 
                 <div className='options__information--label'>
-                  <label htmlFor="mainOfficeDepartment" className="form-label">Departamento donde se ubica la sede principal de la empresa *</label>
+                  <label htmlFor="mainOfficeDepartment" className="form-label">
+                    Departamento donde se ubica la sede principal de la empresa * {errors.mainOfficeDepartment && <span className="error-message">{errors.mainOfficeDepartment}</span>}
+                  </label>
                   <input
                     type="text"
                     id="mainOfficeDepartment"
                     name="mainOfficeDepartment"
-                    placeholder='Ej: Valle del Cauca'
+                    placeholder="Ej: Valle del Cauca"
                     required
                     className="form-input"
                     value={formData.mainOfficeDepartment}
@@ -449,7 +529,9 @@ function Caracterizacion({ onFormSubmit }) {
                 </div>
 
                 <div className='options__information--label'>
-                  <label htmlFor="clientFocus" className="form-label">¿Cuál es el tipo de cliente en el que se enfoca tu empresa? *</label>
+                  <label htmlFor="clientFocus" className="form-label">
+                    ¿Cuál es el tipo de cliente en el que se enfoca tu empresa? * {errors.clientFocus && <span className="error-message">{errors.clientFocus}</span>}
+                  </label>
                   <select
                     id="clientFocus"
                     name="clientFocus"
@@ -458,7 +540,7 @@ function Caracterizacion({ onFormSubmit }) {
                     value={formData.clientFocus}
                     onChange={handleChange}
                   >
-                    <option value="">Seleccione el tipo de cliente</option>
+                    <option value="" disabled>{errors.clientFocus||'Seleccione el tipo de cliente'}</option>
                     <option value="B2B">Su principal cliente es otra empresa (B2B)</option>
                     <option value="B2C">Sus principales clientes son consumidores o el usuario final (B2C)</option>
                     <option value="B2G">Sus principales clientes son entes u organizaciones del gobierno (B2G)</option>
@@ -470,7 +552,10 @@ function Caracterizacion({ onFormSubmit }) {
             <div className="form-row">
               <div>
                 <fieldset>
-                  <legend className="form-label">¿Qué tipo de productos y/o servicios ofrece tu empresa? *</legend>
+                  <legend className="form-label">
+                    ¿Qué tipo de productos y/o servicios ofrece tu empresa? * {errors.productType && <span className="error-message">{errors.productType}</span>}
+                  </legend>
+                  <legend className="form-label">{errors.productType||''}</legend>
                   <div>
                     <input
                       type="checkbox"
@@ -512,10 +597,27 @@ function Caracterizacion({ onFormSubmit }) {
             </div>
           </div>
           <div className='data__treatment'>
-            <p className='data__treatment--text'>Autoriza a la Cámara de Comercio de Cali como responsable del tratamiento de los datos personales, para la recolección, almacenamiento, uso, transmisión y/o transferencia de los datos personales suministrados en este formulario, para las finalidades dispuestas en la Política de tratamiento de datos personales que puede consultar aquí.</p>
+              <p className='data__treatment--text'>
+                  Autoriza a la Cámara de Comercio de Cali como responsable del tratamiento de los datos personales, 
+                  para la recolección, almacenamiento, uso, transmisión y/o transferencia de los datos personales 
+                  suministrados en este formulario, para las finalidades dispuestas en la
+                  política de tratamiento de datos personales que puede <a href="URL_DE_TU_POLITICA" target="_blank"> consultar aquí</a>.
+              </p>
+              <div className='data__treatment--check'>
+                  <input 
+                      type="checkbox" 
+                      id="dataConsent" 
+                      name="dataConsent" 
+                      checked={formData.dataConsent}
+                      onChange={handleChange} 
+                  />
+                  <label htmlFor="dataConsent">
+                    Autorizo tratamiento de datos personales. {errors.dataConsent && <span className="error-message">{errors.dataConsent||''}</span>}
+                  </label>
+              </div>
           </div>
           <div className='button__container'>
-            <button type="submit" className="form-submit-button">Continuar con el autodiagnóstico</button>
+              <button type="submit" className="form-submit-button" disabled={!formData.dataConsent}>Continuar con el autodiagnóstico</button>
           </div>
         </form>
       </div>
