@@ -242,6 +242,11 @@
   padding: 24px 28px 0px 28px;
 }
 
+a.data__treatment--text {
+  color: #12186B;
+  padding: 0%;
+}
+
 .data__treatment--check {
   color: #1C1B1F;
   font-size: 11px;

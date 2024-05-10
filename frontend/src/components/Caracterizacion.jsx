@@ -26,7 +26,7 @@ function Caracterizacion({ onFormSubmit }) {
     mainOfficeDepartment: '',
     mainOfficeMunicipality: '',
     businessSector: '',
-    productType: '',
+    productType: [],
     clientFocus: '',
     marketReach: '',
     businessSize: '',
@@ -37,12 +37,21 @@ function Caracterizacion({ onFormSubmit }) {
 
   const handleChange = (event) => {
     const { name, value, type, checked } = event.target;
-    setFormData(prevFormData => ({
-      ...prevFormData,
-      [name]: type === 'checkbox' ? checked : value
-    }));
+    if (name === 'productType') {
+        setFormData(prevFormData => ({
+            ...prevFormData,
+            [name]: checked 
+                ? [...prevFormData.productType, value]
+                : prevFormData.productType.filter(item => item !== value)
+        }));
+    } else {
+        setFormData(prevFormData => ({
+            ...prevFormData,
+            [name]: type === 'checkbox' ? checked : value
+        }));
+    }
     validateField(name, type === 'checkbox' ? checked : value);
-  };
+};
 
   const validateField = (name, value) => {
     let tempErrors = { ...errors };
@@ -601,7 +610,7 @@ function Caracterizacion({ onFormSubmit }) {
                   Autoriza a la Cámara de Comercio de Cali como responsable del tratamiento de los datos personales, 
                   para la recolección, almacenamiento, uso, transmisión y/o transferencia de los datos personales 
                   suministrados en este formulario, para las finalidades dispuestas en la
-                  política de tratamiento de datos personales que puede <a href="URL_DE_TU_POLITICA" target="_blank"> consultar aquí</a>.
+                  política de tratamiento de datos personales que puede <a className='data__treatment--text' href="https://camaradecomerciodecali-my.sharepoint.com/personal/daocampo_ccc_org_co/_layouts/15/AccessDenied.aspx?Source=https%3A%2F%2Fcamaradecomerciodecali%2Dmy%2Esharepoint%2Ecom%2Fpersonal%2Fdaocampo%5Fccc%5Forg%5Fco%2F%5Flayouts%2F15%2Fonedrive%2Easpx%3Fid%3D%252Fpersonal%252Fdaocampo%255Fccc%255Forg%255Fco%252FDocuments%252FEscritorio%252FAUTORIZACION%2520TRATAMIENTO%2520PARA%2520ENCUESTA%2520DE%2520SATISFACCI%25C3%2593N%2520A%2520EXTERNOS%252Epdf%26parent%3D%252Fpersonal%252Fdaocampo%255Fccc%255Forg%255Fco%252FDocuments%252FEscritorio%26ga%3D1&correlation=e46b26a1%2D806d%2D5000%2D4107%2D345305f08660&Type=item&name=2a6cfacc%2D54a2%2D4177%2D8a9a%2Dac337a4db2d2&listItemId=2195&listItemUniqueId=1badd0e3%2D7fe5%2D4358%2Dabfc%2Da24c08bfe32b" target="noreferrer"> consultar aquí</a>.
               </p>
               <div className='data__treatment--check'>
                   <input 
@@ -612,7 +621,7 @@ function Caracterizacion({ onFormSubmit }) {
                       onChange={handleChange} 
                   />
                   <label htmlFor="dataConsent">
-                    Autorizo tratamiento de datos personales. {errors.dataConsent && <span className="error-message">{errors.dataConsent||''}</span>}
+                     Autorizo tratamiento de datos personales. {errors.dataConsent && <span className="error-message">{errors.dataConsent||''}</span>}
                   </label>
               </div>
           </div>
