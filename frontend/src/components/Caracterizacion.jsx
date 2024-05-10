@@ -51,15 +51,30 @@ function Caracterizacion({ onFormSubmit }) {
         }));
     }
     validateField(name, type === 'checkbox' ? checked : value);
-};
+  };
 
   const validateField = (name, value) => {
     let tempErrors = { ...errors };
+    const currentDate = new Date();
+
     switch (name) {
       case 'email':
         tempErrors[name] = /\S+@\S+\.\S+/.test(value) ? '' : 'Correo electrónico no válido';
         break;
+      case 'identificationNumber':
+      case 'phoneNumber':
+      case 'companyNIT':
+        // Solo permite números, guiones y espacios
+        tempErrors[name] = /^[0-9\- ]+$/.test(value) ? '' : 'Solo se permiten caracteres numéricos y símbolos específicos';
+        break;
+      case 'birthDate':
+      case 'operationStartYear':
+        // Verifica que la fecha no sea futura
+        const inputDate = new Date(value);
+        tempErrors[name] = (inputDate <= currentDate) ? '' : 'La fecha no puede ser futura';
+        break;
       default:
+        // Validación para campos obligatorios generales
         tempErrors[name] = value ? '' : 'Este campo es obligatorio';
         break;
     }
@@ -80,14 +95,34 @@ function Caracterizacion({ onFormSubmit }) {
 
   const validateForm = () => {
     let tempErrors = {};
+    const currentDate = new Date();
+  
     Object.keys(formData).forEach(key => {
+      // Validación para campos vacíos, excepto 'dataConsent'
       if (!formData[key] && key !== 'dataConsent') {
         tempErrors[key] = 'Este campo es obligatorio';
       }
+  
+      // Validación específica para email
+      if (key === 'email' && formData.email && !/\S+@\S+\.\S+/.test(formData.email)) {
+        tempErrors.email = 'Correo electrónico no válido';
+      }
+  
+      // Validación para campos que deben ser numéricos (incluidos ciertos símbolos)
+      if ((key === 'identificationNumber' || key === 'phoneNumber' || key === 'companyNIT') && 
+          !/^[0-9\- ]+$/.test(formData[key])) {
+        tempErrors[key] = 'Solo se permiten caracteres numéricos y símbolos específicos';
+      }
+  
+      // Validación de fechas para no permitir fechas futuras
+      if ((key === 'birthDate' || key === 'operationStartYear') && formData[key]) {
+        const inputDate = new Date(formData[key]);
+        if (inputDate > currentDate) {
+          tempErrors[key] = 'La fecha no puede ser futura';
+        }
+      }
     });
-    if (formData.email && !/\S+@\S+\.\S+/.test(formData.email)) {
-      tempErrors.email = 'Correo electrónico no válido';
-    }
+  
     setErrors(tempErrors);
     return Object.keys(tempErrors).length === 0;
   };
@@ -555,53 +590,25 @@ function Caracterizacion({ onFormSubmit }) {
                     <option value="B2G">Sus principales clientes son entes u organizaciones del gobierno (B2G)</option>
                   </select>
                 </div>
-              </div>
-            </div>
 
-            <div className="form-row">
-              <div>
-                <fieldset>
-                  <legend className="form-label">
+                <div className='options__information--label'>
+                  <label htmlFor="productType" className="form-label">
                     ¿Qué tipo de productos y/o servicios ofrece tu empresa? * {errors.productType && <span className="error-message">{errors.productType}</span>}
-                  </legend>
-                  <legend className="form-label">{errors.productType||''}</legend>
-                  <div>
-                    <input
-                      type="checkbox"
-                      id="productos_bienes_fisicos"
-                      name="productType"
-                      value="productos_bienes_fisicos"
-                      checked={formData.productType.includes("productos_bienes_fisicos")}
-                      onChange={handleChange}
-                      className="form-check-input"
-                    />
-                    <label htmlFor="productos_bienes_fisicos" className="form-check-label">Productos o bienes físicos (Ej: carteras, artesanías, zapatos, etc.)</label>
-                  </div>
-                  <div>
-                    <input
-                      type="checkbox"
-                      id="productos_bienes_no_fisicos"
-                      name="productType"
-                      value="productos_bienes_no_fisicos"
-                      checked={formData.productType.includes("productos_bienes_no_fisicos")}
-                      onChange={handleChange}
-                      className="form-check-input"
-                    />
-                    <label htmlFor="productos_bienes_no_fisicos" className="form-check-label">Productos o bienes no físicos (Ej: Desarrollo de Software, contenido multimedia, etc.)</label>
-                  </div>
-                  <div>
-                    <input
-                      type="checkbox"
-                      id="servicios"
-                      name="productType"
-                      value="servicios"
-                      checked={formData.productType.includes("servicios")}
-                      onChange={handleChange}
-                      className="form-check-input"
-                    />
-                    <label htmlFor="servicios" className="form-check-label">Servicios (Ej: Servicios de publicidad, diseño, etc.)</label>
-                  </div>
-                </fieldset>
+                  </label>
+                  <select
+                    id="productType"
+                    name="productType"
+                    required
+                    className="form-select"
+                    value={formData.productType}
+                    onChange={handleChange}
+                  >
+                    <option value="" disabled>{errors.productType || 'Seleccione el tipo de producto o servicio'}</option>
+                    <option value="productos_bienes_fisicos">Productos o bienes físicos (Ej: Carteras, artesanías, zapatos, etc.)</option>
+                    <option value="productos_bienes_no_fisicos">Productos o bienes no físicos (Ej: Desarrollo de Software, contenido multimedia, etc.)</option>
+                    <option value="servicios">Servicios (Ej: Servicios de publicidad, diseño, etc.)</option>
+                  </select>
+                </div>
               </div>
             </div>
           </div>
@@ -620,8 +627,8 @@ function Caracterizacion({ onFormSubmit }) {
                       checked={formData.dataConsent}
                       onChange={handleChange} 
                   />
-                  <label htmlFor="dataConsent">
-                     Autorizo tratamiento de datos personales. {errors.dataConsent && <span className="error-message">{errors.dataConsent||''}</span>}
+                  <label htmlFor="dataConsent" style={{ paddingLeft: '5px' }}>
+                    Autorizo tratamiento de datos personales. {errors.dataConsent && <span className="error-message">{errors.dataConsent||''}</span>}
                   </label>
               </div>
           </div>
@@ -630,8 +637,6 @@ function Caracterizacion({ onFormSubmit }) {
           </div>
         </form>
       </div>
-
-
     </>
   );
 }
