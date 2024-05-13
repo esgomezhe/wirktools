@@ -2,11 +2,6 @@ import React, { useState } from 'react';
 import Popup from '../components/Popup';
 import '../stylesheets/formCompletion.css';
 
-// const getCircleColor = (percentage) => {
-//   if (percentage < 33) return "#e74c3c";
-//   else if (percentage < 66) return "#f1c40f";
-//   return "#2ecc71";
-// };
 
 const PercentageChart = ({ category, score }) => {
   const radius = 15.9155;

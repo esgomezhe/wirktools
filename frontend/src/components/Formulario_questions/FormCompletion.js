@@ -14,8 +14,6 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 
-
-
 // Flecha derecha del slide
 function SampleNextArrow(props) {
   const { className, style, onClick } = props;
@@ -110,13 +108,15 @@ function FormCompletion({ onRestart }) {
           <div className="figure">
             <img src={figure} alt="figure" width={205} />
           </div>
-          <div className="notice__options">
-            <Link to={'/'}><img src={home} alt="home" /> </Link>
-            <img src={arrow} alt="arrow" />
-            <p className='notice__options--text'>Resultados</p>
-          </div>
-          <div className="nav__title--container">
-            <h4 className='nav__title'>Resultados</h4>
+          <div className='options__container'>
+            <div className="notice__option">
+              <Link to={'/'}><img src={home} alt="home" /> </Link>
+              <img src={arrow} alt="arrow" />
+              <p className='notice__options--text'>Resultados</p>
+            </div>
+            <div className="nav__title--container">
+              <h4 className='nav__title'>Resultados</h4>
+            </div>
           </div>
         </div>
 
