@@ -102,49 +102,47 @@ function FormCompletion({ onRestart }) {
   }
 
   return (
-    <div>
-      <section className="results">
-        <div className='nav__container'>
-          <div className="figure">
-            <img src={figure} alt="figure" width={205} />
+    <section className="results">
+      <div className='nav__container'>
+        <div className="figure">
+          <img src={figure} alt="figure" width={205} />
+        </div>
+        <div className='options__container'>
+          <div className="notice__option">
+            <Link to={'/'}><img src={home} alt="home" /> </Link>
+            <img src={arrow} alt="arrow" />
+            <p className='notice__options--text'>Resultados</p>
           </div>
-          <div className='options__container'>
-            <div className="notice__option">
-              <Link to={'/'}><img src={home} alt="home" /> </Link>
-              <img src={arrow} alt="arrow" />
-              <p className='notice__options--text'>Resultados</p>
-            </div>
-            <div className="nav__title--container">
-              <h4 className='nav__title'>Resultados</h4>
-            </div>
+          <div className="nav__title--container">
+            <h4 className='nav__title'>Resultados</h4>
           </div>
         </div>
+      </div>
 
-        <div className="slider-container">
-          <Slider {...settings}>
-            {categoryAverages.map(({ category, average }) => (
-              <PercentageChart key={category.slug} category={category} score={average} />
-            ))}
-          </Slider>
-        </div>
+      <div className="slider-container">
+        <Slider {...settings}>
+          {categoryAverages.map(({ category, average }) => (
+            <PercentageChart key={category.slug} category={category} score={average} />
+          ))}
+        </Slider>
+      </div>
 
-        <div className="chart-container">
-          <div className="chart">
-            <BarChart categoryAverages={categoryAverages} />
-          </div>
-          <div className="chart">
-            <RadarChart categoryAverages={categoryAverages} />
-          </div>
-          <div className="chart">
-            <BubbleChart intensidadDigital={intensidadDigitalScore} gestionTransformacional={gestionTransformacionalScore} />
-          </div>
+      <div className="chart-container">
+        <div className="chart">
+          <BarChart categoryAverages={categoryAverages} />
         </div>
+        <div className="chart">
+          <RadarChart categoryAverages={categoryAverages} />
+        </div>
+        <div className="chart">
+          <BubbleChart intensidadDigital={intensidadDigitalScore} gestionTransformacional={gestionTransformacionalScore} />
+        </div>
+      </div>
 
-        <div className='restart-form'>
-          <button className='results-button restart' onClick={handleRestart}>Rellenar otro formulario</button>
-        </div>
-      </section>
-    </div>
+      <div className='restart-form'>
+        <button className='results-button restart' onClick={handleRestart}>Rellenar otro formulario</button>
+      </div>
+    </section>
   );
 }
 
