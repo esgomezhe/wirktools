@@ -57,10 +57,10 @@ function FooterHome() {
 
             <div className="footer__tools">
               <span className='footer__tools--span'>Autodiagnósticos disponibles</span>
-              <p className='footer__tools--text'>Medianas y grandes empresas</p>
-              <p className='footer__tools--text'>Micros y pequeñas empresas</p>
-              <p className='footer__tools--text'>Economía popular, asociativa y comunitaria</p>
-              <p className='footer__tools--text'>Excelencia clínica</p>
+              <a href="/autodiagnostico/" className='footer__tools--text'>Medianas y grandes empresas</a>
+              <a href="/autodiagnostico/" className='footer__tools--text'>Micros y pequeñas empresas</a>
+              <a href="/autodiagnostico/" className='footer__tools--text'>Economía popular, asociativa y comunitaria</a>
+              <a href="/autodiagnostico/" className='footer__tools--text'>Excelencia clínica</a>
             </div>
           </div>
         </div>

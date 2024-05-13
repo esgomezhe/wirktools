@@ -55,18 +55,14 @@
   width: 76%;
   text-align: center;
   font-size: 20px;
-  margin-top: 0;
-  margin-left: 0;
-  margin-bottom: 0;
+  margin: auto;
 }
 
 @media (min-width: 768px) {
   .notice__title {
     font-size: 24px;
     width: 55%;
-    margin-top: 6px;
-    margin-left: 122px;
-    margin-bottom: 0;
+    margin: auto;
   }
 }
 
@@ -88,7 +84,7 @@
 
 @media (min-width: 768px) {
   .form__requirement {
-    margin-right: 72px;
+    text-align: center;
   }
 }
 
@@ -202,7 +198,7 @@
 
 .form-input,
 .form-select {
-  width: 100%;
+  width: -webkit-fill-available;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -243,7 +239,20 @@
   font-size: 11px;
   font-weight: 600;
   line-height: 13px;
-  padding: 24px 28px;
+  padding: 24px 28px 0px 28px;
+}
+
+a.data__treatment--text {
+  color: #12186B;
+  padding: 0%;
+}
+
+.data__treatment--check {
+  color: #1C1B1F;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 13px;
+  padding: 10px 28px 24px 28px;
 }
 
 .button__container {
@@ -279,4 +288,8 @@
 
 .form-submit-button:hover {
   background-color: #12186B;
+}
+
+.error-message {
+  color: red;
 }

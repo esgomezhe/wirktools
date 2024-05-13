@@ -10,7 +10,7 @@ function App() {
       <Header />
       <Routes>
         <Route path='/' element={<NewHome />} />
-        <Route path='/autodiagnóstico' element={<Formulario />} />
+        <Route path='/autodiagnostico/' element={<Formulario />} />
       </Routes>
     </>
   );

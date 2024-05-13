@@ -12,7 +12,7 @@ function Header() {
             <img className='header--image' src={require('../../img/logo.jpg')} alt="Cámara de Comercio de Cali" />
           </Link>
         </div>
-        <Link to={'/autodiagnóstico'} className='header__button'>Inicia tu autodiagnóstico</Link>
+        <Link to={'/autodiagnostico/'} className='header__button'>Inicia tu autodiagnóstico</Link>
       </div>
     </header>
   )
