@@ -15,7 +15,7 @@
   margin: 0 auto;
   justify-content: space-between;
   align-items: center;
-
+  gap: 10px;
 }
 
 .header--logo {
@@ -24,7 +24,7 @@
 
 .header__button {
   display: inline-block;
-  padding: 11px 21px;
+  padding: 11px 15px;
   background-color: #253D90;
   color: white;
   border-radius: 8px;
@@ -34,15 +34,19 @@
   border: none;
   transition: all 0.3s ease;
   letter-spacing: 0.1px;
+  text-align: center;
+}
+
+@media (min-width: 415px) {
+  .header__button {
+    padding: 11px 21px;
+  }
 }
 
 .header__button:hover {
   background-color: #12186B;
   top: 3px;
   transform: translateY(-1px);
-}
-
-a:hover {
   color: #FFFFFF;
 }
 

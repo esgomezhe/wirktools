@@ -1,18 +1,45 @@
 /* Estilos resultados del formulario burble */
 .results {
   background-color: transparent;
-  background-image: linear-gradient(180deg, #1E5E66 0%, #1B3C65 100%);
+  background-image: linear-gradient(180deg, #6EB6FC 0%, #5F29B6 100%);
   margin-bottom: 20px;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 20px;
+  padding: 0;
+  padding-bottom: 60px;
+}
 
+.nav__container {
+  width: 100%;
+  height: 92px;
+  display: flex;
 }
 
 @media (min-width: 768px) {
-  .results {
-    grid-template-columns: repeat(4, 1fr);
+  .nav__container {
+    position: relative;
+    height: 155px;
   }
+}
+
+.nav__title--container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .nav__title--container {
+    position: relative;
+    top: 48%;
+    right: 10%;
+    display: block;
+    width: auto;
+  }
+}
+
+.nav__title {
+  color: #FAFAFA;
+  font-size: 22px;
 }
 
 .results-text {
@@ -25,51 +52,44 @@
   padding: 10px;
 }
 
+.slider-container {
+  width: 95%;
+  margin: 0 auto;
+  padding-bottom: 50px;
+}
+
 .results-category {
   padding-top: 0;
   color: white;
   margin: 10px;
+  border: 1px solid rgba(250, 250, 250, 0.5);
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.27);
+  padding-bottom: 10px;
 }
 
 /* Button "autodiagnostico" styles */
 
 .button-container {
   text-align: center;
-  margin-bottom: 20px;
+  padding-bottom: 10px;
 }
-
 
 .results-button {
-  width: 9em;
-  height: 3em;
-  border-radius: 30em;
-  font-size: 15px;
-  font-family: inherit;
-  border: none;
-  position: relative;
-  overflow: hidden;
-  z-index: 1;
-  color: #262c40;
+  padding: 8px 21px;
+  width: 90%;
+  border: transparent;
+  border-radius: 10px;
+  color: #12176B;
+  font-weight: 700;
+  font-size: 12px;
+  background-color: #FAFAFA;
+  transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
 }
 
-.results-button::before {
-  content: '';
-  width: 0;
-  height: 3em;
-  border-radius: 30em;
-  position: absolute;
-  top: 0;
-  left: 0;
-  background-image: linear-gradient(to right, #0fd850 0%, #f9f047 100%);
-  transition: .5s ease;
-  display: block;
-  z-index: -1;
+.results-button:hover {
+  transform: translateY(-1px)
 }
-
-.results-button:hover::before {
-  width: 9em;
-}
-
 
 .results-text:hover {
   background-color: #12176B;
@@ -87,18 +107,18 @@
   background-image: linear-gradient(180deg, #1E5E66 0%, #21508B 100%);
 }
 
-
 .restart-form {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 20px;
 }
 
 .restart {
   flex: none;
+  width: auto;
   margin-bottom: 20px;
 }
-
 
 .chart-container {
   display: flex;
@@ -107,14 +127,20 @@
   /* Centra horizontalmente */
   align-items: center;
   /* Centra verticalmente cuando los elementos están en la misma línea */
+  gap: 10px;
   margin: auto;
-  /* Asegura que el contenedor esté centrado en su contenedor padre */
 }
 
 .chart {
-  flex: 1 1 300px;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   /* Cada gráfico intentará ocupar al menos 300px de ancho */
   max-width: calc(100% - 20px);
   /* Ajusta el ancho máximo para considerar el gap */
   padding: 20px;
+  border: 1px solid rgba(250, 250, 250, 0.5);
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.27);
 }
