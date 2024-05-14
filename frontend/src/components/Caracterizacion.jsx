@@ -26,7 +26,7 @@ function Caracterizacion({ onFormSubmit }) {
     mainOfficeDepartment: '',
     mainOfficeMunicipality: '',
     businessSector: '',
-    productType: [],
+    productType: '',
     clientFocus: '',
     marketReach: '',
     businessSize: '',
