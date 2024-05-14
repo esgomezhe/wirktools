@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 function Caracterizacion({ onFormSubmit }) {
   const [formData, setFormData] = useState({
     userName: '',
-    companyType: '', // micro_pequeñas o unidad_negocio_productivo
+    companyType: '',
     identificationType: '',
     identificationNumber: '',
     birthDate: '',
@@ -37,19 +37,10 @@ function Caracterizacion({ onFormSubmit }) {
 
   const handleChange = (event) => {
     const { name, value, type, checked } = event.target;
-    if (name === 'productType') {
-      setFormData(prevFormData => ({
-        ...prevFormData,
-        [name]: checked
-          ? [...prevFormData.productType, value]
-          : prevFormData.productType.filter(item => item !== value)
-      }));
-    } else {
-      setFormData(prevFormData => ({
-        ...prevFormData,
-        [name]: type === 'checkbox' ? checked : value
-      }));
-    }
+    setFormData(prevFormData => ({
+      ...prevFormData,
+      [name]: type === 'checkbox' ? checked : value
+    }));
     validateField(name, type === 'checkbox' ? checked : value);
   };
 

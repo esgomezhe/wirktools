@@ -60,59 +60,86 @@ export const calculateGestionTransformacionalScore = (categoryAverages) => {
 
 // Prepara los datos para el gráfico de barras (Bar Chart)
 export const getBarChartData = (categoryAverages) => {
-    // Retorna la configuración del gráfico de barras
-    return {
-      data: {
-        labels: categoryAverages.map(ca => ca.category.name),
-        datasets: [
-          {
-            label: 'Puntaje Promedio',
-            data: categoryAverages.map(ca => ca.average),
-            backgroundColor: 'rgba(54, 162, 235, 0.5)',
-            borderColor: 'rgba(54, 162, 235, 1)',
-            borderWidth: 1,
-          },
-        ],
+  return {
+    data: {
+      labels: categoryAverages.map(ca => ca.category.name),
+      datasets: [
+        {
+          label: 'Puntaje Promedio',
+          data: categoryAverages.map(ca => ca.average),
+          backgroundColor: 'rgba(54, 162, 235, 0.5)',
+          borderColor: 'rgba(54, 162, 235, 1)',
+          borderWidth: 1,
+        },
+      ],
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true,
+          max: 5, // Asegurarse de que el máximo del eje Y sea 5
+          ticks: {
+            color: '#FFFFFF' // Color del texto en blanco
+          }
+        },
+        x: {
+          ticks: {
+            color: '#FFFFFF' // Color del texto en blanco
+          }
+        }
       },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true
+      plugins: {
+        legend: {
+          labels: {
+            color: '#FFFFFF' // Color del texto en blanco
           }
         }
       }
-    };
+    },
+  };
 };
 
 // Prepara los datos para el gráfico radar (Radar Chart)
 export const getRadarChartData = (categoryAverages) => {
-    // Retorna la configuración del gráfico radar
-    return {
-      data: {
-        labels: categoryAverages.map(ca => ca.category.name),
-        datasets: [
-          {
-            label: 'Puntaje Promedio',
-            data: categoryAverages.map(ca => ca.average),
-            backgroundColor: 'rgba(255, 99, 132, 0.2)',
-            borderColor: 'rgba(255, 99, 132, 1)',
-            borderWidth: 1,
-            pointBackgroundColor: 'rgba(255, 99, 132, 1)',
+  return {
+    data: {
+      labels: categoryAverages.map(ca => ca.category.name),
+      datasets: [
+        {
+          label: 'Puntaje Promedio',
+          data: categoryAverages.map(ca => ca.average),
+          backgroundColor: 'rgba(255, 99, 132, 0.2)',
+          borderColor: 'rgba(255, 99, 132, 1)',
+          borderWidth: 1,
+          pointBackgroundColor: 'rgba(255, 99, 132, 1)',
+        },
+      ],
+    },
+    options: {
+      scales: {
+        r: {
+          angleLines: {
+            display: true,
           },
-        ],
+          suggestedMin: 0,
+          suggestedMax: 5, // Asegurarse de que el máximo del eje R sea 5
+          pointLabels: {
+            color: '#FFFFFF' // Color del texto en blanco
+          },
+          ticks: {
+            display: false // No mostrar los valores numéricos
+          }
+        }
       },
-      options: {
-        scales: {
-          r: {
-            angleLines: {
-              display: true
-            },
-            suggestedMin: 0,
-            suggestedMax: 5,
+      plugins: {
+        legend: {
+          labels: {
+            color: '#FFFFFF' // Color del texto en blanco
           }
         }
       }
-    };
+    },
+  };
 };
 
 // Prepara los datos para el gráfico cartesiano (Bubble Chart)
@@ -123,7 +150,7 @@ export const getBubbleChartData = (intensidadDigital, gestionTransformacional) =
       data: [{
         x: intensidadDigital,
         y: gestionTransformacional,
-        r: 10 // Tamaño de la burbuja
+        r: 10, // Tamaño de la burbuja
       }],
       backgroundColor: 'rgba(255, 99, 132, 0.2)',
       borderColor: 'rgba(255, 99, 132, 1)',
@@ -137,34 +164,34 @@ export const optionsForBubbleChart = {
     y: {
       beginAtZero: true,
       min: 0,
-      max: 5,
+      max: 5, // Asegurarse de que el máximo del eje Y sea 5
       title: {
         display: true,
         text: 'Intensidad en la Gestión Transformacional',
-        color: '#FAFAFA'
+        color: '#FAFAFA',
       },
       ticks: {
-        color: '#FAFAFA'
-      }
+        color: '#FAFAFA', // Color del texto en blanco
+      },
     },
     x: {
       beginAtZero: true,
       min: 0,
-      max: 5,
+      max: 5, // Asegurarse de que el máximo del eje X sea 5
       title: {
         display: true,
         text: 'Intensidad Digital',
-        color: '#FAFAFA'
+        color: '#FAFAFA',
       },
       ticks: {
-        color: '#FAFAFA'
-      }
+        color: '#FAFAFA', // Color del texto en blanco
+      },
     },
   },
   plugins: {
     legend: {
       labels: {
-        color: '#FAFAFA'
+        color: '#FAFAFA', // Color del texto en blanco
       },
     },
   },

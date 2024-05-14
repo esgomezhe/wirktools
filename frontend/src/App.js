@@ -1,10 +1,9 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Formulario, NewHome } from "./pages/AllPages";
-import Header from "./components/componentes_new_home/HeaderHome"
+import Header from "./components/componentes_new_home/HeaderHome";
 
 function App() {
-
   return (
     <>
       <Header />
@@ -12,12 +11,9 @@ function App() {
         <Route path='/' element={<NewHome />} />
         <Route path='/autodiagnostico/' element={<Formulario />} />
       </Routes>
+      <div id="popup-root"></div> {/* Contenedor para los popups */}
     </>
   );
 }
 
 export default App;
-
-
-
-
