@@ -14,7 +14,7 @@ export const calculateCategoryAverages = (answers) => {
 
   answers.forEach(({ category, value, answers_count }) => {
     totalAnswersCount += answers_count;
-    
+
     if (category.name === 'Complejidad') return;
 
     const categoryName = category.name;
@@ -60,58 +60,59 @@ export const calculateGestionTransformacionalScore = (categoryAverages) => {
 
 // Prepara los datos para el gráfico de barras (Bar Chart)
 export const getBarChartData = (categoryAverages) => {
-  return {
-    data: {
-      labels: categoryAverages.map(ca => ca.category.name),
-      datasets: [
-        {
-          label: 'Puntaje Promedio',
-          data: categoryAverages.map(ca => ca.average),
-          backgroundColor: 'rgba(54, 162, 235, 0.5)',
-          borderColor: 'rgba(54, 162, 235, 1)',
-          borderWidth: 1,
-        },
-      ],
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true,
-          max: 5
+    // Retorna la configuración del gráfico de barras
+    return {
+      data: {
+        labels: categoryAverages.map(ca => ca.category.name),
+        datasets: [
+          {
+            label: 'Puntaje Promedio',
+            data: categoryAverages.map(ca => ca.average),
+            backgroundColor: 'rgba(54, 162, 235, 0.5)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
         }
       }
-    }
-  };
+    };
 };
 
 // Prepara los datos para el gráfico radar (Radar Chart)
 export const getRadarChartData = (categoryAverages) => {
-  return {
-    data: {
-      labels: categoryAverages.map(ca => ca.category.name),
-      datasets: [
-        {
-          label: 'Puntaje Promedio',
-          data: categoryAverages.map(ca => ca.average),
-          backgroundColor: 'rgba(255, 99, 132, 0.2)',
-          borderColor: 'rgba(255, 99, 132, 1)',
-          borderWidth: 1,
-          pointBackgroundColor: 'rgba(255, 99, 132, 1)',
-        },
-      ],
-    },
-    options: {
-      scales: {
-        r: {
-          angleLines: {
-            display: true
+    // Retorna la configuración del gráfico radar
+    return {
+      data: {
+        labels: categoryAverages.map(ca => ca.category.name),
+        datasets: [
+          {
+            label: 'Puntaje Promedio',
+            data: categoryAverages.map(ca => ca.average),
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 1,
+            pointBackgroundColor: 'rgba(255, 99, 132, 1)',
           },
-          suggestedMin: 0,
-          suggestedMax: 5,
+        ],
+      },
+      options: {
+        scales: {
+          r: {
+            angleLines: {
+              display: true
+            },
+            suggestedMin: 0,
+            suggestedMax: 5,
+          }
         }
       }
-    }
-  };
+    };
 };
 
 // Prepara los datos para el gráfico cartesiano (Bubble Chart)
@@ -140,7 +141,11 @@ export const optionsForBubbleChart = {
       title: {
         display: true,
         text: 'Intensidad en la Gestión Transformacional',
+        color: '#FAFAFA'
       },
+      ticks: {
+        color: '#FAFAFA'
+      }
     },
     x: {
       beginAtZero: true,
@@ -149,6 +154,17 @@ export const optionsForBubbleChart = {
       title: {
         display: true,
         text: 'Intensidad Digital',
+        color: '#FAFAFA'
+      },
+      ticks: {
+        color: '#FAFAFA'
+      }
+    },
+  },
+  plugins: {
+    legend: {
+      labels: {
+        color: '#FAFAFA'
       },
     },
   },

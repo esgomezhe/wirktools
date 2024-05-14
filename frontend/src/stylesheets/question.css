@@ -22,7 +22,6 @@
   text-align: center;
   padding-top: 20px;
   gap: 5px;
-  z-index: 1;
 }
 
 @media (min-width: 768px) {
@@ -125,7 +124,6 @@
   border-radius: 10px;
   box-sizing: border-box;
   background: #EBF5FF;
-  /* color: #3B3B3B; */
   display: inline-block;
   font-size: 12.5px;
   font-weight: 400;
@@ -170,7 +168,6 @@
     width: 30%;
     margin: 0 auto;
   }
-
 }
 
 .buttons-question.neprev {
@@ -178,7 +175,6 @@
   padding: 5px;
   color: #12186B;
   font-weight: 600;
-
 }
 
 .buttons-question.neprev:hover {

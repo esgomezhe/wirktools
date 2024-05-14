@@ -38,17 +38,17 @@ function Caracterizacion({ onFormSubmit }) {
   const handleChange = (event) => {
     const { name, value, type, checked } = event.target;
     if (name === 'productType') {
-        setFormData(prevFormData => ({
-            ...prevFormData,
-            [name]: checked 
-                ? [...prevFormData.productType, value]
-                : prevFormData.productType.filter(item => item !== value)
-        }));
+      setFormData(prevFormData => ({
+        ...prevFormData,
+        [name]: checked
+          ? [...prevFormData.productType, value]
+          : prevFormData.productType.filter(item => item !== value)
+      }));
     } else {
-        setFormData(prevFormData => ({
-            ...prevFormData,
-            [name]: type === 'checkbox' ? checked : value
-        }));
+      setFormData(prevFormData => ({
+        ...prevFormData,
+        [name]: type === 'checkbox' ? checked : value
+      }));
     }
     validateField(name, type === 'checkbox' ? checked : value);
   };
@@ -96,24 +96,24 @@ function Caracterizacion({ onFormSubmit }) {
   const validateForm = () => {
     let tempErrors = {};
     const currentDate = new Date();
-  
+
     Object.keys(formData).forEach(key => {
       // Validación para campos vacíos, excepto 'dataConsent'
       if (!formData[key] && key !== 'dataConsent') {
         tempErrors[key] = 'Este campo es obligatorio';
       }
-  
+
       // Validación específica para email
       if (key === 'email' && formData.email && !/\S+@\S+\.\S+/.test(formData.email)) {
         tempErrors.email = 'Correo electrónico no válido';
       }
-  
+
       // Validación para campos que deben ser numéricos (incluidos ciertos símbolos)
-      if ((key === 'identificationNumber' || key === 'phoneNumber' || key === 'companyNIT') && 
-          !/^[0-9\- ]+$/.test(formData[key])) {
+      if ((key === 'identificationNumber' || key === 'phoneNumber' || key === 'companyNIT') &&
+        !/^[0-9\- ]+$/.test(formData[key])) {
         tempErrors[key] = 'Solo se permiten caracteres numéricos y símbolos específicos';
       }
-  
+
       // Validación de fechas para no permitir fechas futuras
       if ((key === 'birthDate' || key === 'operationStartYear') && formData[key]) {
         const inputDate = new Date(formData[key]);
@@ -122,7 +122,7 @@ function Caracterizacion({ onFormSubmit }) {
         }
       }
     });
-  
+
     setErrors(tempErrors);
     return Object.keys(tempErrors).length === 0;
   };
@@ -584,7 +584,7 @@ function Caracterizacion({ onFormSubmit }) {
                     value={formData.clientFocus}
                     onChange={handleChange}
                   >
-                    <option value="" disabled>{errors.clientFocus||'Seleccione el tipo de cliente'}</option>
+                    <option value="" disabled>{errors.clientFocus || 'Seleccione el tipo de cliente'}</option>
                     <option value="B2B">Su principal cliente es otra empresa (B2B)</option>
                     <option value="B2C">Sus principales clientes son consumidores o el usuario final (B2C)</option>
                     <option value="B2G">Sus principales clientes son entes u organizaciones del gobierno (B2G)</option>
@@ -613,27 +613,27 @@ function Caracterizacion({ onFormSubmit }) {
             </div>
           </div>
           <div className='data__treatment'>
-              <p className='data__treatment--text'>
-                  Autoriza a la Cámara de Comercio de Cali como responsable del tratamiento de los datos personales, 
-                  para la recolección, almacenamiento, uso, transmisión y/o transferencia de los datos personales 
-                  suministrados en este formulario, para las finalidades dispuestas en la
-                  política de tratamiento de datos personales que puede <a className='data__treatment--text' href="https://camaradecomerciodecali-my.sharepoint.com/personal/daocampo_ccc_org_co/_layouts/15/AccessDenied.aspx?Source=https%3A%2F%2Fcamaradecomerciodecali%2Dmy%2Esharepoint%2Ecom%2Fpersonal%2Fdaocampo%5Fccc%5Forg%5Fco%2F%5Flayouts%2F15%2Fonedrive%2Easpx%3Fid%3D%252Fpersonal%252Fdaocampo%255Fccc%255Forg%255Fco%252FDocuments%252FEscritorio%252FAUTORIZACION%2520TRATAMIENTO%2520PARA%2520ENCUESTA%2520DE%2520SATISFACCI%25C3%2593N%2520A%2520EXTERNOS%252Epdf%26parent%3D%252Fpersonal%252Fdaocampo%255Fccc%255Forg%255Fco%252FDocuments%252FEscritorio%26ga%3D1&correlation=e46b26a1%2D806d%2D5000%2D4107%2D345305f08660&Type=item&name=2a6cfacc%2D54a2%2D4177%2D8a9a%2Dac337a4db2d2&listItemId=2195&listItemUniqueId=1badd0e3%2D7fe5%2D4358%2Dabfc%2Da24c08bfe32b" target="noreferrer"> consultar aquí</a>.
-              </p>
-              <div className='data__treatment--check'>
-                  <input 
-                      type="checkbox" 
-                      id="dataConsent" 
-                      name="dataConsent" 
-                      checked={formData.dataConsent}
-                      onChange={handleChange} 
-                  />
-                  <label htmlFor="dataConsent" style={{ paddingLeft: '5px' }}>
-                    Autorizo tratamiento de datos personales. {errors.dataConsent && <span className="error-message">{errors.dataConsent||''}</span>}
-                  </label>
-              </div>
+            <p className='data__treatment--text'>
+              Autoriza a la Cámara de Comercio de Cali como responsable del tratamiento de los datos personales,
+              para la recolección, almacenamiento, uso, transmisión y/o transferencia de los datos personales
+              suministrados en este formulario, para las finalidades dispuestas en la
+              política de tratamiento de datos personales que puede <a className='data__treatment--text' href="https://camaradecomerciodecali-my.sharepoint.com/personal/daocampo_ccc_org_co/_layouts/15/AccessDenied.aspx?Source=https%3A%2F%2Fcamaradecomerciodecali%2Dmy%2Esharepoint%2Ecom%2Fpersonal%2Fdaocampo%5Fccc%5Forg%5Fco%2F%5Flayouts%2F15%2Fonedrive%2Easpx%3Fid%3D%252Fpersonal%252Fdaocampo%255Fccc%255Forg%255Fco%252FDocuments%252FEscritorio%252FAUTORIZACION%2520TRATAMIENTO%2520PARA%2520ENCUESTA%2520DE%2520SATISFACCI%25C3%2593N%2520A%2520EXTERNOS%252Epdf%26parent%3D%252Fpersonal%252Fdaocampo%255Fccc%255Forg%255Fco%252FDocuments%252FEscritorio%26ga%3D1&correlation=e46b26a1%2D806d%2D5000%2D4107%2D345305f08660&Type=item&name=2a6cfacc%2D54a2%2D4177%2D8a9a%2Dac337a4db2d2&listItemId=2195&listItemUniqueId=1badd0e3%2D7fe5%2D4358%2Dabfc%2Da24c08bfe32b" target="noreferrer"> consultar aquí</a>.
+            </p>
+            <div className='data__treatment--check'>
+              <input
+                type="checkbox"
+                id="dataConsent"
+                name="dataConsent"
+                checked={formData.dataConsent}
+                onChange={handleChange}
+              />
+              <label htmlFor="dataConsent" style={{ paddingLeft: '5px' }}>
+                Autorizo tratamiento de datos personales. {errors.dataConsent && <span className="error-message">{errors.dataConsent || ''}</span>}
+              </label>
+            </div>
           </div>
           <div className='button__container'>
-              <button type="submit" className="form-submit-button" disabled={!formData.dataConsent}>Continuar con el autodiagnóstico</button>
+            <button type="submit" className="form-submit-button" disabled={!formData.dataConsent}>Continuar con el autodiagnóstico</button>
           </div>
         </form>
       </div>

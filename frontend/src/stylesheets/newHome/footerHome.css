@@ -168,6 +168,7 @@
 .footer__contact--span {
   font-weight: 700;
   color: #454854;
+  font-size: 12px;
   text-transform: capitalize;
 }
 
@@ -207,8 +208,10 @@
   color: #454854;
 }
 
-.footer__tools--text:hover, .footer__contact--link:hover {
-  color: #12186B; /* Cambia el color a azul al pasar el mouse */
+.footer__tools--text:hover,
+.footer__contact--link:hover {
+  color: #12186B;
+  /* Cambia el color a azul al pasar el mouse */
 }
 
 @media (min-width: 768px) {
