@@ -6,7 +6,7 @@ function FirstSection() {
     <section className='first__section'>
       <div className='first__section--container'>
         <div className='first_section--image-container'>
-          <img className='first_section--image' src={require('../../img/Vector.png')} alt="prueba" />
+          <img className='first_section--image' src={require('../../img/Vector.png')} alt="prueba" loading='lazy' />
         </div>
 
         <div className='first_section--text'>
