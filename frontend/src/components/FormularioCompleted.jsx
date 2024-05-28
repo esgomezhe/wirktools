@@ -13,7 +13,8 @@ function FormularioCompleted() {
   const [caracterizacionData, setCaracterizacionData] = useState({});
   const [isCompleted, setIsCompleted] = useState(false);
   const [isCaracterizacionCompleted, setIsCaracterizacionCompleted] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false); // Estado para controlar el envío
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     fetchForms().then(data => {
@@ -46,6 +47,14 @@ function FormularioCompleted() {
       setIsCompleted(true);
     }
   }, []);
+
+  useEffect(() => {
+    if (error) {
+      // Limpiar el almacenamiento local y recargar la página
+      localStorage.clear();
+      window.location.reload(true); // Recargar la página eliminando la caché
+    }
+  }, [error]);
 
   const handleCaracterizacionSubmit = (data) => {
     const tipoIndex = data.companyType === 'micro_pequeñas' ? 0 : 
@@ -89,7 +98,7 @@ function FormularioCompleted() {
         setCurrentQuestionIndex(current => current + 1);
         setSelectedAnswer(null);
       } else {
-        setIsSubmitting(true); // Deshabilitar el botón de envío
+        setIsSubmitting(true);
         const submissionData = {
           answers: answers,
           info: caracterizacionData
@@ -104,9 +113,10 @@ function FormularioCompleted() {
           })
           .catch(error => {
             console.error('Error al enviar el formulario:', error);
+            setError(error); // Establecer el estado de error para manejarlo
           })
           .finally(() => {
-            setIsSubmitting(false); // Habilitar el botón de envío
+            setIsSubmitting(false);
           });
       }
     } else if (direction === 'previous' && currentQuestionIndex > 0) {
