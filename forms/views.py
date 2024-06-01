@@ -10,7 +10,7 @@ class FormViewSet(viewsets.ReadOnlyModelViewSet):
 
 def index(request):
     return render(request, 'index.html')
-        
+
 class CompletedFormViewSet(viewsets.ModelViewSet):
     queryset = CompletedForm.objects.all()
     serializer_class = CompletedFormSerializer

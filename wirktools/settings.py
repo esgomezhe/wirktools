@@ -1,24 +1,21 @@
 import os
-import environ
 from pathlib import Path
-
-env = environ.Env()
-environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
-
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = '^dnx5fde%210%oozxo136qdmc4^f6)xewhzbi!lvt0d=h)u7k='
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG')
+DEBUG = True
 
-ALLOWED_HOSTS = env.list('ALLOWED_HOST_DEV')
+ALLOWED_HOSTS = [
+    'transformaciondigital.com.co',
+    'www.transformaciondigital.com.co',
+    'localhost',
+    '127.0.0.1'
+]
 
 # Application definition
 
@@ -28,11 +25,11 @@ DJANGO_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles'
+    'django.contrib.staticfiles',
 ]
 
 PROJECT_APPS = [
-    'forms'
+    'forms',
 ]
 
 THIRD_PARTY_APPS = [
@@ -41,12 +38,13 @@ THIRD_PARTY_APPS = [
     'corsheaders',
     'ckeditor',
     'import_export',
-    #'ckeditor_uploader'
+    #'adminsortable2',
+    # 'ckeditor_uploader'
 ]
 
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + THIRD_PARTY_APPS
 
-#CKEditor
+# CKEditor
 CKEDITOR_CONFIGS = {
     'default': {
         'toolbar': 'full',
@@ -56,7 +54,7 @@ CKEDITOR_CONFIGS = {
             # ['Link', 'Unlink'],
             # ['RemoveFormat', 'Source']
         # ],
-        'autoParagraph': False
+        'autoParagraph': False,
     }
 }
 CKEDITOR_UPLOAD_PATH = "/media/"
@@ -71,7 +69,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = 'wirktools.urls'
@@ -79,7 +76,7 @@ ROOT_URLCONF = 'wirktools.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, "frontend/public"),],
+        'DIRS': [os.path.join(BASE_DIR, "frontend/build")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -94,7 +91,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'wirktools.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
@@ -104,7 +100,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -124,18 +119,16 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
 LANGUAGE_CODE = 'es'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Bogota'
 
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
@@ -151,7 +144,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Add project-wide static files directory
 # https://docs.djangoproject.com/en/5.0/ref/settings/#staticfiles-dirs
 
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "frontend/build/static")]
 
 # Add project-wide static files directory
 # https://docs.djangoproject.com/en/5.0/ref/settings/#media-root
@@ -159,14 +152,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 MEDIA_URL = "media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
-#CORS_ALLOWED_ORIGINS = [
-    #"http://localhost:3000",
-#]
-
-CORS_ALLOWED_ORIGINS = env.list('CORS_ALLOWED_ORIGINS_DEV')
-CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS_DEV')
-
-EMAIL_BACKEND='django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
@@ -180,16 +166,45 @@ REST_FRAMEWORK = {
     ),
 }
 
-if not DEBUG:
-    ALLOWED_HOSTS = env.list('ALLOWED_HOSTS_DEPLOY')
-    CORS_ALLOWED_ORIGINS = env.list('CORS_ALLOWED_ORIGINS_DEPLOY')
-    CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS_DEPLOY')
-
-
-    DATABASES = {
-        "default": env.db("DATABASE_URL"),
-    }
-    DATABASES["default"]["ATOMIC_REQUESTS"] = True
-
-DATA_UPLOAD_MAX_NUMBER_FIELDS = 1000000
+# CORS and CSRF settings
 CORS_ALLOW_ALL_ORIGINS = True
+
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
+
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
+
+CORS_ALLOW_CREDENTIALS = True
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://transformaciondigital.com.co',
+    'https://www.transformaciondigital.com.co',
+    'http://localhost:3000',
+]
+
+#EMAIL settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'transformaciondigital.com.co'
+EMAIL_PORT = 465
+EMAIL_USE_SSL = True
+EMAIL_HOST_USER = 'autodiagnostico@transformaciondigital.com.co'
+EMAIL_HOST_PASSWORD = 'Bg=;NsDu){3T'
+DEFAULT_FROM_EMAIL = 'autodiagnostico@transformaciondigital.com.co'
+
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 1000
