@@ -38,8 +38,6 @@ THIRD_PARTY_APPS = [
     'corsheaders',
     'ckeditor',
     'import_export',
-    #'adminsortable2',
-    # 'ckeditor_uploader'
 ]
 
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + THIRD_PARTY_APPS
@@ -48,12 +46,6 @@ INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + THIRD_PARTY_APPS
 CKEDITOR_CONFIGS = {
     'default': {
         'toolbar': 'full',
-        # 'toolbar_Custom': [
-            # ['Bold', 'Italic', 'Underline'],
-            # ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
-            # ['Link', 'Unlink'],
-            # ['RemoveFormat', 'Source']
-        # ],
         'autoParagraph': False,
     }
 }
@@ -76,7 +68,7 @@ ROOT_URLCONF = 'wirktools.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, "frontend/build")],
+        'DIRS': [os.path.join(BASE_DIR, "frontend/build")],  # Asegúrate de que la ruta sea correcta
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -92,8 +84,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'wirktools.wsgi.application'
 
 # Database
-# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -102,8 +92,6 @@ DATABASES = {
 }
 
 # Password validation
-# https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -120,8 +108,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # Internationalization
-# https://docs.djangoproject.com/en/5.0/topics/i18n/
-
 LANGUAGE_CODE = 'es'
 
 TIME_ZONE = 'America/Bogota'
@@ -131,29 +117,27 @@ USE_I18N = True
 USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.0/howto/static-files/
-
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "frontend/build/static"),
+]
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# Add project-wide static files directory
-# https://docs.djangoproject.com/en/5.0/ref/settings/#staticfiles-dirs
-
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "frontend/build/static")]
-
-# Add project-wide static files directory
-# https://docs.djangoproject.com/en/5.0/ref/settings/#media-root
-
-MEDIA_URL = "media/"
+# Media files
+MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# Email settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'transformaciondigital.com.co'
+EMAIL_PORT = 465
+EMAIL_USE_SSL = True
+EMAIL_HOST_USER = 'autodiagnostico@transformaciondigital.com.co'
+EMAIL_HOST_PASSWORD = 'Bg=;NsDu){3T'
+DEFAULT_FROM_EMAIL = 'autodiagnostico@transformaciondigital.com.co'
 
+# Django Rest Framework
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
@@ -198,13 +182,5 @@ CSRF_TRUSTED_ORIGINS = [
     'http://localhost:3000',
 ]
 
-#EMAIL settings
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'transformaciondigital.com.co'
-EMAIL_PORT = 465
-EMAIL_USE_SSL = True
-EMAIL_HOST_USER = 'autodiagnostico@transformaciondigital.com.co'
-EMAIL_HOST_PASSWORD = 'Bg=;NsDu){3T'
-DEFAULT_FROM_EMAIL = 'autodiagnostico@transformaciondigital.com.co'
-
+# Additional settings
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 1000
