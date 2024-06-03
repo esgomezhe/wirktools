@@ -14,7 +14,8 @@ class Category(models.Model):
         return f"{self.name}"
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
+        if not self.slug:
+            self.slug = slugify(self.name)
         super().save(*args, **kwargs)
 
 class DiagnosticLevel(models.Model):
@@ -60,7 +61,7 @@ class Answer(models.Model):
 
 class CompletedForm(models.Model):
     user = models.CharField(max_length=255, null=True, blank=True)
-    email = models.CharField(max_length=255, null=True, blank=True)
+    email = models.EmailField(max_length=255, null=True, blank=True)
     form_title = models.CharField(max_length=255)
     content = models.JSONField()
     created_at = models.DateTimeField(auto_now_add=True)

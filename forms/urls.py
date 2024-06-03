@@ -12,7 +12,6 @@ router.register(r'completed-forms', views.CompletedFormViewSet)
 urlpatterns = [
     # Prefijar todas las rutas de la API con 'api/'
     path('api/', include(router.urls)),
-
     # La ruta de captura genérica para la aplicación React debe ser la última
     re_path(r'^.*$', views.index, name='index'),
 ]

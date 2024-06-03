@@ -2,10 +2,10 @@ import nested_admin
 import openpyxl
 import csv
 from django.contrib import admin
-from .models import Form, Question, Answer, CompletedForm, Category, DiagnosticLevel, DiagnosticPlan
+from .models import *
 from django.utils.html import format_html
 from django.http import HttpResponse
-from .utils import calculate_category_averages, get_ordered_answer_questions, build_row, info_questions
+from .utils import *
 
 class DiagnosticPlanInline(nested_admin.NestedStackedInline):
     model = DiagnosticPlan
@@ -57,12 +57,20 @@ def export_as_csv(modeladmin, request, queryset):
     for form_title, forms in forms_by_title.items():
         writer.writerow([form_title])
         ordered_answer_questions = get_ordered_answer_questions(forms)
-        category_averages = calculate_category_averages(forms[0].content.get('answers', []))
+        # Aquí construimos los headers basados en todas las posibles preguntas y categorías
         headers = ['User', 'Form Title', 'Created At'] + list(info_questions.values()) + ordered_answer_questions
-        headers += [f"Autodiagnóstico {avg['category']['name']}" for avg in category_averages]
+
+        # Añadimos las columnas para cada categoría promedio
+        all_category_averages = set()
+        for form in forms:
+            category_averages = calculate_category_averages(form.content.get('answers', []))
+            all_category_averages.update(f"Autodiagnóstico {avg['category']['name']}" for avg in category_averages)
+        headers += list(all_category_averages)
+
         writer.writerow(headers)
 
         for obj in forms:
+            category_averages = calculate_category_averages(obj.content.get('answers', []))
             row = build_row(obj, ordered_answer_questions, category_averages)
             writer.writerow(row)
 
@@ -89,12 +97,20 @@ def export_as_excel(modeladmin, request, queryset):
     for form_title, forms in forms_by_title.items():
         ws = wb.create_sheet(title=form_title[:31])
         ordered_answer_questions = get_ordered_answer_questions(forms)
-        category_averages = calculate_category_averages(forms[0].content.get('answers', []))
+        # Aquí construimos los headers basados en todas las posibles preguntas y categorías
         headers = ['User', 'Form Title', 'Created At'] + list(info_questions.values()) + ordered_answer_questions
-        headers += [f"Autodiagnóstico {avg['category']['name']}" for avg in category_averages]
+
+        # Añadimos las columnas para cada categoría promedio
+        all_category_averages = set()
+        for form in forms:
+            category_averages = calculate_category_averages(form.content.get('answers', []))
+            all_category_averages.update(f"Autodiagnóstico {avg['category']['name']}" for avg in category_averages)
+        headers += list(all_category_averages)
+
         ws.append(headers)
 
         for obj in forms:
+            category_averages = calculate_category_averages(obj.content.get('answers', []))
             row = build_row(obj, ordered_answer_questions, category_averages)
             ws.append(row)
 
@@ -111,7 +127,7 @@ def export_as_excel(modeladmin, request, queryset):
 
 @admin.register(CompletedForm)
 class CompletedFormAdmin(admin.ModelAdmin):
-    list_display = ['form_title', 'user', 'email','created_at']
+    list_display = ['form_title', 'user', 'email', 'created_at']
     readonly_fields = ('user', 'email', 'form_title', 'created_at', 'content_pretty')
     actions = [export_as_csv, export_as_excel]
 
