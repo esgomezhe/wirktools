@@ -1,6 +1,6 @@
-import React from 'react'
+import React from 'react';
 import { Link } from "react-router-dom";
-import '../../stylesheets/newHome/headerHome.css'
+import '../../stylesheets/newHome/headerHome.css';
 
 function Header() {
   return (
@@ -12,10 +12,13 @@ function Header() {
             <img className='header--image' src={require('../../img/logo.jpg')} alt="Cámara de Comercio de Cali" />
           </Link>
         </div>
-        <Link to={'/autodiagnostico/'} className='header__button'>Inicia tu autodiagnóstico</Link>
+        <div className='header__buttons'>
+          <Link to={'/autodiagnostico/'} className='header__button'>Inicia tu autodiagnóstico</Link>
+          <Link to={'/lineabase/'} className='header__button'>Preguntas de línea base</Link>
+        </div>
       </div>
     </header>
-  )
+  );
 }
 
-export default Header
+export default Header;
