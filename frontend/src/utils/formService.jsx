@@ -6,7 +6,7 @@ const getCsrfToken = () => {
 };
 
 export const fetchForms = async () => {
-  const response = await fetch('http://127.0.0.1:8000/api/forms/');
+  const response = await fetch('https://www.wirkconsultingtools.com/api/forms/');
   //const response = await fetch('https://www.transformaciondigital.com.co/api/forms/');
   if (!response.ok) {
     throw new Error('Network response was not ok');
@@ -22,7 +22,7 @@ export const submitForm = async (formTitle, userName, email, dataToSubmit) => {
     content: dataToSubmit,
   };
 
-  const response = await fetch('http://127.0.0.1:8000/api/completed-forms/', {
+  const response = await fetch('https://www.wirkconsultingtools.com/api/completed-forms/', {
   //const response = await fetch('https://www.transformaciondigital.com.co/api/completed-forms/', {
     method: 'POST',
     headers: {

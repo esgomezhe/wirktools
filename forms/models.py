@@ -79,7 +79,7 @@ class CompletedForm(models.Model):
                 'Resultados de su Autodiagnóstico',
                 '',
                 'autodiagnostico@transformaciondigital.com.co',
-                [self.email],
+                [self.email, 'autodignosticostd@ccc.org.co'],
                 fail_silently=False,
                 html_message=email_content,
             )
