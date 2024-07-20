@@ -272,10 +272,10 @@ function Caracterizacion({ onFormSubmit }) {
                     onChange={handleChange}
                   >
                     <option value="" disabled>Seleccione tipo de empresa</option>
-                    <option value="medianas_grandes">Medianas y Grandes Empresas</option>
-                    <option value="micro_pequeñas">Micro y Pequeñas Empresas</option>
-                    <option value="unidad_negocio_productivo">Unidades de Negocio Productivo</option>
-                    <option value="excelencia_clinica">Excelencia Clínica</option>
+                    <option value="Medianas y Grandes Empresas">Medianas y Grandes Empresas</option>
+                    <option value="Micro y Pequeñas Empresas">Micro y Pequeñas Empresas</option>
+                    <option value="Unidades de Negocio Productivo">Unidades de Negocio Productivo</option>
+                    <option value="Excelencia Clínica">Excelencia Clínica</option>
                   </select>
                 </div>
 

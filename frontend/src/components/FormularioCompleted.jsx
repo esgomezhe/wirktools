@@ -57,10 +57,10 @@ function FormularioCompleted() {
   }, [error]);
 
   const handleCaracterizacionSubmit = (data) => {
-    const tipoIndex = data.companyType === 'micro_pequeñas' ? 0 : 
-                      data.companyType === 'unidad_negocio_productivo' ? 1 : 
-                      data.companyType === 'medianas_grandes' ? 2 : 
-                      data.companyType === 'excelencia_clinica' ? 3 : null;
+    const tipoIndex = data.companyType === 'Micro y Pequeñas Empresas' ? 0 : 
+                      data.companyType === 'Unidades de Negocio Productivo' ? 1 : 
+                      data.companyType === 'Medianas y Grandes Empresas' ? 2 : 
+                      data.companyType === 'Excelencia Clínica' ? 3 : null;
     setCurrentFormIndex(tipoIndex);
     setCaracterizacionData(data);
     setIsCaracterizacionCompleted(true);

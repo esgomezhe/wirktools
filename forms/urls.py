@@ -10,9 +10,9 @@ router.register(r'forms', views.FormViewSet)
 router.register(r'completed-forms', views.CompletedFormViewSet)
 
 urlpatterns = [
-    # Prefijar todas las rutas de la API con 'api/'
     path('api/', include(router.urls)),
-    # La ruta de captura genérica para la aplicación React debe ser la última
+    path('api/completed-forms/check/<str:document_number>/', views.CheckDocumentView.as_view(), name='check-document'),
+    path('api/completed-forms/<int:pk>/delete/', views.CompletedFormViewSet.as_view({'delete': 'delete_form'}), name='delete-form'),
     re_path(r'^.*$', views.index, name='index'),
 ]
 

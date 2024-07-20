@@ -1,4 +1,3 @@
-// formService.js
 const getCsrfToken = () => {
   const name = 'csrftoken';
   const cookieValue = document.cookie.split('; ').find(row => row.startsWith(name))?.split('=')[1];
@@ -6,8 +5,15 @@ const getCsrfToken = () => {
 };
 
 export const fetchForms = async () => {
-  const response = await fetch('https://www.wirkconsultingtools.com/api/forms/');
-  //const response = await fetch('https://www.transformaciondigital.com.co/api/forms/');
+  const response = await fetch('/api/forms/');
+  if (!response.ok) {
+    throw new Error('Network response was not ok');
+  }
+  return response.json();
+};
+
+export const checkDocument = async (documentNumber) => {
+  const response = await fetch(`/api/completed-forms/check/${documentNumber}/`);
   if (!response.ok) {
     throw new Error('Network response was not ok');
   }
@@ -22,14 +28,27 @@ export const submitForm = async (formTitle, userName, email, dataToSubmit) => {
     content: dataToSubmit,
   };
 
-  const response = await fetch('https://www.wirkconsultingtools.com/api/completed-forms/', {
-  //const response = await fetch('https://www.transformaciondigital.com.co/api/completed-forms/', {
+  const response = await fetch('/api/completed-forms/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'X-CSRFToken': getCsrfToken(),  // Incluir token CSRF
+      'X-CSRFToken': getCsrfToken(),
     },
     body: JSON.stringify(completedFormData),
+  });
+
+  if (!response.ok) {
+    throw new Error('Network response was not ok');
+  }
+  return response.json();
+};
+
+export const deleteForm = async (formId) => {
+  const response = await fetch(`/api/completed-forms/${formId}/delete/`, {
+    method: 'DELETE',
+    headers: {
+      'X-CSRFToken': getCsrfToken(),
+    },
   });
 
   if (!response.ok) {
