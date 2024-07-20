@@ -65,7 +65,7 @@
 
 .lineabase .form-container {
   background: rgba(154, 208, 255, 0.37);
-  padding-bottom: 60px;
+  padding: 60px 0px;
 }
 
 .lineabase .form__requirement {
