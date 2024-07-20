@@ -14,7 +14,7 @@ function LineaBase() {
   const [formData, setFormData] = useState({
     estadoEmpresa: '',
     ventas2023: '',
-    ventasDigitales: false,
+    ventasDigitales: '',
     porcentajeVentasDigitales: '',
     empleados: {
       mujeres: {
@@ -38,10 +38,10 @@ function LineaBase() {
       { nombre: '', antes: '', despues: '' },
       { nombre: '', antes: '', despues: '' }
     ],
-    otroHito: false,
+    otroHito: '',
     mencionarHito: ''
   });
-  const [error, setError] = useState('');
+  const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
   const navigate = useNavigate();
@@ -58,17 +58,40 @@ function LineaBase() {
       if (response.exists) {
         setUserData({ ...response.data, id: response.id, createdAt: response.data.created_at });
         setIsDocumentVerified(true);
-        setError('');
+        setErrors({});
       } else {
-        setError('No has realizado el autodiagnóstico.');
+        setErrors({ document: 'No has realizado el autodiagnóstico.' });
       }
     } catch (error) {
-      setError('Error al verificar el documento.');
+      setErrors({ document: 'Error al verificar el documento.' });
     }
+  };
+
+  const validateField = (name, value) => {
+    let tempErrors = { ...errors };
+
+    switch (name) {
+      case 'ventas2023':
+      case 'indicadores.0.antes':
+      case 'indicadores.0.despues':
+      case 'indicadores.1.antes':
+      case 'indicadores.1.despues':
+      case 'indicadores.2.antes':
+      case 'indicadores.2.despues':
+        tempErrors[name] = /^[0-9]*$/.test(value) ? '' : 'Solo se permiten caracteres numéricos';
+        break;
+      default:
+        tempErrors[name] = value ? '' : 'Este campo es obligatorio';
+        break;
+    }
+
+    setErrors(tempErrors);
   };
 
   const handleChange = (event) => {
     const { name, value, type, checked } = event.target;
+
+    validateField(name, type === 'checkbox' ? checked : value);
 
     if (name.startsWith('empleados')) {
       const [, gender, field] = name.split('.');
@@ -99,8 +122,37 @@ function LineaBase() {
     }
   };
 
+  const validateForm = () => {
+    let tempErrors = {};
+
+    Object.keys(formData).forEach(key => {
+      if (typeof formData[key] === 'object') {
+        Object.keys(formData[key]).forEach(subKey => {
+          if (typeof formData[key][subKey] === 'object') {
+            Object.keys(formData[key][subKey]).forEach(subSubKey => {
+              if (!formData[key][subKey][subSubKey]) {
+                tempErrors[`${key}.${subKey}.${subSubKey}`] = 'Este campo es obligatorio';
+              }
+            });
+          } else if (!formData[key][subKey]) {
+            tempErrors[`${key}.${subKey}`] = 'Este campo es obligatorio';
+          }
+        });
+      } else if (!formData[key] && key !== 'porcentajeVentasDigitales' && key !== 'mencionarHito') {
+        tempErrors[key] = 'Este campo es obligatorio';
+      }
+    });
+
+    setErrors(tempErrors);
+    return Object.keys(tempErrors).length === 0;
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
+    if (!validateForm()) {
+      return;
+    }
+
     setIsSubmitting(true);
     try {
       const completedFormData = {
@@ -119,7 +171,7 @@ function LineaBase() {
       }
     } catch (error) {
       console.error('Error submitting form:', error);
-      setError('Error submitting form');
+      setErrors({ submit: 'Error submitting form' });
     } finally {
       setIsSubmitting(false);
     }
@@ -160,9 +212,9 @@ function LineaBase() {
               required
               className="form-input"
             />
-            {error && (
+            {errors.document && (
               <div className="error-container">
-                <p className="error-message">{error}</p>
+                <p className="error-message">{errors.document}</p>
                 <button type="button" className="autodiagnostico-button" onClick={handleAutodiagnosticoClick}>
                   Realizar Autodiagnóstico
                 </button>
@@ -182,7 +234,7 @@ function LineaBase() {
                   <div className="column preguntas-column">
                     <div className="options__information--label">
                       <label htmlFor="estadoEmpresa" className="form-label">
-                        ¿Cuál de las siguientes frases se ajusta al estado actual en que se encuentra su empresa?*
+                        ¿Cuál de las siguientes frases se ajusta al estado actual en que se encuentra su empresa?* {errors.estadoEmpresa && <span className="error-message">{errors.estadoEmpresa}</span>}
                       </label>
                       <select
                         id="estadoEmpresa"
@@ -203,7 +255,7 @@ function LineaBase() {
 
                     <div className="options__information--label">
                       <label htmlFor="ventas2023" className="form-label">
-                        ¿Cuál es el valor de las ventas de la empresa en los siguientes periodos? Ventas al cierre del año 2023*
+                        ¿Cuál es el valor de las ventas de la empresa en los siguientes periodos? Ventas al cierre del año 2023* {errors.ventas2023 && <span className="error-message">{errors.ventas2023}</span>}
                       </label>
                       <input
                         type="text"
@@ -219,7 +271,7 @@ function LineaBase() {
 
                     <div className="options__information--label">
                       <label htmlFor="ventasDigitales" className="form-label">
-                        ¿Realiza ventas por medio de canales digitales?*
+                        ¿Realiza ventas por medio de canales digitales?* {errors.ventasDigitales && <span className="error-message">{errors.ventasDigitales}</span>}
                       </label>
                       <select
                         id="ventasDigitales"
@@ -238,12 +290,12 @@ function LineaBase() {
                     {formData.ventasDigitales === 'true' && (
                       <div className="options__information--label">
                         <label htmlFor="porcentajeVentasDigitales" className="form-label">
-                          ¿Qué porcentaje de las ventas de la empresa en el año 2023 fue por canales digitales?*
+                          ¿Qué porcentaje de las ventas de la empresa en el año 2023 fue por canales digitales?* {errors.porcentajeVentasDigitales && <span className="error-message">{errors.porcentajeVentasDigitales}</span>}
                         </label>
                         <select
                           id="porcentajeVentasDigitales"
                           name="porcentajeVentasDigitales"
-                          required
+                          required={formData.ventasDigitales === 'true'}
                           className="form-select"
                           value={formData.porcentajeVentasDigitales}
                           onChange={handleChange}
@@ -265,7 +317,7 @@ function LineaBase() {
 
                     <div className="options__information--label">
                       <label className="form-label">
-                        Barreras para acceso a Transformación Digital*
+                        Barreras para acceso a Transformación Digital* {errors.barrerasTD && <span className="error-message">{errors.barrerasTD}</span>}
                       </label>
                       {[
                         'Falta de acceso a financiación: para invertir en tecnología necesaria para la transformación digital.',
@@ -289,8 +341,13 @@ function LineaBase() {
                                 ...prevFormData,
                                 barrerasTD: newBarrerasTD
                               }));
+                              setErrors(prevErrors => ({
+                                ...prevErrors,
+                                barrerasTD: newBarrerasTD.length === 0 ? 'Este campo es obligatorio' : ''
+                              }));
                             }}
                             className="form-check-input"
+                            required
                           />
                           <label htmlFor={`barrera-${idx}`} className="form-check-label">
                             {barrera}
@@ -303,7 +360,7 @@ function LineaBase() {
                   <div className="column respuestas-column">
                     <div className="options__information--label">
                       <label className="form-label">
-                        Incluyéndose a usted, por favor indique cuántos empleados (número) tiene actualmente en las siguientes categorías de empleo por sexo:*
+                        Incluyéndose a usted, por favor indique cuántos empleados (número) tiene actualmente en las siguientes categorías de empleo por sexo:
                       </label>
                       <div className="empleados-container">
                         <div className="empleados-column">
@@ -320,7 +377,14 @@ function LineaBase() {
                                 className="form-input"
                                 value={formData.empleados.mujeres[category]}
                                 onChange={handleChange}
+                                onKeyPress={(e) => {
+                                  if (!/[0-9]/.test(e.key)) {
+                                    e.preventDefault();
+                                  }
+                                }}
+                                required
                               />
+                              {errors[`empleados.mujeres.${category}`] && <span className="error-message">{errors[`empleados.mujeres.${category}`]}</span>}
                             </div>
                           ))}
                         </div>
@@ -338,7 +402,14 @@ function LineaBase() {
                                 className="form-input"
                                 value={formData.empleados.hombres[category]}
                                 onChange={handleChange}
+                                onKeyPress={(e) => {
+                                  if (!/[0-9]/.test(e.key)) {
+                                    e.preventDefault();
+                                  }
+                                }}
+                                required
                               />
+                              {errors[`empleados.hombres.${category}`] && <span className="error-message">{errors[`empleados.hombres.${category}`]}</span>}
                             </div>
                           ))}
                         </div>
@@ -347,7 +418,7 @@ function LineaBase() {
 
                     <div className="options__information--label">
                       <label className="form-label">
-                        Menciona 3 indicadores cuantitativos en los cuales obtuvo una mejora gracias al plan estratégico de transformación digital. Por favor sé explícito describiendo el cambio que obtuviste en el indicador.*
+                        Menciona 3 indicadores cuantitativos en los cuales obtuvo una mejora gracias al plan estratégico de transformación digital. Por favor sé explícito describiendo el cambio que obtuviste en el indicador.* {errors.indicadores && <span className="error-message">{errors.indicadores}</span>}
                       </label>
                       <table className="indicadores-table">
                         <thead>
@@ -361,13 +432,24 @@ function LineaBase() {
                           {formData.indicadores.map((indicador, idx) => (
                             <tr key={idx}>
                               <td>
-                                <input
-                                  type="text"
+                                <select
                                   name={`indicadores.${idx}.nombre`}
-                                  className="form-input"
+                                  className="form-select"
                                   value={indicador.nombre}
                                   onChange={handleChange}
-                                />
+                                  required
+                                >
+                                  <option value="" disabled>Seleccione un indicador</option>
+                                  <option value="Tecnologías Digitales Emergentes">Tecnologías Digitales Emergentes</option>
+                                  <option value="Resultados">Resultados</option>
+                                  <option value="Gobierno Digital">Gobierno Digital</option>
+                                  <option value="Innovación y Colaboración">Innovación y Colaboración</option>
+                                  <option value="Experiencia del Cliente">Experiencia del Cliente</option>
+                                  <option value="Capacidades Digitales">Capacidades Digitales</option>
+                                  <option value="Cultura Digital">Cultura Digital</option>
+                                  <option value="Estrategia Digital">Estrategia Digital</option>
+                                </select>
+                                {errors[`indicadores.${idx}.nombre`] && <span className="error-message">{errors[`indicadores.${idx}.nombre`]}</span>}
                               </td>
                               <td>
                                 <input
@@ -376,7 +458,14 @@ function LineaBase() {
                                   className="form-input"
                                   value={indicador.antes}
                                   onChange={handleChange}
+                                  onKeyPress={(e) => {
+                                    if (!/[0-9]/.test(e.key)) {
+                                      e.preventDefault();
+                                    }
+                                  }}
+                                  required
                                 />
+                                {errors[`indicadores.${idx}.antes`] && <span className="error-message">{errors[`indicadores.${idx}.antes`]}</span>}
                               </td>
                               <td>
                                 <input
@@ -385,7 +474,14 @@ function LineaBase() {
                                   className="form-input"
                                   value={indicador.despues}
                                   onChange={handleChange}
+                                  onKeyPress={(e) => {
+                                    if (!/[0-9]/.test(e.key)) {
+                                      e.preventDefault();
+                                    }
+                                  }}
+                                  required
                                 />
+                                {errors[`indicadores.${idx}.despues`] && <span className="error-message">{errors[`indicadores.${idx}.despues`]}</span>}
                               </td>
                             </tr>
                           ))}
@@ -395,7 +491,7 @@ function LineaBase() {
 
                     <div className="options__information--label">
                       <label htmlFor="otroHito" className="form-label">
-                        ¿Tienes otro hito o logro que desees mencionar?*
+                        ¿Tienes otro hito o logro que desees mencionar?* {errors.otroHito && <span className="error-message">{errors.otroHito}</span>}
                       </label>
                       <select
                         id="otroHito"
@@ -410,15 +506,19 @@ function LineaBase() {
                         <option value="false">No</option>
                       </select>
                       {formData.otroHito === 'true' && (
-                        <input
-                          type="text"
-                          id="mencionarHito"
-                          name="mencionarHito"
-                          placeholder="Menciónelo aquí"
-                          className="form-input"
-                          value={formData.mencionarHito}
-                          onChange={handleChange}
-                        />
+                        <>
+                          <input
+                            type="text"
+                            id="mencionarHito"
+                            name="mencionarHito"
+                            placeholder="Menciónelo aquí"
+                            className="form-input"
+                            value={formData.mencionarHito}
+                            onChange={handleChange}
+                            required={formData.otroHito === 'true'}
+                          />
+                          {errors.mencionarHito && <span className="error-message">{errors.mencionarHito}</span>}
+                        </>
                       )}
                     </div>
                   </div>

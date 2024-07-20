@@ -1,6 +1,6 @@
 .lineabase .notice__container {
   width: 100%;
-  background: linear-gradient(180deg, #6EB6FC 0%, #5F29B6 100%);
+  background: #5F29B6; /* Color sólido en lugar del degradado */
   height: 155px;
   display: flex;
   position: relative;
@@ -288,7 +288,7 @@
 
 .lineabase .error-message {
   color: #d9534f;
-  font-size: 12px;
+  font-size: 10px;
 }
 
 .lineabase .autodiagnostico-button {
@@ -307,30 +307,35 @@
   background-color: #4cae4c;
 }
 
-.thank-you-message {
+/* Estilos para el mensaje de agradecimiento */
+.lineabase .thank-you-message {
+  display: grid;
+  align-items: center;
+  justify-content: center;
   text-align: center;
   font-size: 16px;
   background: #FDFDFF;
   border-radius: 10px;
   padding: 20px;
-  margin: 200px auto;
   width: 80%;
+  margin: 0 auto;
+  height: 60vh; /* Altura de la pantalla */
 }
 
-.thank-you-message h2 {
+.lineabase .thank-you-message h2 {
   margin-bottom: 20px;
 }
 
-.thank-you-message ul {
+.lineabase .thank-you-message ul {
   list-style: none;
   padding: 0;
 }
 
-.thank-you-message ul li {
+.lineabase .thank-you-message ul li {
   font-size: 14px;
   margin-bottom: 10px;
 }
 
-.thank-you-message ul li strong {
+.lineabase .thank-you-message ul li strong {
   font-weight: 600;
 }
