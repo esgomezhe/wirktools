@@ -15,7 +15,7 @@ class FormViewSet(viewsets.ReadOnlyModelViewSet):
 class CompletedFormViewSet(viewsets.ModelViewSet):
     queryset = CompletedForm.objects.all()
     serializer_class = CompletedFormSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     @action(detail=True, methods=['delete'], url_path='delete')
     def delete_form(self, request, pk=None):
@@ -24,7 +24,7 @@ class CompletedFormViewSet(viewsets.ModelViewSet):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class CheckDocumentView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def get(self, request, document_number):
         try:
