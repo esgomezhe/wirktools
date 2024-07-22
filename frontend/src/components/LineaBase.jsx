@@ -224,8 +224,8 @@ function LineaBase() {
           </form>
         </div>
       ) : (
-        <div className="form-container">
-          {!formSubmitted ? (
+        !formSubmitted && (
+          <div className="form-container">
             <form onSubmit={handleSubmit} noValidate className='wirk__form'>
               <div className="options__information--container">
                 <h5 className='options__information--title'>Seguimiento Ruta - Transformación Digital</h5>
@@ -531,14 +531,23 @@ function LineaBase() {
                 </button>
               </div>
             </form>
-          ) : (
-            <div className="thank-you-message">
-              <h2>Gracias por enviar tus respuestas, {userData.info?.userName || 'Usuario'}!</h2>
-              <p>Tu información ha sido enviada exitosamente.</p>
-              <p>Con estos nos ayudas a seguir creciendo y poder brindarte un mejor proceso que llevaran a mejores resultados</p>
-            </div>
-          )}
-        </div>
+          </div>
+        )
+      )}
+
+      {formSubmitted && (
+        <section className="thank_you">
+          <div className='thank_you__image'>
+            <img src={require('../img/grow-you-business.png')} alt="Thank You"/>
+          </div>
+          <div className="thank_you__text">
+            <h1>Gracias por enviar tus respuestas, {userData.info?.userName || 'Usuario'}!</h1>
+            <h3>Tu información ha sido enviada exitosamente.</h3>
+            <p>Con estos nos ayudas a seguir creciendo y poder brindarte un mejor proceso que llevaran a mejores resultados</p>
+            <p>Regresa a la página principal: <Link className='thank_you__link' to='/'>Home</Link></p>
+            <p>Regresa a nuestra herramienta de autodiagnóstico: <Link className='thank_you__link' to='/autodiagnostico'>Autodiagnóstico</Link></p>
+          </div>
+        </section>
       )}
     </div>
   );

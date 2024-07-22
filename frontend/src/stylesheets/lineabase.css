@@ -308,34 +308,56 @@
 }
 
 /* Estilos para el mensaje de agradecimiento */
-.lineabase .thank-you-message {
-  display: grid;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  font-size: 16px;
-  background: #FDFDFF;
-  border-radius: 10px;
-  padding: 20px;
-  width: 80%;
+.thank_you {
+  width: 100%;
   margin: 0 auto;
-  height: 60vh; /* Altura de la pantalla */
-}
-
-.lineabase .thank-you-message h2 {
-  margin-bottom: 20px;
-}
-
-.lineabase .thank-you-message ul {
-  list-style: none;
   padding: 0;
+  height: 70vh;
+  display: block;
+  background-color: #f9fafa;
+  justify-content: center;
+  align-items: center;
 }
 
-.lineabase .thank-you-message ul li {
-  font-size: 14px;
-  margin-bottom: 10px;
+@media (min-width: 768px) {
+  .thank_you {
+    display: flex;
+  }
 }
 
-.lineabase .thank-you-message ul li strong {
+@media (max-width: 768px) {
+  .thank_you__image {
+    display: flex;
+    justify-content: center;
+  }
+}
+
+.thank_you__link {
+  flex: auto;
+  appearance: none;
+  border: 1px solid #D0D0D0;
+  border-radius: 10px;
+  box-sizing: border-box;
+  background: #253D90;
+  display: inline-block;
+  font-size: 12.5px;
   font-weight: 600;
+  line-height: normal;
+  margin: 5px;
+  min-height: 2.75em;
+  outline: none;
+  padding: 10px;
+  text-align: left;
+  text-decoration: none;
+  transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  will-change: transform;
+  color: #FAFAFA;
+}
+
+.thank_you__link:hover {
+  color: #FAFAFA;
+  background: #12186B;
 }
