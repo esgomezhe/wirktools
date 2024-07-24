@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from "react-router-dom";
-import '../../stylesheets/newHome/headerHome.css';
+import '../stylesheets/newHome/headerHome.css';
 
 function Header() {
   return (
@@ -9,7 +9,7 @@ function Header() {
         <div className='header--logo'>
           {/* Envolver la imagen con Link para redirigir a la página principal */}
           <Link to='/'>
-            <img className='header--image' src={require('../../img/logo.jpg')} alt="Cámara de Comercio de Cali" />
+            <img className='header--image' src={require('../img/logo.jpg')} alt="Cámara de Comercio de Cali" />
           </Link>
         </div>
         <div className='header__buttons'>

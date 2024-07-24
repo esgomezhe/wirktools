@@ -1,9 +1,9 @@
 import React from 'react'
-import '../../stylesheets/newHome/footerHome.css'
+import '../stylesheets/newHome/footerHome.css'
 import { Facebook, Instagram, Linkedin, X, Youtube } from 'iconoir-react';
-import CallCenter from '../../img/svg/call_footer.svg'
-import Email from '../../img/svg/email_footer.svg'
-import EmailJudicial from '../../img/svg/email2_footer.svg'
+import CallCenter from '../img/svg/call_footer.svg'
+import Email from '../img/svg/email_footer.svg'
+import EmailJudicial from '../img/svg/email2_footer.svg'
 
 
 function FooterHome() {
@@ -14,10 +14,10 @@ function FooterHome() {
           <div className='footer__content--container'>
             <div className="footer__section">
               <div className='footer__logos'>
-                <img src={require('../../img/logo.jpg')} alt="camara de comercio cali logo" height={40} />
+                <img src={require('../img/logo.jpg')} alt="camara de comercio cali logo" height={40} />
                 <div className="footer_logos--wirk">
                   <span className='wirk--span'>Con el apoyo de:</span>
-                  <img src={require('../../img/wirk_logo.jpg')} alt="wirkconsulting logo" height={37} />
+                  <img src={require('../img/wirk_logo.jpg')} alt="wirkconsulting logo" height={37} />
                 </div>
               </div>
 

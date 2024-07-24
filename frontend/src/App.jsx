@@ -1,9 +1,9 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Formulario, Home, PreguntasLinea } from "./pages/AllPages";
-import Header from "./components/home/HeaderHome";
+import Header from "./components/Header";
 import NotFound from './components/NotFound';
-import Footer from "./components/home/FooterHome";
+import Footer from "./components/Footer";
 
 function App() {
   return (
