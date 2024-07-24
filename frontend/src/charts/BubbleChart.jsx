@@ -1,6 +1,6 @@
 import React from 'react';
 import { Bubble } from 'react-chartjs-2';
-import { getBubbleChartData, optionsForBubbleChart } from '../utils/chartConfigs';
+import { getBubbleChartData, optionsForBubbleChart } from './chartConfigs';
 
 const BubbleChart = ({ intensidadDigital, gestionTransformacional }) => {
   const chartData = getBubbleChartData(intensidadDigital, gestionTransformacional);

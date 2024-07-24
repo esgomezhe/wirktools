@@ -1,5 +1,5 @@
 import Formulario from './Formulario';
-import NewHome from './NewHome';
+import Home from './Home';
 import PreguntasLinea from './PreguntasLinea';
 
-export { Formulario, NewHome, PreguntasLinea };
+export { Formulario, Home, PreguntasLinea };

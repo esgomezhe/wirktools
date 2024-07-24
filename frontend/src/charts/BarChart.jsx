@@ -1,6 +1,6 @@
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
-import { getBarChartData } from '../utils/chartConfigs';
+import { getBarChartData } from './chartConfigs';
 
 function BarChart({ categoryAverages }) {
   const chartData = getBarChartData(categoryAverages);

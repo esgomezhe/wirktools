@@ -1,5 +1,5 @@
 import React from "react";
-import LineaBase from "../components/LineaBase";
+import LineaBase from "../components/forms/LineaBase";
 
 function PreguntasLinea() {
   return (

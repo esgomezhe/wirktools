@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import '../stylesheets/caracterizacion.css';
-import figure from '../img/svg/formulario_figure.svg';
-import home from '../img/svg/home.svg';
-import arrow from '../img/svg/arrow.svg';
+import '../../stylesheets/caracterizacion.css';
+import figure from '../../img/svg/formulario_figure.svg';
+import home from '../../img/svg/home.svg';
+import arrow from '../../img/svg/arrow.svg';
 import { Link } from 'react-router-dom';
 
 const departamentos = [

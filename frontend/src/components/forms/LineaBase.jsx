@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { checkDocument, submitForm, deleteForm } from '../utils/formService';
+import { checkDocument, submitForm, deleteForm } from '../../utils/formService';
 import { useNavigate } from 'react-router-dom';
-import '../stylesheets/lineabase.css';
-import figure from '../img/svg/formulario_figure.svg';
-import home from '../img/svg/home.svg';
-import arrow from '../img/svg/arrow.svg';
+import '../../stylesheets/lineabase.css';
+import figure from '../../img/svg/formulario_figure.svg';
+import home from '../../img/svg/home.svg';
+import arrow from '../../img/svg/arrow.svg';
 import { Link } from 'react-router-dom';
 
 function LineaBase() {
@@ -538,7 +538,7 @@ function LineaBase() {
       {formSubmitted && (
         <section className="thank_you">
           <div className='thank_you__image'>
-            <img src={require('../img/grow-you-business.png')} alt="Thank You"/>
+            <img src={require('../../img/grow-you-business.png')} alt="Thank You"/>
           </div>
           <div className="thank_you__text">
             <h1>Gracias por enviar tus respuestas, {userData.info?.userName || 'Usuario'}!</h1>

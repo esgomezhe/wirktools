@@ -1,5 +1,5 @@
 import React from "react";
-import FormularioCompleted from "../components/FormularioCompleted";
+import FormularioCompleted from "../components/forms/FormularioCompleted";
 
 function Formulario() {
   return (

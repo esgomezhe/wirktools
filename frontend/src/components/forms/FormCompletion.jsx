@@ -4,7 +4,7 @@ import RadarChart from '../../charts/RadarChart';
 import BubbleChart from '../../charts/BubbleChart';
 import PercentageChart from '../../charts/PercentageChart';
 import Slider from "react-slick";
-import { calculateCategoryAverages, calculateIntensidadDigitalScore, calculateGestionTransformacionalScore } from '../../utils/chartConfigs';
+import { calculateCategoryAverages, calculateIntensidadDigitalScore, calculateGestionTransformacionalScore } from '../../charts/chartConfigs';
 import home from '../../img/svg/home.svg'
 import arrow from '../../img/svg/arrow.svg'
 import figure from '../../img/svg/formulario_figure.svg'

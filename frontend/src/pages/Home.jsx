@@ -1,12 +1,18 @@
-import React from "react";
-import Main from "../components/components_home/MainContent"
+import React from 'react'
+import Hero from '../components/home/Hero'
+import FirstSection from '../components/home/FirstSection'
+import SecondSection from '../components/home/SecondSection'
+import ThirdSection from '../components/home/ThirdSection'
 
-function HomeCCC() {
+function Home() {
   return (
     <>
-      <Main />
+      <Hero />
+      <FirstSection />
+      <SecondSection />
+      <ThirdSection />
     </>
-  );
+  )
 }
 
-export default HomeCCC;
+export default Home

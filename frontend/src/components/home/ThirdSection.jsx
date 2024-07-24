@@ -18,7 +18,7 @@ const HoverContent = ({ title, text, item1, item2, item3, item4 }) => (
         <li className='more-list--item'><img src={arrow} alt="arrow" style={{ marginRight: '10px', width: '16px' }} />{item3}</li>
         <li className='more-list--item'><img src={arrow} alt="arrow" style={{ marginRight: '10px', width: '16px' }} />{item4}</li>
       </ul>
-      <a href="#" className='button'> Conoce más</a>
+      <a href="/" className='button'>Conoce más</a>
     </div>
   </div>
 )
@@ -96,7 +96,7 @@ const PortfolioItems = ({ image, span, title, text, item1, item2, item3, item4 }
           <li className='more-list--item'><img src={arrow} alt="arrow" style={{ marginRight: '10px', width: '16px' }} />{item3}</li>
           <li className='more-list--item'><img src={arrow} alt="arrow" style={{ marginRight: '10px', width: '16px' }} />{item4}</li>
         </ul>
-        <a href="#" className='button'> Conoce más</a>
+        <a href="/" className='button'>Conoce más</a>
       </div>
     </div>
   </div>
