@@ -134,7 +134,7 @@ EMAIL_HOST = 'transformaciondigital.com.co'
 EMAIL_PORT = 465
 EMAIL_USE_SSL = True
 EMAIL_HOST_USER = 'autodiagnostico@transformaciondigital.com.co'
-EMAIL_HOST_PASSWORD = 'Bg=;NsDu){3T'
+EMAIL_HOST_PASSWORD = 'leGO!zRU!TbT'
 DEFAULT_FROM_EMAIL = 'autodiagnostico@transformaciondigital.com.co'
 
 # Django Rest Framework

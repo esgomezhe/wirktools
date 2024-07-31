@@ -2,7 +2,7 @@ from django.db import models
 from django.core.mail import send_mail
 from ckeditor.fields import RichTextField
 from django.utils.text import slugify
-from .utils import calculate_category_averages
+from .utils import calculate_category_averages, update_excel_file
 import pytz
 from django.conf import settings
 
@@ -17,6 +17,10 @@ class Category(models.Model):
         if not self.slug:
             self.slug = slugify(self.name)
         super().save(*args, **kwargs)
+
+    class Meta:
+        verbose_name = 'Categoría'
+        verbose_name_plural = 'Categorías'
 
 class DiagnosticLevel(models.Model):
     category_diagnostics = models.ForeignKey(Category, related_name='levels', on_delete=models.CASCADE, null=True)
@@ -37,6 +41,10 @@ class Form(models.Model):
 
     def __str__(self):
         return self.title
+    
+    class Meta:
+        verbose_name = 'Formulario'
+        verbose_name_plural = 'Formularios'
 
 class Question(models.Model):
     form = models.ForeignKey(Form, related_name='questions', on_delete=models.CASCADE)
@@ -71,6 +79,8 @@ class CompletedForm(models.Model):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
+        update_excel_file()
+        
         if self.email:
             category_averages = calculate_category_averages(self.content.get('answers', []))
             email_content = self.build_email_content(category_averages)
@@ -79,7 +89,7 @@ class CompletedForm(models.Model):
                 'Resultados de su Autodiagnóstico',
                 '',
                 'autodiagnostico@transformaciondigital.com.co',
-                [self.email, 'autodignosticostd@ccc.org.co'],
+                [self.email, 'autodiagnostico@transformaciondigital.com.co'],
                 fail_silently=False,
                 html_message=email_content,
             )
@@ -99,3 +109,13 @@ class CompletedForm(models.Model):
             content_lines.append(f"<p>{avg['plan']}</p>")
         
         return "".join(content_lines)
+    
+    class Meta:
+        verbose_name = 'Formulario Completado'
+        verbose_name_plural = 'Formularios Completados'
+    
+class CompletedFormProxy(CompletedForm):
+    class Meta:
+        proxy = True
+        verbose_name = 'Descarga la Base de Datos Completa'
+        verbose_name_plural = 'Descarga la Base de Datos Completa'

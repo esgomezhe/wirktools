@@ -5,7 +5,12 @@ import logging
 from django.http import HttpResponse
 import openpyxl
 import csv
-from datetime import datetime
+from openpyxl import Workbook, load_workbook
+from openpyxl.utils.exceptions import InvalidFileException
+from django.apps import apps
+import os
+import logging
+
 
 info_questions = {
     "userName": "Nombre",
@@ -252,3 +257,51 @@ def export_as_excel(queryset):
 
     wb.save(response)
     return response
+
+def update_excel_file():
+    CompletedForm = apps.get_model('forms', 'CompletedForm')
+    file_name = 'completed_forms.xlsx'
+    file_path = os.path.join('media', file_name)
+    
+    # Obtener el último formulario completado
+    last_completed_form = CompletedForm.objects.latest('created_at')
+    
+    # Cargar o crear el libro de trabajo
+    if os.path.exists(file_path):
+        try:
+            wb = load_workbook(file_path)
+        except InvalidFileException:
+            wb = Workbook()
+    else:
+        wb = Workbook()
+
+    # Determinar la hoja correspondiente al título del formulario
+    form_title = last_completed_form.form_title[:31]
+    if form_title in wb.sheetnames:
+        ws = wb[form_title]
+    else:
+        ws = wb.create_sheet(title=form_title)
+        ordered_answer_questions = get_ordered_answer_questions([last_completed_form])
+        headers = ['User', 'Form Title', 'Created At'] + list(info_questions.values()) + ordered_answer_questions + linea_base_headers()
+
+        all_category_averages = set()
+        category_averages = calculate_category_averages(last_completed_form.content.get('answers', []))
+        all_category_averages.update(f"Autodiagnóstico {avg['category']['name']}" for avg in category_averages)
+        headers += list(all_category_averages)
+
+        ws.append(headers)
+
+    # Añadir la nueva fila de datos
+    ordered_answer_questions = get_ordered_answer_questions([last_completed_form])
+    category_averages = calculate_category_averages(last_completed_form.content.get('answers', []))
+    row = build_row(last_completed_form, ordered_answer_questions, category_averages)
+    ws.append(row)
+
+    # Ajustar el ancho de las columnas
+    for column in ws.columns:
+        max_length = max(len(str(cell.value)) for cell in column)
+        adjusted_width = (max_length + 2)
+        ws.column_dimensions[column[0].column_letter].width = adjusted_width
+
+    # Guardar el archivo
+    wb.save(file_path)
