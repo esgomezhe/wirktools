@@ -6,16 +6,17 @@ from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.decorators import action
+from .permissions import IsAuthorizedClientOrAuthenticated
 
 class FormViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Form.objects.all()
     serializer_class = FormSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthorizedClientOrAuthenticated]
 
 class CompletedFormViewSet(viewsets.ModelViewSet):
     queryset = CompletedForm.objects.all()
     serializer_class = CompletedFormSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthorizedClientOrAuthenticated]
 
     @action(detail=True, methods=['delete'], url_path='delete')
     def delete_form(self, request, pk=None):
@@ -24,7 +25,7 @@ class CompletedFormViewSet(viewsets.ModelViewSet):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class CheckDocumentView(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthorizedClientOrAuthenticated]
 
     def get(self, request, document_number):
         try:

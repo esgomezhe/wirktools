@@ -182,5 +182,7 @@ CSRF_TRUSTED_ORIGINS = [
     'http://localhost:3000',
 ]
 
+CLIENT_TOKEN = "rTmCvla88GDygIbgkjXePVKoZfC-pq3EsXvQSE_3B-0"
+
 # Additional settings
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 1000

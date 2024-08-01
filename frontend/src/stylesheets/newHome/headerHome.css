@@ -42,9 +42,14 @@
   text-align: center;
 }
 
-@media (min-width: 415px) {
+@media (max-width: 415px) {
   .header__button {
     padding: 11px 21px;
+  }
+
+  .header__buttons {
+    display: grid;
+    gap: 10px;
   }
 }
 

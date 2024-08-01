@@ -4,8 +4,22 @@ const getCsrfToken = () => {
   return cookieValue;
 };
 
+const CLIENT_TOKEN = process.env.REACT_APP_CLIENT_TOKEN; // Token sincronizado con el backend
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL; // Base URL para las APIs
+const API_FORMS = `${API_BASE_URL}/forms/`; // Ruta de la API para los formularios
+const API_COMPLETED_FORMS = `${API_BASE_URL}/completed-forms/`; // Ruta de la API para los formularios completados
+const API_CHECK_DOCUMENT = `${API_BASE_URL}/completed-forms/check/`; // Ruta de la API para verificar el documento
+const API_DELETE_FORMS = `${API_BASE_URL}completed-forms/`; // Ruta de la API para obtener promedios de categorías
+
+
 export const fetchForms = async () => {
-  const response = await fetch('/api/forms/');
+  const response = await fetch(API_FORMS, {
+    method: 'GET',
+    credentials: 'include',
+    headers: {
+      'X-Client-Token': CLIENT_TOKEN,
+    },
+  });
   if (!response.ok) {
     throw new Error('Network response was not ok');
   }
@@ -13,7 +27,13 @@ export const fetchForms = async () => {
 };
 
 export const checkDocument = async (documentNumber) => {
-  const response = await fetch(`/api/completed-forms/check/${documentNumber}/`);
+  const response = await fetch(`${API_CHECK_DOCUMENT}${documentNumber}/`, {
+    method: 'GET',
+    credentials: 'include',
+    headers: {
+      'X-Client-Token': CLIENT_TOKEN,
+    },
+  });
   if (!response.ok) {
     throw new Error('Network response was not ok');
   }
@@ -28,12 +48,14 @@ export const submitForm = async (formTitle, userName, email, dataToSubmit) => {
     content: dataToSubmit,
   };
 
-  const response = await fetch('/api/completed-forms/', {
+  const response = await fetch(API_COMPLETED_FORMS, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'X-CSRFToken': getCsrfToken(),
+      'X-Client-Token': CLIENT_TOKEN,
     },
+    credentials: 'include',
     body: JSON.stringify(completedFormData),
   });
 
@@ -44,10 +66,11 @@ export const submitForm = async (formTitle, userName, email, dataToSubmit) => {
 };
 
 export const deleteForm = async (formId) => {
-  const response = await fetch(`/api/completed-forms/${formId}/delete/`, {
+  const response = await fetch(`${API_DELETE_FORMS}${formId}/delete/`, {
     method: 'DELETE',
+    credentials: 'include',
     headers: {
-      'X-CSRFToken': getCsrfToken(),
+      'X-Client-Token': CLIENT_TOKEN,
     },
   });
 
