@@ -18,11 +18,23 @@ class CompletedFormViewSet(viewsets.ModelViewSet):
     serializer_class = CompletedFormSerializer
     permission_classes = [IsAuthorizedClientOrAuthenticated]
 
-    @action(detail=True, methods=['delete'], url_path='delete')
-    def delete_form(self, request, pk=None):
-        completed_form = get_object_or_404(CompletedForm, pk=pk)
-        completed_form.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+    def create(self, request, *args, **kwargs):
+        # Extraer el número de identificación y el tipo de análisis del contenido del formulario enviado
+        identification_number = request.data.get('content', {}).get('info', {}).get('identificationNumber', None)
+        form_title = request.data.get('form_title', None)
+        if identification_number and form_title:
+            # Buscar un formulario existente con el mismo número de identificación y tipo de formulario
+            existing_form = CompletedForm.objects.filter(
+                content__info__identificationNumber=identification_number,
+                form_title=form_title
+            ).order_by('-created_at').first()
+
+            # Si existe un formulario, eliminarlo
+            if existing_form:
+                existing_form.delete()
+
+        # Crear el nuevo formulario
+        return super().create(request, *args, **kwargs)
 
 class CheckDocumentView(APIView):
     permission_classes = [IsAuthorizedClientOrAuthenticated]

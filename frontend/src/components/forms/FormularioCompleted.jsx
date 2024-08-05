@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Caracterizacion from './Caracterizacion';
 import Question from './Question';
 import FormCompletion from './FormCompletion';
-import { fetchForms, submitForm } from '../../utils/formService';
+import { fetchForms, submitForm } from '../../utils/apiService';
 
 function FormularioCompleted() {
   const [currentFormIndex, setCurrentFormIndex] = useState(null);

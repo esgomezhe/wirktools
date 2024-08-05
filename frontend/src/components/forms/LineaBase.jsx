@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { checkDocument, submitForm, deleteForm } from '../../utils/formService';
+import { checkDocument, submitForm } from '../../utils/apiService';
 import { useNavigate } from 'react-router-dom';
 import '../../stylesheets/lineabase.css';
 import figure from '../../img/svg/formulario_figure.svg';
@@ -166,9 +166,6 @@ function LineaBase() {
       console.log('Form submitted successfully');
       setFormSubmitted(true); // Setea el estado para mostrar el mensaje de agradecimiento
 
-      if (userData && userData.id) {
-        await deleteForm(userData.id); // Eliminar el formulario existente
-      }
     } catch (error) {
       console.error('Error submitting form:', error);
       setErrors({ submit: 'Error submitting form' });

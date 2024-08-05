@@ -5,13 +5,9 @@ const getCsrfToken = () => {
 };
 
 const CLIENT_TOKEN = process.env.REACT_APP_CLIENT_TOKEN;
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
-const API_FORMS = `${API_BASE_URL}/forms/`;
-const API_COMPLETED_FORMS = `${API_BASE_URL}/completed-forms/`;
-const API_CHECK_DOCUMENT = `${API_BASE_URL}/completed-forms/check/`;
 
 export const fetchForms = async () => {
-  const response = await fetch(API_FORMS, {
+  const response = await fetch('/api/forms/', {
     method: 'GET',
     credentials: 'include',
     headers: {
@@ -25,7 +21,7 @@ export const fetchForms = async () => {
 };
 
 export const checkDocument = async (documentNumber) => {
-  const response = await fetch(`${API_CHECK_DOCUMENT}${documentNumber}/`, {
+  const response = await fetch(`/api/completed-forms/check/${documentNumber}/`, {
     method: 'GET',
     credentials: 'include',
     headers: {
@@ -46,7 +42,7 @@ export const submitForm = async (formTitle, userName, email, dataToSubmit) => {
     content: dataToSubmit,
   };
 
-  const response = await fetch(API_COMPLETED_FORMS, {
+  const response = await fetch('/api/completed-forms/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -55,21 +51,6 @@ export const submitForm = async (formTitle, userName, email, dataToSubmit) => {
     },
     credentials: 'include',
     body: JSON.stringify(completedFormData),
-  });
-
-  if (!response.ok) {
-    throw new Error('Network response was not ok');
-  }
-  return response.json();
-};
-
-export const deleteForm = async (formId) => {
-  const response = await fetch(`${API_COMPLETED_FORMS}${formId}delete/`, {
-    method: 'DELETE',
-    credentials: 'include',
-    headers: {
-      'X-Client-Token': CLIENT_TOKEN,
-    },
   });
 
   if (!response.ok) {
