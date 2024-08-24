@@ -44,7 +44,7 @@ const municipios = {
   'Vichada': ['Puerto Carreño', 'La Primavera', 'Santa Rosalía', 'Cumaribo']
 };
 
-function Caracterizacion({ onFormSubmit }) {
+function Personal({ onFormSubmit, formNames }) {
   const [formData, setFormData] = useState({
     userName: '',
     companyType: '',
@@ -259,9 +259,9 @@ function Caracterizacion({ onFormSubmit }) {
 
               <div className="options__information--labels">
 
-                <div className='options__information--label'>
+              <div className='options__information--label'>
                   <label htmlFor="companyType" className="form-label">
-                    Tipo de Empresa * {errors.companyType && <span className="error-message">{errors.companyType}</span>}
+                    Tipo de Análisis * {errors.companyType && <span className="error-message">{errors.companyType}</span>}
                   </label>
                   <select
                     id="companyType"
@@ -271,11 +271,10 @@ function Caracterizacion({ onFormSubmit }) {
                     value={formData.companyType}
                     onChange={handleChange}
                   >
-                    <option value="" disabled>Seleccione tipo de empresa</option>
-                    <option value="Medianas y Grandes Empresas">Medianas y Grandes Empresas</option>
-                    <option value="Micro y Pequeñas Empresas">Micro y Pequeñas Empresas</option>
-                    <option value="Unidades de Negocio Productivo">Unidades de Negocio Productivo</option>
-                    <option value="Excelencia Clínica">Excelencia Clínica</option>
+                    <option value="" disabled>Seleccione tipo de análisis</option>
+                    {formNames.map((formName, index) => (
+                      <option key={index} value={formName}>{formName}</option>
+                    ))}
                   </select>
                 </div>
 
@@ -704,4 +703,4 @@ function Caracterizacion({ onFormSubmit }) {
   );
 }
 
-export default Caracterizacion;
+export default Personal;

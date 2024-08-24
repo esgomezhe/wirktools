@@ -14,7 +14,8 @@ ALLOWED_HOSTS = [
     'transformaciondigital.com.co',
     'www.transformaciondigital.com.co',
     'localhost',
-    '127.0.0.1'
+    '127.0.0.1',
+    '172.19.192.1'
 ]
 
 # Application definition
@@ -179,7 +180,8 @@ CORS_ALLOW_CREDENTIALS = True
 CSRF_TRUSTED_ORIGINS = [
     'https://transformaciondigital.com.co',
     'https://www.transformaciondigital.com.co',
-    'http://localhost:3000',
+    'http://172.19.192.1',
+    'http://127.0.0.1'
 ]
 
 CLIENT_TOKEN = "rTmCvla88GDygIbgkjXePVKoZfC-pq3EsXvQSE_3B-0"

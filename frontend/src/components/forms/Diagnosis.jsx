@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import Caracterizacion from './Caracterizacion';
-import Question from './Question';
-import FormCompletion from './FormCompletion';
-import { fetchForms, submitForm } from '../../utils/apiService';
+import Personal from './Personal';
+import Questions from './Questions';
+import ResultsDisplay from './ResultsDisplay';
+import { fetchForms, submitForm, checkDocument, fetchCategoryAverages } from '../../utils/apiServices';
 
-function FormularioCompleted() {
+function Diagnosis() {
   const [currentFormIndex, setCurrentFormIndex] = useState(null);
   const [forms, setForms] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [answers, setAnswers] = useState([]);
-  const [caracterizacionData, setCaracterizacionData] = useState({});
+  const [personalData, setPersonalData] = useState({});
   const [isCompleted, setIsCompleted] = useState(false);
-  const [isCaracterizacionCompleted, setIsCaracterizacionCompleted] = useState(false);
+  const [isPersonalCompleted, setIsPersonalCompleted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState(null);
+  const [userData, setUserData] = useState(null);
+  const [categoryData, setCategoryData] = useState([]);
 
   useEffect(() => {
     fetchForms().then(data => {
@@ -36,36 +38,47 @@ function FormularioCompleted() {
       setCurrentQuestionIndex(JSON.parse(savedQuestionIndex));
     }
 
-    const savedCaracterizacionData = localStorage.getItem('caracterizacionData');
-    if (savedCaracterizacionData) {
-      setCaracterizacionData(JSON.parse(savedCaracterizacionData));
-      setIsCaracterizacionCompleted(true);
-    }
-
-    const isFormCompleted = localStorage.getItem('isFormCompleted');
-    if (isFormCompleted && JSON.parse(isFormCompleted) === true) {
-      setIsCompleted(true);
+    const savedPersonalData = localStorage.getItem('personalData');
+    if (savedPersonalData) {
+      setPersonalData(JSON.parse(savedPersonalData));
+      setIsPersonalCompleted(true);
     }
   }, []);
 
   useEffect(() => {
     if (error) {
-      // Limpiar el almacenamiento local y recargar la página
       localStorage.clear();
-      window.location.reload(true); // Recargar la página eliminando la caché
+      window.location.reload(true);
     }
   }, [error]);
 
-  const handleCaracterizacionSubmit = (data) => {
-    const tipoIndex = data.companyType === 'Micro y Pequeñas Empresas' ? 0 : 
-                      data.companyType === 'Unidades de Negocio Productivo' ? 1 : 
-                      data.companyType === 'Medianas y Grandes Empresas' ? 2 : 
-                      data.companyType === 'Excelencia Clínica' ? 3 : null;
+  useEffect(() => {
+    if (isCompleted && personalData.identificationNumber) {
+      const verifyDocument = async () => {
+        try {
+          const response = await checkDocument(personalData.identificationNumber);
+          if (response.exists) {
+            setUserData({ ...response.data, id: response.id, createdAt: response.data.created_at });
+            const categoryResponse = await fetchCategoryAverages(personalData.identificationNumber);
+            if (categoryResponse.exists) {
+              setCategoryData(categoryResponse.category_averages);
+            }
+          }
+        } catch (error) {
+          console.error('Error al verificar el documento:', error);
+        }
+      };
+      verifyDocument();
+    }
+  }, [isCompleted, personalData]);
+
+  const handlePersonalSubmit = (data) => {
+    const tipoIndex = forms.findIndex(form => form.title === data.companyType);
     setCurrentFormIndex(tipoIndex);
-    setCaracterizacionData(data);
-    setIsCaracterizacionCompleted(true);
+    setPersonalData(data);
+    setIsPersonalCompleted(true);
     localStorage.setItem('currentFormIndex', JSON.stringify(tipoIndex));
-    localStorage.setItem('caracterizacionData', JSON.stringify(data));
+    localStorage.setItem('personalData', JSON.stringify(data));
   };
 
   const handleAnswerSelect = (answerId) => {
@@ -85,9 +98,8 @@ function FormularioCompleted() {
 
     setSelectedAnswer(answerId);
     setAnswers(current => {
-      const updatedAnswers = [...current, newAnswer];
+      const updatedAnswers = current.filter(a => a.questionId !== question.id).concat(newAnswer);
       localStorage.setItem('formAnswers', JSON.stringify(updatedAnswers));
-      localStorage.setItem('currentQuestionIndex', JSON.stringify(currentQuestionIndex + 1));
       return updatedAnswers;
     });
   };
@@ -97,23 +109,23 @@ function FormularioCompleted() {
       if (currentQuestionIndex < forms[currentFormIndex]?.questions.length - 1) {
         setCurrentQuestionIndex(current => current + 1);
         setSelectedAnswer(null);
+        localStorage.setItem('currentQuestionIndex', JSON.stringify(currentQuestionIndex + 1));
       } else {
         setIsSubmitting(true);
         const submissionData = {
           answers: answers,
-          info: caracterizacionData
+          info: personalData
         };
-        submitForm(forms[currentFormIndex].title, caracterizacionData.userName, caracterizacionData.email, submissionData)
+        submitForm(forms[currentFormIndex].title, personalData.userName, personalData.email, submissionData)
           .then(() => {
             setIsCompleted(true);
-            localStorage.setItem('formAnswers', JSON.stringify(answers));
-            localStorage.setItem('isFormCompleted', 'true');
             localStorage.removeItem('currentQuestionIndex');
-            localStorage.removeItem('caracterizacionData');
+            localStorage.removeItem('personalData');
+            localStorage.removeItem('formAnswers');
           })
           .catch(error => {
             console.error('Error al enviar el formulario:', error);
-            setError(error); // Establecer el estado de error para manejarlo
+            setError(error);
           })
           .finally(() => {
             setIsSubmitting(false);
@@ -124,33 +136,20 @@ function FormularioCompleted() {
       setSelectedAnswer(null);
       localStorage.setItem('currentQuestionIndex', JSON.stringify(currentQuestionIndex - 1));
       setAnswers(current => {
-        const updatedAnswers = current.slice(0, -1);
+        const updatedAnswers = current.filter(a => a.questionId !== forms[currentFormIndex].questions[currentQuestionIndex].id);
         localStorage.setItem('formAnswers', JSON.stringify(updatedAnswers));
         return updatedAnswers;
       });
     }
   };
 
-  const handleRestart = () => {
-    setIsCompleted(false);
-    setCurrentQuestionIndex(0);
-    setSelectedAnswer(null);
-    setAnswers([]);
-    setIsCaracterizacionCompleted(false);
-    setCaracterizacionData({});
-    localStorage.removeItem('formAnswers');
-    localStorage.removeItem('currentQuestionIndex');
-    localStorage.removeItem('isFormCompleted');
-    localStorage.removeItem('caracterizacionData');
-  };
-
   return (
     <>
-      {!isCompleted && !isCaracterizacionCompleted ? (
-        <Caracterizacion onFormSubmit={handleCaracterizacionSubmit} />
-      ) : !isCompleted && isCaracterizacionCompleted ? (
+      {!isCompleted && !isPersonalCompleted ? (
+        <Personal onFormSubmit={handlePersonalSubmit} formNames={forms.map(form => form.title)} />
+      ) : !isCompleted && isPersonalCompleted ? (
         forms.length > 0 && (
-          <Question
+          <Questions
             form={forms[currentFormIndex]}
             currentQuestionIndex={currentQuestionIndex}
             selectedAnswer={selectedAnswer}
@@ -160,10 +159,13 @@ function FormularioCompleted() {
           />
         )
       ) : (
-        <FormCompletion answers={answers} onRestart={handleRestart} />
+        <ResultsDisplay
+          userData={userData}
+          categoryData={categoryData}
+        />
       )}
     </>
   );
 }
 
-export default FormularioCompleted;
+export default Diagnosis;

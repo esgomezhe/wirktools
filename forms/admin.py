@@ -7,7 +7,7 @@ from django.http import FileResponse, HttpResponseRedirect
 from django.conf import settings
 from django.contrib import messages
 from .models import *
-from .utils import export_as_csv, export_as_excel
+from .utils import export_as_excel, export_as_csv
 
 class DiagnosticPlanInline(nested_admin.NestedStackedInline):
     model = DiagnosticPlan
@@ -68,6 +68,7 @@ class CompletedFormAdmin(admin.ModelAdmin):
         return export_as_excel(queryset)
 
     export_as_excel_action.short_description = 'Exportar seleccionados a Excel'
+
 
 @admin.register(CompletedFormProxy)
 class ExcelDownloadAdmin(admin.ModelAdmin):

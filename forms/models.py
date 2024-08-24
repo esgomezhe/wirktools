@@ -1,10 +1,10 @@
 from django.db import models
+from django.conf import settings
 from django.core.mail import send_mail
 from ckeditor.fields import RichTextField
 from django.utils.text import slugify
-from .utils import calculate_category_averages, update_excel_file
+from .utils import calculate_category_averages, create_work_plans, update_excel_file
 import pytz
-from django.conf import settings
 
 class Category(models.Model):
     name = models.CharField(max_length=255, unique=True)
@@ -78,13 +78,21 @@ class CompletedForm(models.Model):
         return f"{self.form_title} - {self.user} - {self.email}"
 
     def save(self, *args, **kwargs):
+        # Primero, guardar el formulario completado
         super().save(*args, **kwargs)
-        update_excel_file()
         
+        # Luego, calcular los promedios de categorías y crear los planes de trabajo
+        answers = self.content.get('answers', [])
+        if answers:
+            create_work_plans(answers, self)
+        
+        # Finalmente, actualizar el archivo Excel con la nueva información
+        update_excel_file()
+
+        # Enviar el correo de resultados si el email está presente
         if self.email:
-            category_averages = calculate_category_averages(self.content.get('answers', []))
+            category_averages = calculate_category_averages(answers)
             email_content = self.build_email_content(category_averages)
-            
             send_mail(
                 'Resultados de su Autodiagnóstico',
                 '',
@@ -95,13 +103,11 @@ class CompletedForm(models.Model):
             )
 
     def build_email_content(self, category_averages):
-        local_tz = pytz.timezone(settings.TIME_ZONE)
-        local_created_at = self.created_at.astimezone(local_tz)
         content_lines = []
         content_lines.append(f"<p>Formulario: {self.form_title}</p>")
         content_lines.append(f"<p>Usuario: {self.user}</p>")
         content_lines.append(f"<p>Correo: {self.email}</p>")
-        content_lines.append(f"<p>Fecha: {local_created_at.strftime('%Y-%m-%d %H:%M:%S')}</p>")
+        content_lines.append(f"<p>Fecha: {self.created_at.strftime('%Y-%m-%d %H:%M:%S')}</p>")
         content_lines.append("<h3>Resumen de Diagnóstico:</h3>")
         
         for avg in category_averages:
@@ -119,3 +125,12 @@ class CompletedFormProxy(CompletedForm):
         proxy = True
         verbose_name = 'Descarga la Base de Datos Completa'
         verbose_name_plural = 'Descarga la Base de Datos Completa'
+
+class WorkPlan(models.Model):
+    completed_form = models.ForeignKey('CompletedForm', related_name='work_plans', on_delete=models.CASCADE)
+    identification_number = models.CharField(max_length=255, null=True, blank=True)
+    category = models.ForeignKey('Category', on_delete=models.CASCADE)
+    plan = models.TextField()
+
+    def __str__(self):
+        return f"Plan for {self.category.name} - Form: {self.completed_form.form_title}"

@@ -1,20 +1,22 @@
-from .models import Form, CompletedForm
-from .serializers import FormSerializer, CompletedFormSerializer
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
+from .models import Form, CompletedForm, WorkPlan
+from .serializers import FormSerializer, CompletedFormSerializer, WorkPlanSerializer
+from collections import defaultdict
 from rest_framework import viewsets, status
 from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.decorators import action
 from .permissions import IsAuthorizedClientOrAuthenticated
+from .utils import calculate_category_averages
+from rest_framework.decorators import api_view
 
 class FormViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Form.objects.all()
+    queryset = Form.objects.all().order_by('id')
     serializer_class = FormSerializer
     permission_classes = [IsAuthorizedClientOrAuthenticated]
 
 class CompletedFormViewSet(viewsets.ModelViewSet):
-    queryset = CompletedForm.objects.all()
+    queryset = CompletedForm.objects.all().order_by('-created_at')
     serializer_class = CompletedFormSerializer
     permission_classes = [IsAuthorizedClientOrAuthenticated]
 
@@ -52,5 +54,46 @@ class CheckDocumentView(APIView):
         except Exception as e:
             return Response({'exists': False, 'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-def index(request):
-    return render(request, 'index.html')
+class WorkPlanViewSet(viewsets.ModelViewSet):
+    serializer_class = WorkPlanSerializer
+    permission_classes = [IsAuthorizedClientOrAuthenticated]
+
+    def get_queryset(self):
+        return WorkPlan.objects.all()
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        grouped_data = defaultdict(lambda: {'id': None, 'identificationNumber': None, 'plans': []})
+
+        for work_plan in queryset:
+            completed_form_id = work_plan.completed_form.id
+            if grouped_data[completed_form_id]['id'] is None:
+                grouped_data[completed_form_id]['id'] = completed_form_id
+                grouped_data[completed_form_id]['identificationNumber'] = work_plan.identification_number
+
+            category_info = {
+                'id': work_plan.category.id,
+                'name': work_plan.category.name,
+                'slug': work_plan.category.slug,
+                'plan': work_plan.plan,
+            }
+            grouped_data[completed_form_id]['plans'].append(category_info)
+
+        paginated_data = self.paginate_queryset(list(grouped_data.values()))
+
+        if paginated_data is not None:
+            return self.get_paginated_response(paginated_data)
+
+        return Response(list(grouped_data.values()))
+    
+@api_view(['GET'])
+def get_category_averages(request, document_number):
+    completed_form = CompletedForm.objects.filter(
+        content__info__identificationNumber=document_number
+    ).order_by('-created_at').first()
+
+    if not completed_form:
+        return Response({'exists': False}, status=404)
+
+    category_averages = calculate_category_averages(completed_form.content.get('answers', []))
+    return Response({'exists': True, 'category_averages': category_averages})

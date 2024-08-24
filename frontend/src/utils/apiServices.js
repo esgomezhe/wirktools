@@ -58,3 +58,17 @@ export const submitForm = async (formTitle, userName, email, dataToSubmit) => {
   }
   return response.json();
 };
+
+export const fetchCategoryAverages = async (documentNumber) => {
+  const response = await fetch(`/api/completed-forms/category-averages/${documentNumber}/`, {
+    method: 'GET',
+    credentials: 'include',
+    headers: {
+      'X-Client-Token': CLIENT_TOKEN,
+    },
+  });
+  if (!response.ok) {
+    throw new Error('Network response was not ok');
+  }
+  return response.json();
+};

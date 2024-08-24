@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { checkDocument, submitForm } from '../../utils/apiService';
+import { checkDocument, submitForm } from '../../utils/apiServices';
 import { useNavigate } from 'react-router-dom';
 import '../../stylesheets/lineabase.css';
 import figure from '../../img/svg/formulario_figure.svg';
