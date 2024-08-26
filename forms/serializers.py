@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Form, Question, Answer, CompletedForm, Category, DiagnosticLevel, DiagnosticPlan, WorkPlan
+from .models import Form, Question, Answer, CompletedForm, Category, DiagnosticLevel, DiagnosticPlan
 
 class DiagnosticPlanSerializer(serializers.ModelSerializer):
     class Meta:
@@ -64,26 +64,3 @@ class CategoryPlanSerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ['id', 'name', 'slug', 'levels']
-
-class WorkPlanSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField(source='completed_form.id')
-    identificationNumber = serializers.CharField(source='identification_number')
-
-    class Meta:
-        model = WorkPlan
-        fields = ['id', 'identificationNumber', 'category', 'plan']
-
-    def to_representation(self, instance):
-        representation = super().to_representation(instance)
-        category = {
-            'id': instance.category.id,
-            'name': instance.category.name,
-            'slug': instance.category.slug,
-            'plan': instance.plan,
-        }
-        # Construir la estructura requerida
-        return {
-            'id': representation['id'],
-            'identificationNumber': representation['identificationNumber'],
-            'plans': [category]
-        }

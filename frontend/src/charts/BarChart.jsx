@@ -7,7 +7,7 @@ function BarChart({ categories }) {
   // Prepara los datos para el gráfico de barras (Bar Chart)
   const getBarChartData = (categories) => {
     return {
-      labels: categories.map(ca => ca.name),
+      labels: categories.map(ca => ca.category.name),
       datasets: [
         {
           label: 'Puntaje Promedio',

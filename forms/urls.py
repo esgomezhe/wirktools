@@ -8,7 +8,7 @@ from . import views
 router = DefaultRouter()
 router.register(r'forms', views.FormViewSet)
 router.register(r'completed-forms', views.CompletedFormViewSet)
-router.register(r'work-plans', views.WorkPlanViewSet, basename='work-plan')
+
 
 urlpatterns = [
     path('api/', include(router.urls)),

@@ -37,12 +37,10 @@ const ResultsDisplay = ({ userData, categoryData }) => {
       </div>
 
       <section className="results">
-        <div className="category-container">
+        <div className="slider-container">
           <Slider {...sliderSettings}>
             {categoryData.map((category, index) => (
-              <div className="slider-container" key={index}>
-                <PercentageChart category={category} />
-              </div>
+              <PercentageChart category={category} />
             ))}
           </Slider>
         </div>

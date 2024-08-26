@@ -116,29 +116,6 @@ def calculate_category_averages(answers):
         logging.error(f"Error calculating category averages: {e}")
         return []
 
-# Función para calcular los promedios de categorías y crear planes de trabajo
-def create_work_plans(answers, completed_form):
-    category_averages = calculate_category_averages(answers)
-    
-    Category = apps.get_model('forms', 'Category')
-    WorkPlan = apps.get_model('forms', 'WorkPlan')
-    
-    identification_number = completed_form.content.get('info', {}).get('identificationNumber')
-    
-    for avg in category_averages:
-        category_name = avg['category']['name']
-        plan = avg['plan']
-        category = Category.objects.get(name=category_name)
-
-        WorkPlan.objects.update_or_create(
-            completed_form=completed_form,
-            identification_number=identification_number,
-            category=category,
-            defaults={'plan': plan}
-        )
-
-    return category_averages
-
 # Función para obtener las preguntas ordenadas
 def get_ordered_answer_questions(forms):
     ordered_answer_questions = []

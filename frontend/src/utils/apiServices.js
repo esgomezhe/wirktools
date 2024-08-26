@@ -60,7 +60,7 @@ export const submitForm = async (formTitle, userName, email, dataToSubmit) => {
 };
 
 export const fetchCategoryAverages = async (documentNumber) => {
-  const response = await fetch(`/api/completed-forms/category-averages/${documentNumber}/`, {
+  const response = await fetch(`/api/category-averages/${documentNumber}/`, {
     method: 'GET',
     credentials: 'include',
     headers: {

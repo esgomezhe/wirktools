@@ -1,6 +1,6 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { Form, Home, PreguntasLinea } from "./pages/AllPages";
+import { Form, Home, PreguntasLinea, CheckResults } from "./pages/AllPages";
 import Header from "./components/Header";
 import NotFound from './components/NotFound';
 import Footer from "./components/Footer";
@@ -13,6 +13,7 @@ function App() {
         <Route path='/' element={<Home />} />
         <Route path='/autodiagnostico/' element={<Form />} />
         <Route path='/lineabase/' element={<PreguntasLinea />} />
+        <Route path='/resultados/' element={<CheckResults />} />
         <Route path='*' element={<NotFound />} />
       </Routes>
       <Footer />

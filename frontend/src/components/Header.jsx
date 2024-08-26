@@ -15,6 +15,7 @@ function Header() {
         <div className='header__buttons'>
           <Link to={'/autodiagnostico/'} className='header__button'>Inicia tu autodiagnóstico</Link>
           <Link to={'/lineabase/'} className='header__button'>Preguntas de línea base</Link>
+          <Link to={'/resultados/'} className='header__button'>Resultados</Link>
         </div>
       </div>
     </header>

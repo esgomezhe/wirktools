@@ -1,14 +1,13 @@
 from django.shortcuts import render
-from .models import Form, CompletedForm, WorkPlan
-from .serializers import FormSerializer, CompletedFormSerializer, WorkPlanSerializer
-from collections import defaultdict
 from rest_framework import viewsets, status
+from rest_framework.decorators import api_view
 from rest_framework.permissions import AllowAny
-from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.views import APIView
 from .permissions import IsAuthorizedClientOrAuthenticated
 from .utils import calculate_category_averages
-from rest_framework.decorators import api_view
+from .models import Form, CompletedForm
+from .serializers import FormSerializer, CompletedFormSerializer
 
 class FormViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Form.objects.all().order_by('id')
@@ -53,38 +52,6 @@ class CheckDocumentView(APIView):
                 return Response({'exists': False}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({'exists': False, 'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-class WorkPlanViewSet(viewsets.ModelViewSet):
-    serializer_class = WorkPlanSerializer
-    permission_classes = [IsAuthorizedClientOrAuthenticated]
-
-    def get_queryset(self):
-        return WorkPlan.objects.all()
-
-    def list(self, request, *args, **kwargs):
-        queryset = self.get_queryset()
-        grouped_data = defaultdict(lambda: {'id': None, 'identificationNumber': None, 'plans': []})
-
-        for work_plan in queryset:
-            completed_form_id = work_plan.completed_form.id
-            if grouped_data[completed_form_id]['id'] is None:
-                grouped_data[completed_form_id]['id'] = completed_form_id
-                grouped_data[completed_form_id]['identificationNumber'] = work_plan.identification_number
-
-            category_info = {
-                'id': work_plan.category.id,
-                'name': work_plan.category.name,
-                'slug': work_plan.category.slug,
-                'plan': work_plan.plan,
-            }
-            grouped_data[completed_form_id]['plans'].append(category_info)
-
-        paginated_data = self.paginate_queryset(list(grouped_data.values()))
-
-        if paginated_data is not None:
-            return self.get_paginated_response(paginated_data)
-
-        return Response(list(grouped_data.values()))
     
 @api_view(['GET'])
 def get_category_averages(request, document_number):
