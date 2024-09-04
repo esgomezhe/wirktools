@@ -80,7 +80,7 @@ class CompletedForm(models.Model):
         super().save(*args, **kwargs)
         answers = self.content.get('answers', [])
         update_excel_file()
-
+        
         if self.email:
             category_averages = calculate_category_averages(answers)
             email_content = self.build_email_content(category_averages)
@@ -106,7 +106,7 @@ class CompletedForm(models.Model):
             content_lines.append(f"<p>{avg['plan']}</p>")
         
         return "".join(content_lines)
-
+        
     class Meta:
         verbose_name = 'Formulario Completado'
         verbose_name_plural = 'Formularios Completados'
