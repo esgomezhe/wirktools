@@ -8,7 +8,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from django.utils.decorators import method_decorator
 from rest_framework_simplejwt.exceptions import TokenError
 from mentoring.models import Mentoring
-from .serializers import UserSerializer, RatingSerializer
+from .serializers import UserSerializer
 
 User = get_user_model()
 
@@ -73,32 +73,3 @@ class UserDetailsView(APIView):
             ]
 
         return Response(response_data)
-    
-class RateMentorView(generics.GenericAPIView):
-    permission_classes = (IsAuthenticated,)
-    serializer_class = RatingSerializer
-
-    def post(self, request, *args, **kwargs):
-        user = request.user
-        rating_value = request.data.get('rating')
-        mentor_id = request.data.get('mentor_id')
-
-        if not rating_value or not mentor_id:
-            return Response({"detail": "Rating and Mentor ID are required."}, status=status.HTTP_400_BAD_REQUEST)
-
-        try:
-            rating_value = int(rating_value)
-            if rating_value < 1 or rating_value > 5:
-                raise ValueError
-        except ValueError:
-            return Response({"detail": "Rating must be an integer between 1 and 5."}, status=status.HTTP_400_BAD_REQUEST)
-
-        try:
-            mentor = Mentoring.objects.get(user_id=mentor_id, is_mentor=True)
-        except Mentoring.DoesNotExist:
-            return Response({"detail": "Mentor not found."}, status=status.HTTP_404_NOT_FOUND)
-
-        # Añadir la calificación al mentor
-        mentor.add_rating(rating_value)
-
-        return Response({"detail": "Rating added successfully."}, status=status.HTTP_200_OK)
