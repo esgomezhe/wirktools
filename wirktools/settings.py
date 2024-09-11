@@ -31,6 +31,8 @@ DJANGO_APPS = [
 
 PROJECT_APPS = [
     'forms',
+    'users',
+    'mentoring',
 ]
 
 THIRD_PARTY_APPS = [

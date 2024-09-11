@@ -9,10 +9,9 @@ router = DefaultRouter()
 router.register(r'forms', views.FormViewSet)
 router.register(r'completed-forms', views.CompletedFormViewSet)
 
-
 urlpatterns = [
-    path('api/', include(router.urls)),
-    path('api/completed-forms/check/<str:document_number>/', views.CheckDocumentView.as_view(), name='check-document'),
-    path('api/completed-forms/<int:pk>/delete/', views.CompletedFormViewSet.as_view({'delete': 'delete_form'}), name='delete-form'),
-    path('api/category-averages/<str:document_number>/', views.get_category_averages, name='category-averages')
+    path('', include(router.urls)),
+    path('completed-forms/check/<str:document_number>/', views.CheckDocumentView.as_view(), name='check-document'),
+    path('completed-forms/<int:pk>/delete/', views.CompletedFormViewSet.as_view({'delete': 'delete_form'}), name='delete-form'),
+    path('category-averages/<str:document_number>/', views.get_category_averages, name='category-averages')
 ]
