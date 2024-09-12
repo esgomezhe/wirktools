@@ -1,5 +1,5 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin, Group, Permission
-from django.db import models
+from django.db import models, transaction
 from django.core.exceptions import ValidationError
 
 class UserManager(BaseUserManager):
@@ -16,11 +16,18 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
+    @transaction.atomic
     def create_superuser(self, document, email, full_name, password=None, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
 
-        return self.create_user(document, email, full_name, password, **extra_fields)
+        # Crear el superusuario
+        user = self.create_user(document, email, full_name, password, **extra_fields)
+        
+        from mentoring.models import Mentoring
+        Mentoring.objects.create(user=user, is_mentor=True)
+        
+        return user
 
 class User(AbstractBaseUser, PermissionsMixin):
     document = models.CharField(max_length=255, unique=True)

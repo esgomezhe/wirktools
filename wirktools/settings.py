@@ -31,13 +31,11 @@ DJANGO_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
-
 PROJECT_APPS = [
     'forms',
     'mentoring',
     'users',
 ]
-
 THIRD_PARTY_APPS = [
     'nested_admin',
     'rest_framework',
@@ -46,7 +44,6 @@ THIRD_PARTY_APPS = [
     'ckeditor',
     'import_export',
 ]
-
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + THIRD_PARTY_APPS
 
 # CKEditor
