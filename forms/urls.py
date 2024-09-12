@@ -9,6 +9,7 @@ router = DefaultRouter()
 router.register(r'forms', views.FormViewSet)
 router.register(r'completed-forms', views.CompletedFormViewSet)
 
+
 urlpatterns = [
     path('', include(router.urls)),
     path('completed-forms/check/<str:document_number>/', views.CheckDocumentView.as_view(), name='check-document'),

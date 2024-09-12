@@ -34,3 +34,7 @@ class UserSerializer(serializers.ModelSerializer):
         )
         Mentoring.objects.create(user=user)
         return user
+    
+class RatingSerializer(serializers.Serializer):
+    rating = serializers.IntegerField(min_value=1, max_value=5)
+    mentor_id = serializers.IntegerField()

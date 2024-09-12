@@ -3,7 +3,7 @@ from django.conf import settings
 from django.core.mail import send_mail
 from ckeditor.fields import RichTextField
 from django.utils.text import slugify
-from .utils import calculate_category_averages, update_excel_file
+from .utils import calculate_category_averages
 
 class Category(models.Model):
     name = models.CharField(max_length=255, unique=True)
@@ -75,20 +75,19 @@ class CompletedForm(models.Model):
 
     def __str__(self):
         return f"{self.form_title} - {self.user} - {self.email}"
-
+    '''
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         answers = self.content.get('answers', [])
-        update_excel_file()
-        
+
         if self.email:
             category_averages = calculate_category_averages(answers)
             email_content = self.build_email_content(category_averages)
             send_mail(
                 'Resultados de su Autodiagnóstico',
                 '',
-                'autodiagnostico@transformaciondigital.com.co',
-                [self.email, 'autodiagnostico@transformaciondigital.com.co'],
+                'autodiagnostico@wirkconsultingtools.com',
+                [self.email, 'autodiagnostico@wirkconsultingtools.com'],
                 fail_silently=False,
                 html_message=email_content,
             )
@@ -106,13 +105,13 @@ class CompletedForm(models.Model):
             content_lines.append(f"<p>{avg['plan']}</p>")
         
         return "".join(content_lines)
-        
+    '''
     class Meta:
-        verbose_name = 'Formulario Completado'
-        verbose_name_plural = 'Formularios Completados'
+        verbose_name = 'Formulario completado'
+        verbose_name_plural = 'Formularios completados'
     
 class CompletedFormProxy(CompletedForm):
     class Meta:
         proxy = True
-        verbose_name = 'Descarga la Base de Datos Completa'
-        verbose_name_plural = 'Descarga la Base de Datos Completa'
+        verbose_name = 'Descarga la base de datos completa'
+        verbose_name_plural = 'Descarga la base de datos completa'

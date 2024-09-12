@@ -68,38 +68,3 @@ class CompletedFormAdmin(admin.ModelAdmin):
         return export_as_excel(queryset)
 
     export_as_excel_action.short_description = 'Exportar seleccionados a Excel'
-
-
-@admin.register(CompletedFormProxy)
-class ExcelDownloadAdmin(admin.ModelAdmin):
-    change_list_template = None  # No utilizar plantilla personalizada
-
-    def get_urls(self):
-        urls = super().get_urls()
-        custom_urls = [
-            path('download_excel/', self.admin_site.admin_view(self.download_excel), name='download_excel'),
-        ]
-        return custom_urls + urls
-
-    def download_excel(self, request):
-        file_path = os.path.join(settings.MEDIA_ROOT, 'completed_forms.xlsx')
-        if os.path.exists(file_path):
-            return FileResponse(open(file_path, 'rb'), as_attachment=True, filename='completed_forms.xlsx')
-        else:
-            messages.error(request, "El archivo no existe.")
-            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-
-    def changelist_view(self, request, extra_context=None):
-        return self.download_excel(request)
-
-    def has_add_permission(self, request):
-        return False
-
-    def has_change_permission(self, request, obj=None):
-        return False
-
-    def has_delete_permission(self, request, obj=None):
-        return False
-
-    def has_view_permission(self, request, obj=None):
-        return True

@@ -10,7 +10,7 @@ class Mentoring(models.Model):
     rating = models.DecimalField(max_digits=3, decimal_places=2, default=0.00)  # Rating promedio del mentor
     total_ratings = models.PositiveIntegerField(default=0)  # Número total de calificaciones
     ratings_sum = models.PositiveIntegerField(default=0)  # Suma de todas las calificaciones
-    categories = models.ManyToManyField(Category, related_name='mentors', blank=True, null=True)  # Relación con categorías
+    categories = models.ManyToManyField(Category, related_name='mentors')  # Relación con categorías
 
     def add_rating(self, new_rating):
         """Añadir una nueva calificación y actualizar el rating promedio"""

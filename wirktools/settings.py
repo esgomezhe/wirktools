@@ -1,26 +1,28 @@
 import os
 from datetime import timedelta
 from pathlib import Path
+from decouple import config, Csv
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '^dnx5fde%210%oozxo136qdmc4^f6)xewhzbi!lvt0d=h)u7k='
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = [
-    'transformaciondigital.com.co',
-    'www.transformaciondigital.com.co',
-    'localhost',
-    '127.0.0.1',
-    '172.19.192.1'
-]
+if DEBUG:
+    ALLOWED_HOSTS = config('DEV_ALLOWED_HOSTS', cast=Csv())
+    CORS_ALLOW_ORIGINS = config('DEV_CORS_ALLOW_ORIGINS', cast=Csv())
+    CSRF_TRUSTED_ORIGINS = config('DEV_CSRF_TRUSTED_ORIGINS', cast=Csv())
+else:
+    ALLOWED_HOSTS = config('PROD_ALLOWED_HOSTS', cast=Csv())
+    CORS_ALLOW_ORIGINS = config('PROD_CORS_ALLOW_ORIGINS', cast=Csv())
+    CSRF_TRUSTED_ORIGINS = config('PROD_CSRF_TRUSTED_ORIGINS', cast=Csv())
 
 # Application definition
-
 DJANGO_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -90,10 +92,9 @@ WSGI_APPLICATION = 'wirktools.wsgi.application'
 
 # Database
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default=f'sqlite:///{BASE_DIR / config("DATABASE_NAME")}'
+    )
 }
 
 # Password validation
@@ -114,17 +115,13 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 LANGUAGE_CODE = 'es'
-
 TIME_ZONE = 'America/Bogota'
-
 USE_I18N = True
-
 USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "frontend/build/static"),
 ]
@@ -135,12 +132,12 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 # Email settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'transformaciondigital.com.co'
-EMAIL_PORT = 465
-EMAIL_USE_SSL = True
-EMAIL_HOST_USER = 'autodiagnostico@transformaciondigital.com.co'
-EMAIL_HOST_PASSWORD = 'leGO!zRU!TbT'
-DEFAULT_FROM_EMAIL = 'autodiagnostico@transformaciondigital.com.co'
+EMAIL_HOST = config('EMAIL_HOST')
+EMAIL_PORT = config('EMAIL_PORT', cast=int)
+EMAIL_USE_SSL = config('EMAIL_USE_SSL', default=True, cast=bool)  # Asegúrate de que el valor predeterminado sea correcto
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL')
 
 # Django Rest Framework
 REST_FRAMEWORK = {
@@ -154,7 +151,6 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     ),
 }
-
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),  # Ajusta según sea necesario
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
@@ -166,12 +162,10 @@ SIMPLE_JWT = {
     'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
     'TOKEN_TYPE_CLAIM': 'token_type',
 }
-
 AUTH_USER_MODEL = 'users.User'
 
 # CORS and CSRF settings
 CORS_ALLOW_ALL_ORIGINS = True
-
 CORS_ALLOW_METHODS = [
     'DELETE',
     'GET',
@@ -180,7 +174,6 @@ CORS_ALLOW_METHODS = [
     'POST',
     'PUT',
 ]
-
 CORS_ALLOW_HEADERS = [
     'accept',
     'accept-encoding',
@@ -192,17 +185,10 @@ CORS_ALLOW_HEADERS = [
     'x-csrftoken',
     'x-requested-with',
 ]
-
 CORS_ALLOW_CREDENTIALS = True
-
-CSRF_TRUSTED_ORIGINS = [
-    'https://transformaciondigital.com.co',
-    'https://www.transformaciondigital.com.co',
-    'http://172.19.192.1',
-    'http://127.0.0.1'
-]
-
-CLIENT_TOKEN = "rTmCvla88GDygIbgkjXePVKoZfC-pq3EsXvQSE_3B-0"
+CSRF_COOKIE_NAME = "csrftoken"
+CSRF_TRUSTED_ORIGINS = config('DEV_CSRF_TRUSTED_ORIGINS', cast=Csv()) if DEBUG else config('PROD_CSRF_TRUSTED_ORIGINS', cast=Csv())
+CLIENT_TOKEN = config('CLIENT_TOKEN')
 
 # Additional settings
-DATA_UPLOAD_MAX_NUMBER_FIELDS = 1000
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 10000
