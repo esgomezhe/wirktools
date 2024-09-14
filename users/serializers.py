@@ -4,6 +4,10 @@ from mentoring.models import Mentoring
 
 class UserSerializer(serializers.ModelSerializer):
     is_mentor = serializers.SerializerMethodField()
+    is_apprentice = serializers.SerializerMethodField()
+    about = serializers.SerializerMethodField()
+    rating = serializers.SerializerMethodField()
+    categories = serializers.SerializerMethodField()
 
     class Meta:
         model = User
@@ -16,7 +20,28 @@ class UserSerializer(serializers.ModelSerializer):
             return mentoring.is_mentor
         except Mentoring.DoesNotExist:
             return False
-        
+
+    def get_is_apprentice(self, obj):
+        try:
+            mentoring = Mentoring.objects.get(user=obj)
+            return mentoring.is_apprentice
+        except Mentoring.DoesNotExist:
+            return False
+
+    def get_about(self, obj):
+        try:
+            mentoring = Mentoring.objects.get(user=obj)
+            return mentoring.about
+        except Mentoring.DoesNotExist:
+            return ''
+    
+    def get_rating(self, obj):
+        try:
+            mentoring = Mentoring.objects.get(user=obj)
+            return mentoring.rating
+        except Mentoring.DoesNotExist:
+            return 0.0
+
     def get_categories(self, obj):
         try:
             mentoring = Mentoring.objects.get(user=obj)
