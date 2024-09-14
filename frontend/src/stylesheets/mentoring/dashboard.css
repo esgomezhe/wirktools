@@ -1,0 +1,81 @@
+.apprentice-dashboard {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+  }
+  
+  h2 {
+    margin-bottom: 20px;
+  }
+  
+  .sessions-tab,
+  .schedule-tab,
+  .availability-tab,
+  .details-tab {
+    padding: 20px;
+  }
+  
+  .sessions .session-item {
+    margin-bottom: 15px;
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #f5f5f5;
+  }
+  
+  .sessions .session-item.confirmed {
+    border-left: 4px solid #6c63ff;
+  }
+  
+  .sessions .session-item.unconfirmed {
+    border-left: 4px solid #ccc;
+  }
+  
+  .schedule-button,
+  .confirm-button,
+  .back-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #6c63ff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 20px;
+  }
+  
+  .back-button {
+    background-color: #ccc;
+    color: black;
+  }
+  
+  .back-button:hover {
+    background-color: #bbb;
+  }
+  
+  .schedule-tab .mentors .mentor-item {
+    margin-bottom: 15px;
+  }
+  
+  .availability-tab .availability-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+  }
+  
+  .availability-tab .availability-item {
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    text-align: center;
+    background-color: #f5f5f5;
+  }
+  
+  .session-details input,
+  .session-details textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
