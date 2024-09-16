@@ -1,17 +1,22 @@
 import React, { createContext, useState, useEffect } from 'react';
-import { getUserDetails } from '../utils/apiServices';
+import { getUserDetails, getUserProfile } from '../utils/apiServices';
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const access = localStorage.getItem('access');
     if (access) {
-      getUserDetails(access).then(userData => {
+      Promise.all([
+        getUserDetails(access),
+        getUserProfile(access),
+      ]).then(([userData, profileData]) => {
         setUser({ ...userData, token: access });
+        setProfile(profileData);
         setLoading(false);
       }).catch(() => {
         setLoading(false);
@@ -23,17 +28,22 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (accessToken) => {
     localStorage.setItem('access', accessToken);
-    const userData = await getUserDetails(accessToken);
+    const [userData, profileData] = await Promise.all([
+      getUserDetails(accessToken),
+      getUserProfile(accessToken),
+    ]);
     setUser({ ...userData, token: accessToken });
+    setProfile(profileData);
   };
 
   const logout = () => {
     localStorage.removeItem('access');
     setUser(null);
+    setProfile(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, loading }}>
+    <AuthContext.Provider value={{ user, profile, login, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );

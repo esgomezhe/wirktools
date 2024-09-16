@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import '../../stylesheets/caracterizacion.css';
 import figure from '../../img/svg/formulario_figure.svg';
 import home from '../../img/svg/home.svg';
 import arrow from '../../img/svg/arrow.svg';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../contexts/AuthContext';
+import { updateUserProfile } from '../../utils/apiServices';
 
 const departamentos = [
   'Amazonas', 'Antioquia', 'Arauca', 'Atlántico', 'Bolívar', 'Boyacá', 'Caldas', 'Caquetá', 'Casanare', 'Cauca', 'Cesar', 'Chocó', 'Córdoba', 'Cundinamarca', 'Guainía', 'Guaviare', 'Huila', 'La Guajira', 'Magdalena', 'Meta', 'Nariño', 'Norte de Santander', 'Putumayo', 'Quindío', 'Risaralda', 'San Andrés y Providencia', 'Santander', 'Sucre', 'Tolima', 'Valle del Cauca', 'Vaupés', 'Vichada'
@@ -45,6 +47,8 @@ const municipios = {
 };
 
 function Personal({ onFormSubmit, formNames }) {
+  const { user, profile, loading, updateProfile } = useContext(AuthContext);
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     userName: '',
     companyType: '',
@@ -74,6 +78,25 @@ function Personal({ onFormSubmit, formNames }) {
 
   const [errors, setErrors] = useState({});
   const [municipiosOptions, setMunicipiosOptions] = useState([]);
+
+  useEffect(() => {
+    if (!loading && !user) {
+      navigate('/login');
+    }
+  }, [loading, user, navigate]);
+
+  useEffect(() => {
+    if (profile) {
+      setFormData(prevFormData => ({
+        ...prevFormData,
+        ...profile,
+        dataConsent: profile.data_consent || false,
+      }));
+      if (profile.main_office_department) {
+        setMunicipiosOptions(municipios[profile.main_office_department] || []);
+      }
+    }
+  }, [profile]);
 
   const handleChange = (event) => {
     const { name, value, type, checked } = event.target;
@@ -117,10 +140,22 @@ function Personal({ onFormSubmit, formNames }) {
     setErrors(tempErrors);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     if (validateForm() && formData.dataConsent) {
-      onFormSubmit(formData);
+      try {
+        const updatedProfile = await updateUserProfile(user.token, formData);
+        alert('Perfil actualizado con éxito');
+        // Actualizar el perfil en el contexto
+        updateProfile(updatedProfile);
+        // Puedes redirigir o realizar alguna acción adicional
+        if (onFormSubmit) {
+          onFormSubmit(formData);
+        }
+      } catch (error) {
+        console.error('Error updating profile:', error);
+        alert('Ocurrió un error al actualizar el perfil');
+      }
     } else {
       console.error("Validation errors", errors);
       if (!formData.dataConsent) {
@@ -159,6 +194,10 @@ function Personal({ onFormSubmit, formNames }) {
     return Object.keys(tempErrors).length === 0;
   };
 
+  if (loading || !user) {
+    return <p>Cargando...</p>;
+  }
+
   return (
     <>
       <div className='notice__container'>
@@ -188,7 +227,7 @@ function Personal({ onFormSubmit, formNames }) {
               <div className="options__information--labels">
                 <div className='options__information--label'>
                   <label htmlFor="userName" className="form-label">
-                    Nombre del emprendedor/empresario * {errors.userName && <span className="error-message">{errors.userName}</span>}
+                    Nombre del emprendedor/empresario *
                   </label>
                   <input
                     type="text"
@@ -197,14 +236,14 @@ function Personal({ onFormSubmit, formNames }) {
                     placeholder="Ingresar nombre completo"
                     required
                     className="form-input"
-                    value={formData.userName}
-                    onChange={handleChange}
+                    value={user.full_name}
+                    readOnly
                   />
                 </div>
 
                 <div className='options__information--label'>
                   <label htmlFor="identificationNumber" className="form-label">
-                    Número de identificación * {errors.identificationNumber && <span className="error-message">{errors.identificationNumber}</span>}
+                    Número de identificación *
                   </label>
                   <input
                     type='text'
@@ -213,8 +252,8 @@ function Personal({ onFormSubmit, formNames }) {
                     placeholder="Ingresar número de identificación"
                     required
                     className="form-input"
-                    value={formData.identificationNumber}
-                    onChange={handleChange}
+                    value={user.document}
+                    readOnly
                   />
                 </div>
 
@@ -259,7 +298,7 @@ function Personal({ onFormSubmit, formNames }) {
 
               <div className="options__information--labels">
 
-              <div className='options__information--label'>
+                <div className='options__information--label'>
                   <label htmlFor="companyType" className="form-label">
                     Tipo de Análisis * {errors.companyType && <span className="error-message">{errors.companyType}</span>}
                   </label>
@@ -379,9 +418,9 @@ function Personal({ onFormSubmit, formNames }) {
                   </select>
                 </div>
 
-                <div>
+                <div className='options__information--label'>
                   <label htmlFor="email" className="form-label">
-                    Correo electrónico * {errors.email && <span className="error-message">{errors.email}</span>}
+                    Correo electrónico *
                   </label>
                   <input
                     type="email"
@@ -390,8 +429,8 @@ function Personal({ onFormSubmit, formNames }) {
                     placeholder="example@example.com"
                     required
                     className="form-input"
-                    value={formData.email}
-                    onChange={handleChange}
+                    value={user.email}
+                    readOnly
                   />
                 </div>
 
@@ -499,7 +538,7 @@ function Personal({ onFormSubmit, formNames }) {
 
                 <div className='options__information--label'>
                   <label htmlFor="registeredInCCC" className="form-label">
-                    Selecciones la cámara de comercio donde se encuentra matriculado * {errors.registeredInCCC && <span className="error-message">{errors.registeredInCCC}</span>}
+                    Seleccione la cámara de comercio donde se encuentra matriculado * {errors.registeredInCCC && <span className="error-message">{errors.registeredInCCC}</span>}
                   </label>
                   <select
                     id="registeredInCCC"
@@ -646,7 +685,7 @@ function Personal({ onFormSubmit, formNames }) {
                     value={formData.clientFocus}
                     onChange={handleChange}
                   >
-                    <option value="" disabled>{errors.clientFocus || 'Seleccione el tipo de cliente'}</option>
+                    <option value="" disabled>Seleccione el tipo de cliente</option>
                     <option value="B2B">Su principal cliente es otra empresa (B2B)</option>
                     <option value="B2C">Sus principales clientes son consumidores o el usuario final (B2C)</option>
                     <option value="B2G">Sus principales clientes son entes u organizaciones del gobierno (B2G)</option>
@@ -665,10 +704,10 @@ function Personal({ onFormSubmit, formNames }) {
                     value={formData.productType}
                     onChange={handleChange}
                   >
-                    <option value="" disabled>{errors.productType || 'Seleccione el tipo de producto o servicio'}</option>
-                    <option value="productos_bienes_fisicos">Productos o bienes físicos (Ej: Carteras, artesanías, zapatos, etc.)</option>
-                    <option value="productos_bienes_no_fisicos">Productos o bienes no físicos (Ej: Desarrollo de Software, contenido multimedia, etc.)</option>
-                    <option value="servicios">Servicios (Ej: Servicios de publicidad, diseño, etc.)</option>
+                    <option value="" disabled>Seleccione el tipo de producto o servicio</option>
+                    <option value="productos_bienes_fisicos">Productos o bienes físicos</option>
+                    <option value="productos_bienes_no_fisicos">Productos o bienes no físicos</option>
+                    <option value="servicios">Servicios</option>
                   </select>
                 </div>
               </div>
@@ -679,7 +718,7 @@ function Personal({ onFormSubmit, formNames }) {
               Autoriza a la Cámara de Comercio de Cali como responsable del tratamiento de los datos personales,
               para la recolección, almacenamiento, uso, transmisión y/o transferencia de los datos personales
               suministrados en este formulario, para las finalidades dispuestas en la
-              política de tratamiento de datos personales que puede <a className='data__treatment--text' href="https://www.ccc.org.co/wp-content/uploads/2024/05/Tratamiento-de-datos_autodignostico_digitalizate.pdf" target="noreferrer"> consultar aquí</a>.
+              política de tratamiento de datos personales que puede <a className='data__treatment--text' href="https://www.ccc.org.co/wp-content/uploads/2024/05/Tratamiento-de-datos_autodignostico_digitalizate.pdf" target="_blank" rel="noopener noreferrer"> consultar aquí</a>.
             </p>
             <div className='data__treatment--check'>
               <input

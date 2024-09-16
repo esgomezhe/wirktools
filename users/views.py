@@ -8,7 +8,8 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from django.utils.decorators import method_decorator
 from rest_framework_simplejwt.exceptions import TokenError
 from mentoring.models import Mentoring
-from .serializers import UserSerializer
+from .serializers import UserSerializer, UserProfileSerializer
+from .models import UserProfile
 
 User = get_user_model()
 
@@ -73,3 +74,11 @@ class UserDetailsView(APIView):
             ]
 
         return Response(response_data)
+
+class UserProfileView(generics.RetrieveUpdateAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = UserProfileSerializer
+
+    def get_object(self):
+        profile, created = UserProfile.objects.get_or_create(user=self.request.user)
+        return profile

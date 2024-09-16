@@ -60,6 +60,29 @@ export const getUserDetails = async (token) => {
   return response.data;
 };
 
+export const getUserProfile = async (token) => {
+  const response = await axios.get(`${API_BASE_URL}/users/profile/`, {
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'X-CSRFToken': getCsrfToken(),
+    },
+    withCredentials: true,
+  });
+  return response.data;
+};
+
+export const updateUserProfile = async (token, profileData) => {
+  const response = await axios.put(`${API_BASE_URL}/users/profile/`, profileData, {
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'X-CSRFToken': getCsrfToken(),
+      'Content-Type': 'application/json',
+    },
+    withCredentials: true,
+  });
+  return response.data;
+};
+
 // Funciones para los formularios
 
 export const fetchForms = async () => {
