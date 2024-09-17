@@ -8,7 +8,6 @@ from django.conf import settings
 from django.contrib import messages
 from .models import *
 from .utils import export_as_excel, export_as_csv
-from users.models import UserProfile
 
 class DiagnosticPlanInline(nested_admin.NestedStackedInline):
     model = DiagnosticPlan
@@ -70,19 +69,72 @@ class CompletedFormAdmin(admin.ModelAdmin):
 
     export_as_excel_action.short_description = 'Exportar seleccionados a Excel'
 
-@admin.register(UserProxy)
-class UserProxyAdmin(admin.ModelAdmin):
+@admin.register(CompletedFormProxy)
+class ExcelDownloadAdmin(admin.ModelAdmin):
+    change_list_template = None  # No utilizar plantilla personalizada
+
+    def get_urls(self):
+        urls = super().get_urls()
+        custom_urls = [
+            path('download_excel/', self.admin_site.admin_view(self.download_excel), name='download_excel'),
+        ]
+        return custom_urls + urls
+
+    def download_excel(self, request):
+        file_path = os.path.join(settings.MEDIA_ROOT, 'completed_forms.xlsx')
+        if os.path.exists(file_path):
+            return FileResponse(open(file_path, 'rb'), as_attachment=True, filename='completed_forms.xlsx')
+        else:
+            messages.error(request, "El archivo no existe.")
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+    def changelist_view(self, request, extra_context=None):
+        return self.download_excel(request)
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    def has_view_permission(self, request, obj=None):
+        return True
+
+@admin.register(UserProfileProxy)
+class UserProfileProxyAdmin(admin.ModelAdmin):
     list_display = ['document', 'full_name', 'email', 'has_complete_profile', 'has_completed_form']
-    search_fields = ['document', 'full_name', 'email']
+    search_fields = ['user__document', 'user__full_name', 'user__email']
+
+    def document(self, obj):
+        return obj.user.document
+    document.admin_order_field = 'user__document'
+    document.short_description = 'Documento'
+
+    def full_name(self, obj):
+        return obj.user.full_name
+    full_name.admin_order_field = 'user__full_name'
+    full_name.short_description = 'Nombre Completo'
+
+    def email(self, obj):
+        return obj.user.email
+    email.admin_order_field = 'user__email'
+    email.short_description = 'Email'
 
     def has_complete_profile(self, obj):
         # Verificar si el usuario tiene un perfil completo
-        return UserProfile.objects.filter(user=obj).exists()
+        return True
     has_complete_profile.boolean = True
     has_complete_profile.short_description = 'Caracterización'
 
     def has_completed_form(self, obj):
         # Verificar si el usuario tiene formularios completados
-        return CompletedForm.objects.filter(content__info__document=obj.document).exists()
+        document_number = obj.user.document
+        return CompletedForm.objects.filter(content__info__document=document_number).exists()
     has_completed_form.boolean = True
-    has_completed_form.short_description = 'Diagnostico'
+    has_completed_form.short_description = 'Diagnóstico'
+    
+    def has_change_permission(self, request, obj=None):
+        return False
