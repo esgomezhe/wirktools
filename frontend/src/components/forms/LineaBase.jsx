@@ -161,7 +161,7 @@ function LineaBase() {
         created_at: userData.createdAt // Incluye la fecha del formulario anterior
       };
 
-      await submitForm(userData.info.companyType, userData.info.userName, userData.info.email, completedFormData);
+      await submitForm(userData.info.company_type, userData.info.full_name, userData.info.email, completedFormData);
 
       console.log('Form submitted successfully');
       setFormSubmitted(true); // Setea el estado para mostrar el mensaje de agradecimiento
@@ -191,7 +191,7 @@ function LineaBase() {
         </div>
         <div className="notice__title--container">
           <h4 className='notice__title'>
-            {isDocumentVerified && userData ? `Bienvenido, ${userData.info?.userName || 'Usuario'}!` : 'Ingrese su número de documento para continuar'}
+            {isDocumentVerified && userData ? `Bienvenido, ${userData.info?.full_name || 'Usuario'}!` : 'Ingrese su número de documento para continuar'}
           </h4>
         </div>
       </div>
@@ -538,7 +538,7 @@ function LineaBase() {
             <img src={require('../../img/grow-you-business.png')} alt="Thank You"/>
           </div>
           <div className="thank_you__text">
-            <h1>Gracias por enviar tus respuestas, {userData.info?.userName || 'Usuario'}!</h1>
+            <h1>Gracias por enviar tus respuestas, {userData.info?.full_name || 'Usuario'}!</h1>
             <h3>Tu información ha sido enviada exitosamente.</h3>
             <p>Con estos nos ayudas a seguir creciendo y poder brindarte un mejor proceso que llevaran a mejores resultados</p>
             <p>Regresa a la página principal: <Link className='thank_you__link' to='/'>Home</Link></p>

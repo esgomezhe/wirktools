@@ -8,6 +8,7 @@ from django.conf import settings
 from django.contrib import messages
 from .models import *
 from .utils import export_as_excel, export_as_csv
+from users.models import UserProfile
 
 class DiagnosticPlanInline(nested_admin.NestedStackedInline):
     model = DiagnosticPlan
@@ -68,3 +69,20 @@ class CompletedFormAdmin(admin.ModelAdmin):
         return export_as_excel(queryset)
 
     export_as_excel_action.short_description = 'Exportar seleccionados a Excel'
+
+@admin.register(UserProxy)
+class UserProxyAdmin(admin.ModelAdmin):
+    list_display = ['document', 'full_name', 'email', 'has_complete_profile', 'has_completed_form']
+    search_fields = ['document', 'full_name', 'email']
+
+    def has_complete_profile(self, obj):
+        # Verificar si el usuario tiene un perfil completo
+        return UserProfile.objects.filter(user=obj).exists()
+    has_complete_profile.boolean = True
+    has_complete_profile.short_description = 'Caracterización'
+
+    def has_completed_form(self, obj):
+        # Verificar si el usuario tiene formularios completados
+        return CompletedForm.objects.filter(content__info__document=obj.document).exists()
+    has_completed_form.boolean = True
+    has_completed_form.short_description = 'Diagnostico'

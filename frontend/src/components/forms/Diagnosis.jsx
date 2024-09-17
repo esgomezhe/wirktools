@@ -53,13 +53,13 @@ function Diagnosis() {
   }, [error]);
 
   useEffect(() => {
-    if (isCompleted && personalData.identificationNumber) {
+    if (isCompleted && personalData.document) {
       const verifyDocument = async () => {
         try {
-          const response = await checkDocument(personalData.identificationNumber);
+          const response = await checkDocument(personalData.document);
           if (response.exists) {
             setUserData({ ...response.data, id: response.id, createdAt: response.data.created_at });
-            const categoryResponse = await fetchCategoryAverages(personalData.identificationNumber);
+            const categoryResponse = await fetchCategoryAverages(personalData.document);
             if (categoryResponse.exists) {
               setCategoryData(categoryResponse.category_averages);
             }
@@ -73,7 +73,7 @@ function Diagnosis() {
   }, [isCompleted, personalData]);
 
   const handlePersonalSubmit = (data) => {
-    const tipoIndex = forms.findIndex(form => form.title === data.companyType);
+    const tipoIndex = forms.findIndex(form => form.title === data.company_type);
     setCurrentFormIndex(tipoIndex);
     setPersonalData(data);
     setIsPersonalCompleted(true);
@@ -116,7 +116,7 @@ function Diagnosis() {
           answers: answers,
           info: personalData
         };
-        submitForm(forms[currentFormIndex].title, personalData.userName, personalData.email, submissionData)
+        submitForm(forms[currentFormIndex].title, personalData.user_name, personalData.email, submissionData)
           .then(() => {
             setIsCompleted(true);
             localStorage.removeItem('currentQuestionIndex');

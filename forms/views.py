@@ -1,7 +1,5 @@
-from django.shortcuts import render
 from rest_framework import viewsets, status
 from rest_framework.decorators import api_view
-from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .permissions import IsAuthorizedClientOrAuthenticated
@@ -21,12 +19,12 @@ class CompletedFormViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         # Extraer el número de identificación y el tipo de análisis del contenido del formulario enviado
-        identification_number = request.data.get('content', {}).get('info', {}).get('identificationNumber', None)
+        document = request.data.get('content', {}).get('info', {}).get('document', None)
         form_title = request.data.get('form_title', None)
-        if identification_number and form_title:
+        if document and form_title:
             # Buscar un formulario existente con el mismo número de identificación y tipo de formulario
             existing_form = CompletedForm.objects.filter(
-                content__info__identificationNumber=identification_number,
+                content__info__document=document,
                 form_title=form_title
             ).order_by('-created_at').first()
 
@@ -43,7 +41,7 @@ class CheckDocumentView(APIView):
     def get(self, request, document_number):
         try:
             completed_form = CompletedForm.objects.filter(
-                content__info__identificationNumber=document_number
+                content__info__document=document_number
             ).order_by('-created_at').first()
 
             if completed_form:
@@ -56,7 +54,7 @@ class CheckDocumentView(APIView):
 @api_view(['GET'])
 def get_category_averages(request, document_number):
     completed_form = CompletedForm.objects.filter(
-        content__info__identificationNumber=document_number
+        content__info__document=document_number
     ).order_by('-created_at').first()
 
     if not completed_form:

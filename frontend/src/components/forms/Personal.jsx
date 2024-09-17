@@ -49,31 +49,32 @@ const municipios = {
 function Personal({ onFormSubmit, formNames }) {
   const { user, profile, loading, updateProfile } = useContext(AuthContext);
   const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
-    userName: '',
-    companyType: '',
-    identificationType: '',
-    identificationNumber: '',
-    birthDate: '',
-    gender: '',
-    ethnicGroup: '',
-    disability: '',
+    user_name: '',
     email: '',
-    phoneNumber: '',
-    highestEducationLevel: '',
-    companyName: '',
-    companyNIT: '',
-    previousBusiness: '',
-    operationStartYear: '',
-    registeredInCCC: '',
-    mainOfficeDepartment: '',
-    mainOfficeMunicipality: '',
-    businessSector: '',
-    productType: '',
-    clientFocus: '',
-    marketReach: '',
-    businessSize: '',
-    dataConsent: false
+    document: '',
+    identification_type: '',
+    birth_date: '',
+    gender: '',
+    ethnic_group: '',
+    disability: '',
+    phone_number: '',
+    highest_education_level: '',
+    company_type: '',
+    company_name: '',
+    company_nit: '',
+    previous_business: '',
+    operation_start_year: '',
+    registered_in_ccc: '',
+    main_office_department: '',
+    main_office_municipality: '',
+    business_sector: '',
+    product_type: '',
+    client_focus: '',
+    market_reach: '',
+    business_size: '',
+    data_consent: false,
   });
 
   const [errors, setErrors] = useState({});
@@ -87,16 +88,28 @@ function Personal({ onFormSubmit, formNames }) {
 
   useEffect(() => {
     if (profile) {
+      const {
+        full_name,
+        email,
+        document,
+        user_id,
+        data_consent,
+        ...profileData
+      } = profile;
+
       setFormData(prevFormData => ({
         ...prevFormData,
-        ...profile,
-        dataConsent: profile.data_consent || false,
+        ...profileData,
+        user_name: user.full_name || '',
+        email: user.email || '',
+        document: user.document || '',
       }));
+
       if (profile.main_office_department) {
         setMunicipiosOptions(municipios[profile.main_office_department] || []);
       }
     }
-  }, [profile]);
+  }, [profile, user]);
 
   const handleChange = (event) => {
     const { name, value, type, checked } = event.target;
@@ -106,11 +119,11 @@ function Personal({ onFormSubmit, formNames }) {
     }));
     validateField(name, type === 'checkbox' ? checked : value);
 
-    if (name === 'mainOfficeDepartment') {
+    if (name === 'main_office_department') {
       setMunicipiosOptions(municipios[value] || []);
       setFormData(prevFormData => ({
         ...prevFormData,
-        mainOfficeMunicipality: ''
+        main_office_municipality: ''
       }));
     }
   };
@@ -120,16 +133,12 @@ function Personal({ onFormSubmit, formNames }) {
     const currentDate = new Date();
 
     switch (name) {
-      case 'email':
-        tempErrors[name] = /\S+@\S+\.\S+/.test(value) ? '' : 'Correo electrónico no válido';
-        break;
-      case 'identificationNumber':
-      case 'phoneNumber':
-      case 'companyNIT':
+      case 'phone_number':
+      case 'company_nit':
         tempErrors[name] = /^[0-9\- ]+$/.test(value) ? '' : 'Solo se permiten caracteres numéricos y símbolos específicos';
         break;
-      case 'birthDate':
-      case 'operationStartYear':
+      case 'birth_date':
+      case 'operation_start_year':
         const inputDate = new Date(value);
         tempErrors[name] = (inputDate <= currentDate) ? '' : 'La fecha no puede ser futura';
         break;
@@ -140,49 +149,18 @@ function Personal({ onFormSubmit, formNames }) {
     setErrors(tempErrors);
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    if (validateForm() && formData.dataConsent) {
-      try {
-        const updatedProfile = await updateUserProfile(user.token, formData);
-        alert('Perfil actualizado con éxito');
-        // Actualizar el perfil en el contexto
-        updateProfile(updatedProfile);
-        // Puedes redirigir o realizar alguna acción adicional
-        if (onFormSubmit) {
-          onFormSubmit(formData);
-        }
-      } catch (error) {
-        console.error('Error updating profile:', error);
-        alert('Ocurrió un error al actualizar el perfil');
-      }
-    } else {
-      console.error("Validation errors", errors);
-      if (!formData.dataConsent) {
-        alert('Debe autorizar el tratamiento de los datos personales para continuar.');
-      }
-    }
-  };
-
   const validateForm = () => {
     let tempErrors = {};
     const currentDate = new Date();
 
     Object.keys(formData).forEach(key => {
-      if (!formData[key] && key !== 'dataConsent') {
-        tempErrors[key] = 'Este campo es obligatorio';
+      if (key === 'phone_number' || key === 'company_nit') {
+        if (!/^[0-9\- ]+$/.test(formData[key])) {
+          tempErrors[key] = 'Solo se permiten caracteres numéricos y símbolos específicos';
+        }
       }
 
-      if (key === 'email' && formData.email && !/\S+@\S+\.\S+/.test(formData.email)) {
-        tempErrors.email = 'Correo electrónico no válido';
-      }
-
-      if ((key === 'identificationNumber' || key === 'phoneNumber' || key === 'companyNIT') &&
-        !/^[0-9\- ]+$/.test(formData[key])) {
-        tempErrors[key] = 'Solo se permiten caracteres numéricos y símbolos específicos';
-      }
-
-      if ((key === 'birthDate' || key === 'operationStartYear') && formData[key]) {
+      if ((key === 'birth_date' || key === 'operation_start_year') && formData[key]) {
         const inputDate = new Date(formData[key]);
         if (inputDate > currentDate) {
           tempErrors[key] = 'La fecha no puede ser futura';
@@ -192,6 +170,28 @@ function Personal({ onFormSubmit, formNames }) {
 
     setErrors(tempErrors);
     return Object.keys(tempErrors).length === 0;
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    if (validateForm() && formData.data_consent) {
+      try {
+        console.log('Submitting formData:', formData);
+        const updatedProfile = await updateUserProfile(user.token, formData);
+        alert('Perfil actualizado con éxito');
+  
+        updateProfile(updatedProfile);
+  
+        if (onFormSubmit) {
+          onFormSubmit(formData);
+        }
+      } catch (error) {
+        console.error('Error updating profile:', error);
+        alert(`Ocurrió un error al actualizar el perfil: ${error.message}`);
+      }
+    } else {
+      console.error("Validation errors", errors);
+    }
   };
 
   if (loading || !user) {
@@ -226,47 +226,47 @@ function Personal({ onFormSubmit, formNames }) {
 
               <div className="options__information--labels">
                 <div className='options__information--label'>
-                  <label htmlFor="userName" className="form-label">
+                  <label htmlFor="full_name" className="form-label">
                     Nombre del emprendedor/empresario *
                   </label>
                   <input
                     type="text"
-                    id="userName"
-                    name="userName"
+                    id="full_name"
+                    name="full_name"
                     placeholder="Ingresar nombre completo"
                     required
                     className="form-input"
-                    value={user.full_name}
+                    value={formData.user_name}
                     readOnly
                   />
                 </div>
 
                 <div className='options__information--label'>
-                  <label htmlFor="identificationNumber" className="form-label">
+                  <label htmlFor="document" className="form-label">
                     Número de identificación *
                   </label>
                   <input
                     type='text'
-                    id="identificationNumber"
-                    name="identificationNumber"
+                    id="document"
+                    name="document"
                     placeholder="Ingresar número de identificación"
                     required
                     className="form-input"
-                    value={user.document}
+                    value={formData.document}
                     readOnly
                   />
                 </div>
 
                 <div className='options__information--label'>
-                  <label htmlFor="ethnicGroup" className="form-label">
-                    Se autorreconoce o pertenece a alguno de estos grupos étnicos * {errors.ethnicGroup && <span className="error-message">{errors.ethnicGroup}</span>}
+                  <label htmlFor="ethnic_group" className="form-label">
+                    Se autorreconoce o pertenece a alguno de estos grupos étnicos * {errors.ethnic_group && <span className="error-message">{errors.ethnic_group}</span>}
                   </label>
                   <select
-                    id="ethnicGroup"
-                    name="ethnicGroup"
+                    id="ethnic_group"
+                    name="ethnic_group"
                     required
                     className="form-select"
-                    value={formData.ethnicGroup}
+                    value={formData.ethnic_group}
                     onChange={handleChange}
                   >
                     <option value="" disabled>Seleccione grupo étnico</option>
@@ -280,17 +280,17 @@ function Personal({ onFormSubmit, formNames }) {
                 </div>
 
                 <div className='options__information--label'>
-                  <label htmlFor="phoneNumber" className="form-label">
-                    Teléfono/celular de contacto * {errors.phoneNumber && <span className="error-message">{errors.phoneNumber}</span>}
+                  <label htmlFor="phone_number" className="form-label">
+                    Teléfono/celular de contacto * {errors.phone_number && <span className="error-message">{errors.phone_number}</span>}
                   </label>
                   <input
                     type="tel"
-                    id="phoneNumber"
-                    name="phoneNumber"
+                    id="phone_number"
+                    name="phone_number"
                     placeholder="Ingresar número de contacto"
                     required
                     className="form-input"
-                    value={formData.phoneNumber}
+                    value={formData.phone_number}
                     onChange={handleChange}
                   />
                 </div>
@@ -299,15 +299,15 @@ function Personal({ onFormSubmit, formNames }) {
               <div className="options__information--labels">
 
                 <div className='options__information--label'>
-                  <label htmlFor="companyType" className="form-label">
-                    Tipo de Análisis * {errors.companyType && <span className="error-message">{errors.companyType}</span>}
+                  <label htmlFor="company_type" className="form-label">
+                    Tipo de Análisis * {errors.company_type && <span className="error-message">{errors.company_type}</span>}
                   </label>
                   <select
-                    id="companyType"
-                    name="companyType"
+                    id="company_type"
+                    name="company_type"
                     required
                     className="form-select"
-                    value={formData.companyType}
+                    value={formData.company_type}
                     onChange={handleChange}
                   >
                     <option value="" disabled>Seleccione tipo de análisis</option>
@@ -318,16 +318,16 @@ function Personal({ onFormSubmit, formNames }) {
                 </div>
 
                 <div className='options__information--label'>
-                  <label htmlFor="birthDate" className="form-label">
-                    Fecha de nacimiento * {errors.birthDate && <span className="error-message">{errors.birthDate}</span>}
+                  <label htmlFor="birth_date" className="form-label">
+                    Fecha de nacimiento * {errors.birth_date && <span className="error-message">{errors.birth_date}</span>}
                   </label>
                   <input
                     type="date"
-                    id="birthDate"
-                    name="birthDate"
+                    id="birth_date"
+                    name="birth_date"
                     required
                     className="form-input"
-                    value={formData.birthDate}
+                    value={formData.birth_date}
                     onChange={handleChange}
                   />
                 </div>
@@ -347,7 +347,7 @@ function Personal({ onFormSubmit, formNames }) {
                     <option value="" disabled>Seleccione si tiene alguna discapacidad</option>
                     <option value="cognitiva">Cognitiva</option>
                     <option value="mental">Mental</option>
-                    <option value="múltiple">Múltiple</option>
+                    <option value="multiple">Múltiple</option>
                     <option value="sensorial_auditiva">Sensorial Auditiva</option>
                     <option value="sensorial_física">Sensorial Física</option>
                     <option value="sensorial_visual">Sensorial Visual</option>
@@ -356,15 +356,15 @@ function Personal({ onFormSubmit, formNames }) {
                 </div>
 
                 <div className='options__information--label'>
-                  <label htmlFor="highestEducationLevel" className="form-label">
-                    Nivel educativo más alto que has completado * {errors.highestEducationLevel && <span className="error-message">{errors.highestEducationLevel}</span>}
+                  <label htmlFor="highest_education_level" className="form-label">
+                    Nivel educativo más alto que has completado * {errors.highest_education_level && <span className="error-message">{errors.highest_education_level}</span>}
                   </label>
                   <select
-                    id="highestEducationLevel"
-                    name="highestEducationLevel"
+                    id="highest_education_level"
+                    name="highest_education_level"
                     required
                     className="form-select"
-                    value={formData.highestEducationLevel}
+                    value={formData.highest_education_level}
                     onChange={handleChange}
                   >
                     <option value="" disabled>Seleccione nivel educativo</option>
@@ -381,15 +381,15 @@ function Personal({ onFormSubmit, formNames }) {
               <div className="options__information--labels">
 
                 <div className='options__information--label'>
-                  <label htmlFor="identificationType" className="form-label">
-                    Tipo de documento de identificación * {errors.identificationType && <span className="error-message">{errors.identificationType}</span>}
+                  <label htmlFor="identification_type" className="form-label">
+                    Tipo de documento de identificación * {errors.identification_type && <span className="error-message">{errors.identification_type}</span>}
                   </label>
                   <select
-                    id="identificationType"
-                    name="identificationType"
+                    id="identification_type"
+                    name="identification_type"
                     required
                     className="form-select"
-                    value={formData.identificationType}
+                    value={formData.identification_type}
                     onChange={handleChange}
                   >
                     <option value="" disabled>Seleccione un tipo de documento</option>
@@ -429,7 +429,7 @@ function Personal({ onFormSubmit, formNames }) {
                     placeholder="example@example.com"
                     required
                     className="form-input"
-                    value={user.email}
+                    value={formData.email}
                     readOnly
                   />
                 </div>
@@ -446,48 +446,48 @@ function Personal({ onFormSubmit, formNames }) {
               <div className="options__information--labels">
 
                 <div className='options__information--label'>
-                  <label htmlFor="companyName" className="form-label">
-                    Nombre de empresa * {errors.companyName && <span className="error-message">{errors.companyName}</span>}
+                  <label htmlFor="company_name" className="form-label">
+                    Nombre de empresa * {errors.company_name && <span className="error-message">{errors.company_name}</span>}
                   </label>
                   <input
                     type="text"
-                    id="companyName"
-                    name="companyName"
+                    id="company_name"
+                    name="company_name"
                     placeholder="Ingrese el nombre de la empresa"
                     required
                     className="form-input"
-                    value={formData.companyName}
+                    value={formData.company_name}
                     onChange={handleChange}
                   />
                 </div>
 
                 <div className='options__information--label'>
-                  <label htmlFor="operationStartYear" className="form-label">
-                    Año en el que inició operaciones * {errors.operationStartYear && <span className="error-message">{errors.operationStartYear}</span>}
+                  <label htmlFor="operation_start_year" className="form-label">
+                    Año en el que inició operaciones * {errors.operation_start_year && <span className="error-message">{errors.operation_start_year}</span>}
                   </label>
                   <input
                     type="date"
-                    id="operationStartYear"
-                    name="operationStartYear"
+                    id="operation_start_year"
+                    name="operation_start_year"
                     required
                     className="form-input"
-                    value={formData.operationStartYear}
+                    value={formData.operation_start_year}
                     onChange={handleChange}
                   />
                 </div>
 
                 <div className='options__information--label'>
-                  <label htmlFor="mainOfficeMunicipality" className="form-label">
-                    Municipio donde se ubica la sede principal de la empresa * {errors.mainOfficeMunicipality && <span className="error-message">{errors.mainOfficeMunicipality}</span>}
+                  <label htmlFor="main_office_municipality" className="form-label">
+                    Municipio donde se ubica la sede principal de la empresa * {errors.main_office_municipality && <span className="error-message">{errors.main_office_municipality}</span>}
                   </label>
                   <select
-                    id="mainOfficeMunicipality"
-                    name="mainOfficeMunicipality"
+                    id="main_office_municipality"
+                    name="main_office_municipality"
                     required
                     className="form-select"
-                    value={formData.mainOfficeMunicipality}
+                    value={formData.main_office_municipality}
                     onChange={handleChange}
-                    disabled={!formData.mainOfficeDepartment}
+                    disabled={!formData.main_office_department}
                   >
                     <option value="" disabled>Seleccione municipio</option>
                     {municipiosOptions.map(municipio => (
@@ -497,15 +497,15 @@ function Personal({ onFormSubmit, formNames }) {
                 </div>
 
                 <div className='options__information--label'>
-                  <label htmlFor="marketReach" className="form-label">
-                    ¿Cuál es el tipo de mercado al que llega actualmente tu emprendimiento? * {errors.marketReach && <span className="error-message">{errors.marketReach}</span>}
+                  <label htmlFor="market_reach" className="form-label">
+                    ¿Cuál es el tipo de mercado al que llega actualmente tu emprendimiento? * {errors.market_reach && <span className="error-message">{errors.market_reach}</span>}
                   </label>
                   <select
-                    id="marketReach"
-                    name="marketReach"
+                    id="market_reach"
+                    name="market_reach"
                     required
                     className="form-select"
-                    value={formData.marketReach}
+                    value={formData.market_reach}
                     onChange={handleChange}
                   >
                     <option value="" disabled>Seleccione el alcance de mercado</option>
@@ -521,31 +521,31 @@ function Personal({ onFormSubmit, formNames }) {
               <div className="options__information--labels">
 
                 <div className='options__information--label'>
-                  <label htmlFor="companyNIT" className="form-label">
-                    NIT de empresa (O número de documento en caso de no tenerlo) * {errors.companyNIT && <span className="error-message">{errors.companyNIT}</span>}
+                  <label htmlFor="company_nit" className="form-label">
+                    NIT de empresa (O número de documento en caso de no tenerlo) * {errors.company_nit && <span className="error-message">{errors.company_nit}</span>}
                   </label>
                   <input
                     type="text"
-                    id="companyNIT"
-                    name="companyNIT"
-                    placeholder={errors.companyNIT || 'Ej: 51059231-9'}
+                    id="company_nit"
+                    name="company_nit"
+                    placeholder={errors.company_nit || 'Ej: 51059231-9'}
                     required
                     className="form-input"
-                    value={formData.companyNIT}
+                    value={formData.company_nit}
                     onChange={handleChange}
                   />
                 </div>
 
                 <div className='options__information--label'>
-                  <label htmlFor="registeredInCCC" className="form-label">
-                    Seleccione la cámara de comercio donde se encuentra matriculado * {errors.registeredInCCC && <span className="error-message">{errors.registeredInCCC}</span>}
+                  <label htmlFor="registered_in_ccc" className="form-label">
+                    Seleccione la cámara de comercio donde se encuentra matriculado * {errors.registered_in_ccc && <span className="error-message">{errors.registered_in_ccc}</span>}
                   </label>
                   <select
-                    id="registeredInCCC"
-                    name="registeredInCCC"
+                    id="registered_in_ccc"
+                    name="registered_in_ccc"
                     required
                     className="form-select"
-                    value={formData.registeredInCCC}
+                    value={formData.registered_in_ccc}
                     onChange={handleChange}
                   >
                     <option value="" disabled>Seleccione una opción</option>
@@ -579,15 +579,15 @@ function Personal({ onFormSubmit, formNames }) {
                 </div>
 
                 <div className='options__information--label'>
-                  <label htmlFor="businessSector" className="form-label">
-                    ¿Cuál es el sector principal en el que se encuentra tu empresa? * {errors.businessSector && <span className="error-message">{errors.businessSector}</span>}
+                  <label htmlFor="business_sector" className="form-label">
+                    ¿Cuál es el sector principal en el que se encuentra tu empresa? * {errors.business_sector && <span className="error-message">{errors.business_sector}</span>}
                   </label>
                   <select
-                    id="businessSector"
-                    name="businessSector"
+                    id="business_sector"
+                    name="business_sector"
                     required
                     className="form-select"
-                    value={formData.businessSector}
+                    value={formData.business_sector}
                     onChange={handleChange}
                   >
                     <option value="" disabled>Seleccione sector principal</option>
@@ -615,15 +615,15 @@ function Personal({ onFormSubmit, formNames }) {
                 </div>
 
                 <div className='options__information--label'>
-                  <label htmlFor="businessSize" className="form-label">
-                    ¿De qué tamaño es tu empresa? * {errors.businessSize && <span className="error-message">{errors.businessSize}</span>}
+                  <label htmlFor="business_size" className="form-label">
+                    ¿De qué tamaño es tu empresa? * {errors.business_size && <span className="error-message">{errors.business_size}</span>}
                   </label>
                   <select
-                    id="businessSize"
-                    name="businessSize"
+                    id="business_size"
+                    name="business_size"
                     required
                     className="form-select"
-                    value={formData.businessSize}
+                    value={formData.business_size}
                     onChange={handleChange}
                   >
                     <option value="" disabled>Seleccione el tamaño de la empresa</option>
@@ -637,15 +637,15 @@ function Personal({ onFormSubmit, formNames }) {
               <div className="options__information--labels">
 
                 <div className='options__information--label'>
-                  <label htmlFor="previousBusiness" className="form-label">
-                    Antes de este emprendimiento/negocio/empresa, ¿Habías creado otra empresa? * {errors.previousBusiness && <span className="error-message">{errors.previousBusiness}</span>}
+                  <label htmlFor="previous_business" className="form-label">
+                    Antes de este emprendimiento/negocio/empresa, ¿Habías creado otra empresa? * {errors.previous_business && <span className="error-message">{errors.previous_business}</span>}
                   </label>
                   <select
-                    id="previousBusiness"
-                    name="previousBusiness"
+                    id="previous_business"
+                    name="previous_business"
                     required
                     className="form-select"
-                    value={formData.previousBusiness}
+                    value={formData.previous_business}
                     onChange={handleChange}
                   >
                     <option value="" disabled>Seleccione una opción</option>
@@ -655,15 +655,15 @@ function Personal({ onFormSubmit, formNames }) {
                 </div>
 
                 <div className='options__information--label'>
-                  <label htmlFor="mainOfficeDepartment" className="form-label">
-                    Departamento donde se ubica la sede principal de la empresa * {errors.mainOfficeDepartment && <span className="error-message">{errors.mainOfficeDepartment}</span>}
+                  <label htmlFor="main_office_department" className="form-label">
+                    Departamento donde se ubica la sede principal de la empresa * {errors.main_office_department && <span className="error-message">{errors.main_office_department}</span>}
                   </label>
                   <select
-                    id="mainOfficeDepartment"
-                    name="mainOfficeDepartment"
+                    id="main_office_department"
+                    name="main_office_department"
                     required
                     className="form-select"
-                    value={formData.mainOfficeDepartment}
+                    value={formData.main_office_department}
                     onChange={handleChange}
                   >
                     <option value="" disabled>Seleccione departamento</option>
@@ -674,15 +674,15 @@ function Personal({ onFormSubmit, formNames }) {
                 </div>
 
                 <div className='options__information--label'>
-                  <label htmlFor="clientFocus" className="form-label">
-                    ¿Cuál es el tipo de cliente en el que se enfoca tu empresa? * {errors.clientFocus && <span className="error-message">{errors.clientFocus}</span>}
+                  <label htmlFor="client_focus" className="form-label">
+                    ¿Cuál es el tipo de cliente en el que se enfoca tu empresa? * {errors.client_focus && <span className="error-message">{errors.client_focus}</span>}
                   </label>
                   <select
-                    id="clientFocus"
-                    name="clientFocus"
+                    id="client_focus"
+                    name="client_focus"
                     required
                     className="form-select"
-                    value={formData.clientFocus}
+                    value={formData.client_focus}
                     onChange={handleChange}
                   >
                     <option value="" disabled>Seleccione el tipo de cliente</option>
@@ -693,15 +693,15 @@ function Personal({ onFormSubmit, formNames }) {
                 </div>
 
                 <div className='options__information--label'>
-                  <label htmlFor="productType" className="form-label">
-                    ¿Qué tipo de productos y/o servicios ofrece tu empresa? * {errors.productType && <span className="error-message">{errors.productType}</span>}
+                  <label htmlFor="product_type" className="form-label">
+                    ¿Qué tipo de productos y/o servicios ofrece tu empresa? * {errors.product_type && <span className="error-message">{errors.product_type}</span>}
                   </label>
                   <select
-                    id="productType"
-                    name="productType"
+                    id="product_type"
+                    name="product_type"
                     required
                     className="form-select"
-                    value={formData.productType}
+                    value={formData.product_type}
                     onChange={handleChange}
                   >
                     <option value="" disabled>Seleccione el tipo de producto o servicio</option>
@@ -723,18 +723,18 @@ function Personal({ onFormSubmit, formNames }) {
             <div className='data__treatment--check'>
               <input
                 type="checkbox"
-                id="dataConsent"
-                name="dataConsent"
-                checked={formData.dataConsent}
+                id="data_consent"
+                name="data_consent"
+                checked={formData.data_consent}
                 onChange={handleChange}
               />
-              <label htmlFor="dataConsent" style={{ paddingLeft: '5px' }}>
-                Autorizo tratamiento de datos personales. {errors.dataConsent && <span className="error-message">{errors.dataConsent || ''}</span>}
+              <label htmlFor="data_consent" style={{ paddingLeft: '5px' }}>
+                Autorizo tratamiento de datos personales. {!formData.data_consent && (<span className="error-message">Debe autorizar el tratamiento de los datos personales para continuar.</span>)}
               </label>
             </div>
           </div>
           <div className='button__container'>
-            <button type="submit" className="form-submit-button" disabled={!formData.dataConsent}>Continuar con el autodiagnóstico</button>
+            <button type="submit" className="form-submit-button" disabled={!formData.data_consent}>Continuar con el autodiagnóstico</button>
           </div>
         </form>
       </div>

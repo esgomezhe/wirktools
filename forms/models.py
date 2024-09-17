@@ -4,6 +4,16 @@ from django.core.mail import send_mail
 from ckeditor.fields import RichTextField
 from django.utils.text import slugify
 from .utils import calculate_category_averages
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
+class UserProxy(User):
+    class Meta:
+        proxy = True
+        app_label = 'forms'
+        verbose_name = 'Usuario'
+        verbose_name_plural = 'Usuarios'
 
 class Category(models.Model):
     name = models.CharField(max_length=255, unique=True)

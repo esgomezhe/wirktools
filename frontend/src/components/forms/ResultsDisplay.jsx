@@ -31,7 +31,7 @@ const ResultsDisplay = ({ userData, categoryData }) => {
         </div>
         <div className="notice__title--container">
           <h4 className='notice__title'>
-            {`Bienvenido, ${userData?.info?.userName || 'Usuario'}! Estos son tus resultados de ${userData?.info?.companyType || ''}`}
+            {`Bienvenido, ${userData?.info?.full_name || 'Usuario'}! Estos son tus resultados de ${userData?.info?.company_type || ''}`}
           </h4>
         </div>
       </div>
