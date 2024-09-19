@@ -82,7 +82,12 @@ function Header() {
         <nav id="navbar" className="navbar">
           <ul>
             <li><Link className="active" to='/'>Home</Link></li>
-            <li><Link to='/autodiagnostico/'>Autodiagnostico</Link></li>
+            <li className="dropdown"><Link to='#'>Madurez Digital<i className="bi bi-chevron-down"></i></Link>
+              <ul>
+                <li><Link to='/autodiagnostico/'>Autodiagnostico</Link></li>
+                <li><Link to='/lineabase/'>Línea Base</Link></li>
+              </ul>
+            </li>
             <li><Link to='/mentorias/'>Mentorias</Link></li>
             <li className="dropdown">
               {user ? (

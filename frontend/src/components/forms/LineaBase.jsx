@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { checkDocument, submitForm } from '../../utils/apiServices';
 import { useNavigate } from 'react-router-dom';
 import '../../stylesheets/lineabase.css';
@@ -6,9 +6,10 @@ import figure from '../../img/svg/formulario_figure.svg';
 import home from '../../img/svg/home.svg';
 import arrow from '../../img/svg/arrow.svg';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../../contexts/AuthContext';
 
 function LineaBase() {
-  const [documentNumber, setDocumentNumber] = useState('');
+  const { user } = useContext(AuthContext);
   const [isDocumentVerified, setIsDocumentVerified] = useState(false);
   const [userData, setUserData] = useState(null);
   const [formData, setFormData] = useState({
@@ -46,26 +47,29 @@ function LineaBase() {
   const [formSubmitted, setFormSubmitted] = useState(false);
   const navigate = useNavigate();
 
-  const handleDocumentChange = (event) => {
-    setDocumentNumber(event.target.value);
-  };
-
-  const handleDocumentSubmit = async (event) => {
-    event.preventDefault();
-    try {
-      const response = await checkDocument(documentNumber);
-      console.log(response); // Verifica la respuesta de la API
-      if (response.exists) {
-        setUserData({ ...response.data, id: response.id, createdAt: response.data.created_at });
-        setIsDocumentVerified(true);
-        setErrors({});
-      } else {
-        setErrors({ document: 'No has realizado el autodiagnóstico.' });
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        if (user && user.document) {
+          const response = await checkDocument(user.document);
+          console.log(response);
+          if (response.exists) {
+            setUserData({ ...response.data, id: response.id, createdAt: response.data.created_at });
+            setIsDocumentVerified(true);
+            setErrors({});
+          } else {
+            setErrors({ document: 'No has realizado el autodiagnóstico.' });
+          }
+        } else {
+          setErrors({ document: 'Usuario no autenticado.' });
+        }
+      } catch (error) {
+        setErrors({ document: 'Error al verificar el documento.' });
       }
-    } catch (error) {
-      setErrors({ document: 'Error al verificar el documento.' });
-    }
-  };
+    };
+
+    fetchUserData();
+  }, [user]);
 
   const validateField = (name, value) => {
     let tempErrors = { ...errors };
@@ -191,39 +195,24 @@ function LineaBase() {
         </div>
         <div className="notice__title--container">
           <h4 className='notice__title'>
-            {isDocumentVerified && userData ? `Bienvenido, ${userData.info?.full_name || 'Usuario'}!` : 'Ingrese su número de documento para continuar'}
+            {isDocumentVerified && userData ? `Bienvenido, ${userData.info?.full_name || 'Usuario'}!` : 'Cargando...'}
           </h4>
         </div>
       </div>
 
-      {!isDocumentVerified ? (
-        <div className="document-check">
-          <form onSubmit={handleDocumentSubmit} className="document-check-form">
-            <label htmlFor="documentNumber" className="form-label">Ingrese su número de documento</label>
-            <input
-              type="text"
-              id="documentNumber"
-              name="documentNumber"
-              value={documentNumber}
-              onChange={handleDocumentChange}
-              required
-              className="form-input"
-            />
-            {errors.document && (
-              <div className="error-container">
-                <p className="error-message">{errors.document}</p>
-                <button type="button" className="autodiagnostico-button" onClick={handleAutodiagnosticoClick}>
-                  Realizar Autodiagnóstico
-                </button>
-              </div>
-            )}
-            <button type="submit" className="form-submit-button">Verificar</button>
-          </form>
+      {errors.document ? (
+        <div className="error-container">
+          <p className="error-message">{errors.document}</p>
+          <button type="button" className="autodiagnostico-button" onClick={handleAutodiagnosticoClick}>
+            Realizar Autodiagnóstico
+          </button>
         </div>
-      ) : (
-        !formSubmitted && (
-          <div className="form-container">
-            <form onSubmit={handleSubmit} noValidate className='wirk__form'>
+      ) : !isDocumentVerified ? (
+        <p>Cargando...</p>
+      ) : !formSubmitted ? (
+        <div className="form-container">
+          <form onSubmit={handleSubmit} noValidate className='wirk__form'>
+          <form onSubmit={handleSubmit} noValidate className='wirk__form'>
               <div className="options__information--container">
                 <h5 className='options__information--title'>Seguimiento Ruta - Transformación Digital</h5>
 
@@ -528,11 +517,9 @@ function LineaBase() {
                 </button>
               </div>
             </form>
-          </div>
-        )
-      )}
-
-      {formSubmitted && (
+          </form>
+        </div>
+      ) : (
         <section className="thank_you">
           <div className='thank_you__image'>
             <img src={require('../../img/grow-you-business.png')} alt="Thank You"/>

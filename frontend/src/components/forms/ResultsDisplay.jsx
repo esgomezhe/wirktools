@@ -40,7 +40,7 @@ const ResultsDisplay = ({ userData, categoryData }) => {
         <div className="slider-container">
           <Slider {...sliderSettings}>
             {categoryData.map((category, index) => (
-              <PercentageChart category={category} />
+              <PercentageChart key={index} category={category} />
             ))}
           </Slider>
         </div>
