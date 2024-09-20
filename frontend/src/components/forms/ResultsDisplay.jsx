@@ -27,7 +27,7 @@ const ResultsDisplay = ({ userData, categoryData }) => {
         <div className="notice__options">
           <Link to={'/'}><img src={home} alt="home" /> </Link>
           <img src={arrow} alt="arrow" />
-          <p className='notice__options--text'>Formulario de línea base</p>
+          <p className='notice__options--text'>Resultados</p>
         </div>
         <div className="notice__title--container">
           <h4 className='notice__title'>

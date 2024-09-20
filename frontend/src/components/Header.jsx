@@ -86,6 +86,7 @@ function Header() {
               <ul>
                 <li><Link to='/autodiagnostico/'>Autodiagnostico</Link></li>
                 <li><Link to='/lineabase/'>Línea Base</Link></li>
+                <li><Link to='/resultados/'>Resultados</Link></li>
               </ul>
             </li>
             <li><Link to='/mentorias/'>Mentorias</Link></li>
@@ -94,7 +95,6 @@ function Header() {
                 <>
                   <Link to='#'><span>{user.full_name}</span> <i className="bi bi-chevron-down"></i></Link>
                   <ul>
-                    <li><Link to='/resultados/'>Resultados</Link></li>
                     <li><Link to='#' onClick={handleLogout}>Salir</Link></li>
                   </ul>
                 </>
