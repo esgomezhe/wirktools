@@ -1,18 +1,20 @@
-import React from 'react'
-import Hero from '../components/home/Hero'
-import FirstSection from '../components/home/FirstSection'
-import SecondSection from '../components/home/SecondSection'
-import ThirdSection from '../components/home/ThirdSection'
+import React from "react";
+import HeroSection from "../components/home/HeroSection";
+import ServicesSection from "../components/home/ServicesSection";
+import WhyUsSection from "../components/home/WhyUsSection";
+import FeacturesSection from "../components/home/FeaturesSection";
 
 function Home() {
   return (
     <>
-      <Hero />
-      <FirstSection />
-      <SecondSection />
-      <ThirdSection />
+      <HeroSection />
+      <main id="main">
+        <ServicesSection />
+        <WhyUsSection />
+        <FeacturesSection />
+      </main>
     </>
-  )
+  );
 }
 
-export default Home
+export default Home;

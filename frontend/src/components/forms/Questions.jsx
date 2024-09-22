@@ -1,11 +1,11 @@
 import React from 'react';
-import '../../stylesheets/question.css';
+import '../../stylesheets/questions.css';
 import { Link } from 'react-router-dom';
 import home from '../../img/svg/home.svg';
 import arrow from '../../img/svg/arrow.svg';
 import figure from '../../img/svg/formulario_figure.svg';
 
-function Questions({ form, currentQuestionIndex, selectedAnswer, onSelectAnswer, onNavigate, isSubmitting }) {
+function Question({ form, currentQuestionIndex, selectedAnswer, onSelectAnswer, onNavigate, isSubmitting }) {
 
   const progress = Math.floor((currentQuestionIndex / form.questions.length) * 100);
 
@@ -68,4 +68,4 @@ function Questions({ form, currentQuestionIndex, selectedAnswer, onSelectAnswer,
   );
 }
 
-export default Questions;
+export default Question;

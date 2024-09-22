@@ -60,33 +60,6 @@ export const getUserDetails = async (token) => {
   return response.data;
 };
 
-export const getUserProfile = async (token) => {
-  const response = await axios.get(`${API_BASE_URL}/users/profile/`, {
-    headers: {
-      'Authorization': `Bearer ${token}`,
-      'X-CSRFToken': getCsrfToken(),
-    },
-    withCredentials: true,
-  });
-  return response.data;
-};
-export const updateUserProfile = async (token, formData) => {
-  try {
-    const response = await axios.patch(`${API_BASE_URL}/users/profile/`, formData, {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'X-CSRFToken': getCsrfToken(),
-        'Content-Type': 'application/json',
-      },
-      withCredentials: true,
-    });
-    return response.data;
-  } catch (error) {
-    // Manejo de errores
-    throw error;
-  }
-};
-
 // Funciones para los formularios
 
 export const fetchForms = async () => {
@@ -117,10 +90,10 @@ export const checkDocument = async (documentNumber) => {
   return response.json();
 };
 
-export const submitForm = async (formTitle, userName, email, dataToSubmit) => {
+export const submitForm = async (formTitle, idenfiticationNumber, email, dataToSubmit) => {
   const completedFormData = {
     form_title: formTitle,
-    user: userName,
+    user: idenfiticationNumber,
     email: email,
     content: dataToSubmit,
   };

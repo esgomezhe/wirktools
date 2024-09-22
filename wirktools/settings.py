@@ -23,6 +23,7 @@ else:
     CSRF_TRUSTED_ORIGINS = config('PROD_CSRF_TRUSTED_ORIGINS', cast=Csv())
 
 # Application definition
+
 DJANGO_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -31,11 +32,13 @@ DJANGO_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
+
 PROJECT_APPS = [
     'forms',
     'mentoring',
     'users',
 ]
+
 THIRD_PARTY_APPS = [
     'nested_admin',
     'rest_framework',
@@ -44,6 +47,7 @@ THIRD_PARTY_APPS = [
     'ckeditor',
     'import_export',
 ]
+
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + THIRD_PARTY_APPS
 
 # CKEditor
@@ -112,13 +116,17 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 LANGUAGE_CODE = 'es'
+
 TIME_ZONE = 'America/Bogota'
+
 USE_I18N = True
+
 USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "frontend/build/static"),
 ]
@@ -148,6 +156,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     ),
 }
+
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),  # Ajusta según sea necesario
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
@@ -159,9 +168,11 @@ SIMPLE_JWT = {
     'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
     'TOKEN_TYPE_CLAIM': 'token_type',
 }
+
 AUTH_USER_MODEL = 'users.User'
 
 # CORS and CSRF settings
+
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_METHODS = [
     'DELETE',
@@ -182,6 +193,7 @@ CORS_ALLOW_HEADERS = [
     'x-csrftoken',
     'x-requested-with',
 ]
+
 CORS_ALLOW_CREDENTIALS = True
 CSRF_COOKIE_NAME = "csrftoken"
 CSRF_TRUSTED_ORIGINS = config('DEV_CSRF_TRUSTED_ORIGINS', cast=Csv()) if DEBUG else config('PROD_CSRF_TRUSTED_ORIGINS', cast=Csv())

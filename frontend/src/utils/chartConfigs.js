@@ -1,19 +1,3 @@
-// Función para calcular el puntaje de Intensidad Digital
-export const calculateIntensidadDigitalScore = (categoryAverages) => {
-  const categories = ['Capacidades Digitales', 'Experiencia del Cliente', 'Resultados', 'Tecnologías Digitales Emergentes'];
-  const filteredAverages = categoryAverages.filter(cat => categories.includes(cat.category.name));
-  const total = filteredAverages.reduce((acc, curr) => acc + curr.average, 0);
-  return filteredAverages.length > 0 ? total / filteredAverages.length : 0;
-};
-
-// Función para calcular el puntaje de Gestión Transformacional
-export const calculateGestionTransformacionalScore = (categoryAverages) => {
-  const categories = ['Estrategia Digital', 'Cultura Digital', 'Innovación y Colaboración', 'Gobierno Digital'];
-  const filteredAverages = categoryAverages.filter(cat => categories.includes(cat.category.name));
-  const total = filteredAverages.reduce((acc, curr) => acc + curr.average, 0);
-  return filteredAverages.length > 0 ? total / filteredAverages.length : 0;
-};
-
 // Flecha derecha del slide
 export function SampleNextArrow(props) {
   const { className, style, onClick } = props;

@@ -8,7 +8,7 @@ function RadarChart({ categories }) {
   const getRadarChartData = (categories) => {
     return {
       data: {
-        labels: categories.map(ca => ca.category.name),
+        labels: categories.map(ca => ca.name),
         datasets: [
           {
             label: 'Puntaje Promedio',
@@ -29,6 +29,7 @@ function RadarChart({ categories }) {
             suggestedMin: 0,
             suggestedMax: 5, // Asegurarse de que el máximo del eje R sea 5
             pointLabels: {
+              display: false, // No mostrar los nombres de las categorías
               color: '#FFFFFF' // Color del texto en blanco
             },
             ticks: {

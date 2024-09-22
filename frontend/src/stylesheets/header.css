@@ -3,14 +3,14 @@
   box-shadow: 0 4px 27px 0 rgba(0, 0, 0, 0.15);
   border: solid 1px #e8e8e8;
   padding: 13px 0;
-  position: flex;
+  position: fixed;
   top: 0;
   z-index: 1;
   width: 100%;
 }
 
 .header__container {
-  display: inline-flex;
+  display: flex;
   width: 95%;
   margin: 0 auto;
   justify-content: space-between;

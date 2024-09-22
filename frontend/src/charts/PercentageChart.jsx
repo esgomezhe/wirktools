@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Popup from '../components/Popup';
-import '../stylesheets/formCompletion.css';
+import '../stylesheets/results.css';
 
 const PercentageChart = ({ category }) => {
   const radius = 15.9155;
@@ -14,7 +14,7 @@ const PercentageChart = ({ category }) => {
   return (
     <div className='results-category'>
       <div className="survey-container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px' }}>
-        <h5 style={{ fontSize: '14px', marginBottom: '0', width: '63%' }}>{category.category.name}</h5>
+        <h5 style={{ fontSize: '14px', marginBottom: '0', width: '63%' }}>{category.name}</h5>
         <div style={{ fontSize: '12px', color: '#fff', borderRadius: '100px', border: '3px solid rgba(250, 250, 250, 0.34)', padding: '2px 10px' }}>{category.average.toFixed()} / 5</div>
       </div>
       <div className="circle-container" style={{ position: 'relative', width: '150px', height: '150px', margin: '20px auto' }}>
@@ -34,7 +34,7 @@ const PercentageChart = ({ category }) => {
       <div className='button-container'>
         <button className='results-button' onClick={togglePopup}>Ver detalle</button>
         <Popup isOpen={isPopupOpen} onClose={togglePopup}>
-          <h2 style={{ color: 'black' }}>{category.category.name}:</h2>
+          <h2 style={{ color: 'black' }}>{category.name}:</h2>
           <div style={{ color: 'black' }} dangerouslySetInnerHTML={{ __html: category.plan }}></div>
         </Popup>
       </div>

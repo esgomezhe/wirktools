@@ -1,11 +1,9 @@
-import React, { useState, useContext, useEffect } from 'react';
-import '../../stylesheets/caracterizacion.css';
+import React, { useState } from 'react';
+import '../../stylesheets/personal.css';
 import figure from '../../img/svg/formulario_figure.svg';
 import home from '../../img/svg/home.svg';
 import arrow from '../../img/svg/arrow.svg';
-import { Link, useNavigate } from 'react-router-dom';
-import { AuthContext } from '../../contexts/AuthContext';
-import { updateUserProfile } from '../../utils/apiServices';
+import { Link } from 'react-router-dom';
 
 const departamentos = [
   'Amazonas', 'Antioquia', 'Arauca', 'Atlántico', 'Bolívar', 'Boyacá', 'Caldas', 'Caquetá', 'Casanare', 'Cauca', 'Cesar', 'Chocó', 'Córdoba', 'Cundinamarca', 'Guainía', 'Guaviare', 'Huila', 'La Guajira', 'Magdalena', 'Meta', 'Nariño', 'Norte de Santander', 'Putumayo', 'Quindío', 'Risaralda', 'San Andrés y Providencia', 'Santander', 'Sucre', 'Tolima', 'Valle del Cauca', 'Vaupés', 'Vichada'
@@ -47,69 +45,25 @@ const municipios = {
 };
 
 function Personal({ onFormSubmit, formNames }) {
-  const { user, profile, loading, updateProfile } = useContext(AuthContext);
-  const navigate = useNavigate();
-
   const [formData, setFormData] = useState({
-    user_name: '',
+    userName: '',
+    analysisType: '',
+    identificationType: '',
+    identificationNumber: '',
+    birthDate: '',
     email: '',
-    document: '',
-    identification_type: '',
-    birth_date: '',
-    gender: '',
-    ethnic_group: '',
-    disability: '',
-    phone_number: '',
-    highest_education_level: '',
-    company_type: '',
-    company_name: '',
-    company_nit: '',
-    previous_business: '',
-    operation_start_year: '',
-    registered_in_ccc: '',
-    main_office_department: '',
-    main_office_municipality: '',
-    business_sector: '',
-    product_type: '',
-    client_focus: '',
-    market_reach: '',
-    business_size: '',
-    data_consent: false,
+    phoneNumber: '',
+    companyName: '',
+    companyNIT: '',
+    operationStartYear: '',
+    mainOfficeDepartment: '',
+    mainOfficeMunicipality: '',
+    marketReach: '',
+    dataConsent: false
   });
 
   const [errors, setErrors] = useState({});
   const [municipiosOptions, setMunicipiosOptions] = useState([]);
-
-  useEffect(() => {
-    if (!loading && !user) {
-      navigate('/login');
-    }
-  }, [loading, user, navigate]);
-
-  useEffect(() => {
-    if (profile) {
-      const {
-        full_name,
-        email,
-        document,
-        user_id,
-        data_consent,
-        ...profileData
-      } = profile;
-
-      setFormData(prevFormData => ({
-        ...prevFormData,
-        ...profileData,
-        user_name: user.full_name || '',
-        email: user.email || '',
-        document: user.document || '',
-      }));
-
-      if (profile.main_office_department) {
-        setMunicipiosOptions(municipios[profile.main_office_department] || []);
-      }
-    }
-  }, [profile, user]);
 
   const handleChange = (event) => {
     const { name, value, type, checked } = event.target;
@@ -119,11 +73,11 @@ function Personal({ onFormSubmit, formNames }) {
     }));
     validateField(name, type === 'checkbox' ? checked : value);
 
-    if (name === 'main_office_department') {
+    if (name === 'mainOfficeDepartment') {
       setMunicipiosOptions(municipios[value] || []);
       setFormData(prevFormData => ({
         ...prevFormData,
-        main_office_municipality: ''
+        mainOfficeMunicipality: ''
       }));
     }
   };
@@ -133,12 +87,15 @@ function Personal({ onFormSubmit, formNames }) {
     const currentDate = new Date();
 
     switch (name) {
-      case 'phone_number':
-      case 'company_nit':
+      case 'email':
+        tempErrors[name] = /\S+@\S+\.\S+/.test(value) ? '' : 'Correo electrónico no válido';
+        break;
+      case 'identificationNumber':
+      case 'phoneNumber':
         tempErrors[name] = /^[0-9\- ]+$/.test(value) ? '' : 'Solo se permiten caracteres numéricos y símbolos específicos';
         break;
-      case 'birth_date':
-      case 'operation_start_year':
+      case 'birthDate':
+      case 'operationStarYear':
         const inputDate = new Date(value);
         tempErrors[name] = (inputDate <= currentDate) ? '' : 'La fecha no puede ser futura';
         break;
@@ -149,18 +106,37 @@ function Personal({ onFormSubmit, formNames }) {
     setErrors(tempErrors);
   };
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (validateForm() && formData.dataConsent) {
+      onFormSubmit(formData);
+    } else {
+      console.error("Validation errors", errors);
+      if (!formData.dataConsent) {
+        alert('Debe autorizar el tratamiento de los datos personales para continuar.');
+      }
+    }
+  };
+
   const validateForm = () => {
     let tempErrors = {};
     const currentDate = new Date();
 
     Object.keys(formData).forEach(key => {
-      if (key === 'phone_number' || key === 'company_nit') {
-        if (!/^[0-9\- ]+$/.test(formData[key])) {
-          tempErrors[key] = 'Solo se permiten caracteres numéricos y símbolos específicos';
-        }
+      if (!formData[key] && key !== 'dataConsent') {
+        tempErrors[key] = 'Este campo es obligatorio';
       }
 
-      if ((key === 'birth_date' || key === 'operation_start_year') && formData[key]) {
+      if (key === 'email' && formData.email && !/\S+@\S+\.\S+/.test(formData.email)) {
+        tempErrors.email = 'Correo electrónico no válido';
+      }
+
+      if ((key === 'identificationNumber' || key === 'phoneNumber') &&
+        !/^[0-9\- ]+$/.test(formData[key])) {
+        tempErrors[key] = 'Solo se permiten caracteres numéricos y símbolos específicos';
+      }
+
+      if (key === 'birthDate' && formData[key]) {
         const inputDate = new Date(formData[key]);
         if (inputDate > currentDate) {
           tempErrors[key] = 'La fecha no puede ser futura';
@@ -171,32 +147,6 @@ function Personal({ onFormSubmit, formNames }) {
     setErrors(tempErrors);
     return Object.keys(tempErrors).length === 0;
   };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    if (validateForm() && formData.data_consent) {
-      try {
-        console.log('Submitting formData:', formData);
-        const updatedProfile = await updateUserProfile(user.token, formData);
-        alert('Perfil actualizado con éxito');
-  
-        updateProfile(updatedProfile);
-  
-        if (onFormSubmit) {
-          onFormSubmit(formData);
-        }
-      } catch (error) {
-        console.error('Error updating profile:', error);
-        alert(`Ocurrió un error al actualizar el perfil: ${error.message}`);
-      }
-    } else {
-      console.error("Validation errors", errors);
-    }
-  };
-
-  if (loading || !user) {
-    return <p>Cargando...</p>;
-  }
 
   return (
     <>
@@ -226,170 +176,31 @@ function Personal({ onFormSubmit, formNames }) {
 
               <div className="options__information--labels">
                 <div className='options__information--label'>
-                  <label htmlFor="full_name" className="form-label">
-                    Nombre del emprendedor/empresario *
+                  <label htmlFor="userName" className="form-label">
+                    Nombre del emprendedor/empresario * {errors.userName && <span className="error-message">{errors.userName}</span>}
                   </label>
                   <input
                     type="text"
-                    id="full_name"
-                    name="full_name"
+                    id="userName"
+                    name="userName"
                     placeholder="Ingresar nombre completo"
                     required
                     className="form-input"
-                    value={formData.user_name}
-                    readOnly
-                  />
-                </div>
-
-                <div className='options__information--label'>
-                  <label htmlFor="document" className="form-label">
-                    Número de identificación *
-                  </label>
-                  <input
-                    type='text'
-                    id="document"
-                    name="document"
-                    placeholder="Ingresar número de identificación"
-                    required
-                    className="form-input"
-                    value={formData.document}
-                    readOnly
-                  />
-                </div>
-
-                <div className='options__information--label'>
-                  <label htmlFor="ethnic_group" className="form-label">
-                    Se autorreconoce o pertenece a alguno de estos grupos étnicos * {errors.ethnic_group && <span className="error-message">{errors.ethnic_group}</span>}
-                  </label>
-                  <select
-                    id="ethnic_group"
-                    name="ethnic_group"
-                    required
-                    className="form-select"
-                    value={formData.ethnic_group}
-                    onChange={handleChange}
-                  >
-                    <option value="" disabled>Seleccione grupo étnico</option>
-                    <option value="otro">Otro</option>
-                    <option value="afrodescendiente">Afrodescendiente</option>
-                    <option value="indígena">Indígena</option>
-                    <option value="mestizo_blanco">Mestizo/Blanco</option>
-                    <option value="palanquero_san_brasilio">Palanquero de San Basilio</option>
-                    <option value="raizal_san_andrés">Raizal del Archipiélago de San Andrés</option>
-                  </select>
-                </div>
-
-                <div className='options__information--label'>
-                  <label htmlFor="phone_number" className="form-label">
-                    Teléfono/celular de contacto * {errors.phone_number && <span className="error-message">{errors.phone_number}</span>}
-                  </label>
-                  <input
-                    type="tel"
-                    id="phone_number"
-                    name="phone_number"
-                    placeholder="Ingresar número de contacto"
-                    required
-                    className="form-input"
-                    value={formData.phone_number}
-                    onChange={handleChange}
-                  />
-                </div>
-              </div>
-
-              <div className="options__information--labels">
-
-                <div className='options__information--label'>
-                  <label htmlFor="company_type" className="form-label">
-                    Tipo de Análisis * {errors.company_type && <span className="error-message">{errors.company_type}</span>}
-                  </label>
-                  <select
-                    id="company_type"
-                    name="company_type"
-                    required
-                    className="form-select"
-                    value={formData.company_type}
-                    onChange={handleChange}
-                  >
-                    <option value="" disabled>Seleccione tipo de análisis</option>
-                    {formNames.map((formName, index) => (
-                      <option key={index} value={formName}>{formName}</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className='options__information--label'>
-                  <label htmlFor="birth_date" className="form-label">
-                    Fecha de nacimiento * {errors.birth_date && <span className="error-message">{errors.birth_date}</span>}
-                  </label>
-                  <input
-                    type="date"
-                    id="birth_date"
-                    name="birth_date"
-                    required
-                    className="form-input"
-                    value={formData.birth_date}
+                    value={formData.userName}
                     onChange={handleChange}
                   />
                 </div>
 
                 <div className='options__information--label'>
-                  <label htmlFor="disability" className="form-label">
-                    Tiene alguna clase de discapacidad * {errors.disability && <span className="error-message">{errors.disability}</span>}
+                  <label htmlFor="identificationType" className="form-label">
+                    Tipo de documento de identificación * {errors.identificationType && <span className="error-message">{errors.identificationType}</span>}
                   </label>
                   <select
-                    id="disability"
-                    name="disability"
+                    id="identificationType"
+                    name="identificationType"
                     required
                     className="form-select"
-                    value={formData.disability}
-                    onChange={handleChange}
-                  >
-                    <option value="" disabled>Seleccione si tiene alguna discapacidad</option>
-                    <option value="cognitiva">Cognitiva</option>
-                    <option value="mental">Mental</option>
-                    <option value="multiple">Múltiple</option>
-                    <option value="sensorial_auditiva">Sensorial Auditiva</option>
-                    <option value="sensorial_física">Sensorial Física</option>
-                    <option value="sensorial_visual">Sensorial Visual</option>
-                    <option value="ninguna">Ninguna</option>
-                  </select>
-                </div>
-
-                <div className='options__information--label'>
-                  <label htmlFor="highest_education_level" className="form-label">
-                    Nivel educativo más alto que has completado * {errors.highest_education_level && <span className="error-message">{errors.highest_education_level}</span>}
-                  </label>
-                  <select
-                    id="highest_education_level"
-                    name="highest_education_level"
-                    required
-                    className="form-select"
-                    value={formData.highest_education_level}
-                    onChange={handleChange}
-                  >
-                    <option value="" disabled>Seleccione nivel educativo</option>
-                    <option value="primaria">Primaria</option>
-                    <option value="secundaria">Secundaria</option>
-                    <option value="técnico_tecnológico">Técnico o Tecnológico</option>
-                    <option value="universitario_pregrado">Universitario (pregrado)</option>
-                    <option value="especialización_maestría">Especialización o maestría</option>
-                    <option value="doctorado_postdoctorado">Doctorado o postdoctorado</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className="options__information--labels">
-
-                <div className='options__information--label'>
-                  <label htmlFor="identification_type" className="form-label">
-                    Tipo de documento de identificación * {errors.identification_type && <span className="error-message">{errors.identification_type}</span>}
-                  </label>
-                  <select
-                    id="identification_type"
-                    name="identification_type"
-                    required
-                    className="form-select"
-                    value={formData.identification_type}
+                    value={formData.identificationType}
                     onChange={handleChange}
                   >
                     <option value="" disabled>Seleccione un tipo de documento</option>
@@ -400,27 +211,59 @@ function Personal({ onFormSubmit, formNames }) {
                 </div>
 
                 <div className='options__information--label'>
-                  <label htmlFor="gender" className="form-label">
-                    Género * {errors.gender && <span className="error-message">{errors.gender}</span>}
+                  <label htmlFor="identificationNumber" className="form-label">
+                    Número de identificación * {errors.identificationNumber && <span className="error-message">{errors.identificationNumber}</span>}
                   </label>
-                  <select
-                    id="gender"
-                    name="gender"
+                  <input
+                    type='text'
+                    id="identificationNumber"
+                    name="identificationNumber"
+                    placeholder="Ingresar número de identificación"
                     required
-                    className="form-select"
-                    value={formData.gender}
+                    className="form-input"
+                    value={formData.identificationNumber}
                     onChange={handleChange}
-                  >
-                    <option value="" disabled>Seleccione género</option>
-                    <option value="masculino">Masculino</option>
-                    <option value="femenino">Femenino</option>
-                    <option value="no_identifico">No me identifico</option>
-                  </select>
+                  />
+                </div>
+
+              </div>
+
+              <div className="options__information--labels">
+
+                <div className='options__information--label'>
+                  <label htmlFor="birthDate" className="form-label">
+                    Fecha de nacimiento * {errors.birthDate && <span className="error-message">{errors.birthDate}</span>}
+                  </label>
+                  <input
+                    type="date"
+                    id="birthDate"
+                    name="birthDate"
+                    required
+                    className="form-input"
+                    value={formData.birthDate}
+                    onChange={handleChange}
+                  />
                 </div>
 
                 <div className='options__information--label'>
+                  <label htmlFor="phoneNumber" className="form-label">
+                    Teléfono/celular de contacto * {errors.phoneNumber && <span className="error-message">{errors.phoneNumber}</span>}
+                  </label>
+                  <input
+                    type="tel"
+                    id="phoneNumber"
+                    name="phoneNumber"
+                    placeholder="Ingresar número de contacto"
+                    required
+                    className="form-input"
+                    value={formData.phoneNumber}
+                    onChange={handleChange}
+                  />
+                </div>
+
+                <div>
                   <label htmlFor="email" className="form-label">
-                    Correo electrónico *
+                    Correo electrónico * {errors.email && <span className="error-message">{errors.email}</span>}
                   </label>
                   <input
                     type="email"
@@ -430,13 +273,38 @@ function Personal({ onFormSubmit, formNames }) {
                     required
                     className="form-input"
                     value={formData.email}
-                    readOnly
+                    onChange={handleChange}
                   />
                 </div>
 
               </div>
+
+              <div className="options__information--labels">
+
+                <div className='options__information--label'>
+                  <label htmlFor="analysisType" className="form-label">
+                    Tipo de Análisis * {errors.analysisType && <span className="error-message">{errors.analysisType}</span>}
+                  </label>
+                  <select
+                    id="analysisType"
+                    name="analysisType"
+                    required
+                    className="form-select"
+                    value={formData.analysisType}
+                    onChange={handleChange}
+                  >
+                    <option value="" disabled>Seleccione tipo de análisis</option>
+                    {formNames.map((formName, index) => (
+                      <option key={index} value={formName}>{formName}</option>
+                    ))}
+                  </select>
+                </div>
+              
+              </div>
+
             </div>
-          </div>
+
+          </div>  
 
           <div className="options__information--container">
             <h5 className='options__information--title'>información de la empresa</h5>
@@ -446,224 +314,51 @@ function Personal({ onFormSubmit, formNames }) {
               <div className="options__information--labels">
 
                 <div className='options__information--label'>
-                  <label htmlFor="company_name" className="form-label">
-                    Nombre de empresa * {errors.company_name && <span className="error-message">{errors.company_name}</span>}
+                  <label htmlFor="companyName" className="form-label">
+                    Nombre de empresa * {errors.companyName && <span className="error-message">{errors.companyName}</span>}
                   </label>
                   <input
                     type="text"
-                    id="company_name"
-                    name="company_name"
+                    id="companyName"
+                    name="companyName"
                     placeholder="Ingrese el nombre de la empresa"
                     required
                     className="form-input"
-                    value={formData.company_name}
+                    value={formData.companyName}
                     onChange={handleChange}
                   />
                 </div>
 
                 <div className='options__information--label'>
-                  <label htmlFor="operation_start_year" className="form-label">
-                    Año en el que inició operaciones * {errors.operation_start_year && <span className="error-message">{errors.operation_start_year}</span>}
-                  </label>
-                  <input
-                    type="date"
-                    id="operation_start_year"
-                    name="operation_start_year"
-                    required
-                    className="form-input"
-                    value={formData.operation_start_year}
-                    onChange={handleChange}
-                  />
-                </div>
-
-                <div className='options__information--label'>
-                  <label htmlFor="main_office_municipality" className="form-label">
-                    Municipio donde se ubica la sede principal de la empresa * {errors.main_office_municipality && <span className="error-message">{errors.main_office_municipality}</span>}
-                  </label>
-                  <select
-                    id="main_office_municipality"
-                    name="main_office_municipality"
-                    required
-                    className="form-select"
-                    value={formData.main_office_municipality}
-                    onChange={handleChange}
-                    disabled={!formData.main_office_department}
-                  >
-                    <option value="" disabled>Seleccione municipio</option>
-                    {municipiosOptions.map(municipio => (
-                      <option key={municipio} value={municipio}>{municipio}</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className='options__information--label'>
-                  <label htmlFor="market_reach" className="form-label">
-                    ¿Cuál es el tipo de mercado al que llega actualmente tu emprendimiento? * {errors.market_reach && <span className="error-message">{errors.market_reach}</span>}
-                  </label>
-                  <select
-                    id="market_reach"
-                    name="market_reach"
-                    required
-                    className="form-select"
-                    value={formData.market_reach}
-                    onChange={handleChange}
-                  >
-                    <option value="" disabled>Seleccione el alcance de mercado</option>
-                    <option value="local">Local (ciudad/municipio)</option>
-                    <option value="regional">Regional (departamento / región del país)</option>
-                    <option value="nacional">Nacional</option>
-                    <option value="nacional_internacional">Nacional e internacional</option>
-                    <option value="solo_internacional">Solo internacional</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className="options__information--labels">
-
-                <div className='options__information--label'>
-                  <label htmlFor="company_nit" className="form-label">
-                    NIT de empresa (O número de documento en caso de no tenerlo) * {errors.company_nit && <span className="error-message">{errors.company_nit}</span>}
+                  <label htmlFor="companyNIT" className="form-label">
+                    NIT de empresa (O número de documento en caso de no tenerlo) * {errors.companyNIT && <span className="error-message">{errors.companyNIT}</span>}
                   </label>
                   <input
                     type="text"
-                    id="company_nit"
-                    name="company_nit"
-                    placeholder={errors.company_nit || 'Ej: 51059231-9'}
+                    id="companyNIT"
+                    name="companyNIT"
+                    placeholder={errors.companyNIT || 'Ej: 51059231-9'}
                     required
                     className="form-input"
-                    value={formData.company_nit}
+                    value={formData.companyNIT}
                     onChange={handleChange}
                   />
                 </div>
 
-                <div className='options__information--label'>
-                  <label htmlFor="registered_in_ccc" className="form-label">
-                    Seleccione la cámara de comercio donde se encuentra matriculado * {errors.registered_in_ccc && <span className="error-message">{errors.registered_in_ccc}</span>}
-                  </label>
-                  <select
-                    id="registered_in_ccc"
-                    name="registered_in_ccc"
-                    required
-                    className="form-select"
-                    value={formData.registered_in_ccc}
-                    onChange={handleChange}
-                  >
-                    <option value="" disabled>Seleccione una opción</option>
-                    <option value="cámara de comercio de bogotá">Cámara de Comercio de Bogotá</option>
-                    <option value="cámara de comercio de buga">Cámara de Comercio de Buga</option>
-                    <option value="cámara de comercio de cali">Cámara de Comercio de Cali</option>
-                    <option value="cámara de comercio de ibagué">Cámara de Comercio de Ibagué</option>
-                    <option value="cámara de comercio de casanare">Cámara de Comercio de Casanare</option>
-                    <option value="cámara de comercio de cartago">Cámara de Comercio de Cartago</option>
-                    <option value="cámara de comercio de medellín para antioquia">Cámara de Comercio de Medellín para Antioquia</option>
-                    <option value="cámara de comercio de bucaramanga">Cámara de Comercio de Bucaramanga</option>
-                    <option value="cámara de comercio de santa marta">Cámara de Comercio de Santa Marta</option>
-                    <option value="cámara de comercio de manizales">Cámara de Comercio de Manizales</option>
-                    <option value="cámara de comercio de cúcuta">Cámara de Comercio de Cúcuta</option>
-                    <option value="cámara de comercio de montería">Cámara de Comercio de Montería</option>
-                    <option value="cámara de comercio de barranquilla">Cámara de Comercio de Barranquilla</option>
-                    <option value="cámara de comercio del huila">Cámara de Comercio del Huila</option>
-                    <option value="cámara de comercio de cartagena">Cámara de Comercio de Cartagena</option>
-                    <option value="cámara de comercio del oriente antioqueño">Cámara de Comercio del Oriente Antioqueño</option>
-                    <option value="cámara de comercio del magdalena medio y nordeste antioqueño">Cámara de Comercio del Magdalena Medio y Nordeste Antioqueño</option>
-                    <option value="cámara de comercio de palmira">Cámara de Comercio de Palmira</option>
-                    <option value="cámara de comercio de armenia">Cámara de Comercio de Armenia</option>
-                    <option value="cámara de comercio de buenaventura">Cámara de Comercio de Buenaventura</option>
-                    <option value="cámara de comercio del cauca">Cámara de Comercio del Cauca</option>
-                    <option value="cámara de comercio de tuluá">Cámara de Comercio de Tuluá</option>
-                    <option value="cámara de comercio de pereira">Cámara de Comercio de Pereira</option>
-                    <option value="cámara de comercio aburrá sur">Cámara de Comercio Aburrá Sur</option>
-                    <option value="cámara de comercio de villavicencio">Cámara de Comercio de Villavicencio</option>
-                    <option value="ninguna">Ninguna</option>
-                  </select>
-                </div>
-
-                <div className='options__information--label'>
-                  <label htmlFor="business_sector" className="form-label">
-                    ¿Cuál es el sector principal en el que se encuentra tu empresa? * {errors.business_sector && <span className="error-message">{errors.business_sector}</span>}
-                  </label>
-                  <select
-                    id="business_sector"
-                    name="business_sector"
-                    required
-                    className="form-select"
-                    value={formData.business_sector}
-                    onChange={handleChange}
-                  >
-                    <option value="" disabled>Seleccione sector principal</option>
-                    <option value="agricultura">Agricultura</option>
-                    <option value="arte">Arte</option>
-                    <option value="entretenimiento">Entretenimiento</option>
-                    <option value="comunicacion_informacion">Comunicación e información</option>
-                    <option value="construccion">Construcción</option>
-                    <option value="alimentos_empacados">Alimentos empacados listos para consumir y bebidas no alcohólicas</option>
-                    <option value="comercio_mayorista_minorista">Comercio al por mayor y al por menor de mercancías</option>
-                    <option value="proteina_blanca">Proteína blanca (productoras de pollo, cerdo y huevo)</option>
-                    <option value="energia">Energía</option>
-                    <option value="otros_servicios">Otros servicios</option>
-                    <option value="servicios_financieros_empresariales">Servicios financieros y empresariales</option>
-                    <option value="software_hardware">Software y hardware</option>
-                    <option value="transporte">Transporte</option>
-                    <option value="x_tech">X-Tech</option>
-                    <option value="salud">Salud</option>
-                    <option value="belleza_cuidado_personal">Belleza y cuidado personal</option>
-                    <option value="sistema_moda">Sistema moda (Confección, Marroquinería)</option>
-                    <option value="hoteles_servicios_hosteleria">Hoteles y servicios de hostelería y operadores turísticos</option>
-                    <option value="restaurantes">Restaurantes</option>
-                    <option value="otro">Otro</option>
-                  </select>
-                </div>
-
-                <div className='options__information--label'>
-                  <label htmlFor="business_size" className="form-label">
-                    ¿De qué tamaño es tu empresa? * {errors.business_size && <span className="error-message">{errors.business_size}</span>}
-                  </label>
-                  <select
-                    id="business_size"
-                    name="business_size"
-                    required
-                    className="form-select"
-                    value={formData.business_size}
-                    onChange={handleChange}
-                  >
-                    <option value="" disabled>Seleccione el tamaño de la empresa</option>
-                    <option value="unidad_productiva">Unidad Productiva Ventas anuales entre $1 - $ 800.000.000</option>
-                    <option value="micro_mediana">Micro y Mediana. Ventas anuales entre $801.000.000. - $14.000.000.000</option>
-                    <option value="mediana_grande">Mediana y Grande $14.000.000.001- $74.000.000.000</option>
-                  </select>
-                </div>
               </div>
 
               <div className="options__information--labels">
 
                 <div className='options__information--label'>
-                  <label htmlFor="previous_business" className="form-label">
-                    Antes de este emprendimiento/negocio/empresa, ¿Habías creado otra empresa? * {errors.previous_business && <span className="error-message">{errors.previous_business}</span>}
+                  <label htmlFor="mainOfficeDepartment" className="form-label">
+                    Departamento donde se ubica la sede principal de la empresa * {errors.mainOfficeDepartment && <span className="error-message">{errors.mainOfficeDepartment}</span>}
                   </label>
                   <select
-                    id="previous_business"
-                    name="previous_business"
+                    id="mainOfficeDepartment"
+                    name="mainOfficeDepartment"
                     required
                     className="form-select"
-                    value={formData.previous_business}
-                    onChange={handleChange}
-                  >
-                    <option value="" disabled>Seleccione una opción</option>
-                    <option value="si">Sí</option>
-                    <option value="no">No</option>
-                  </select>
-                </div>
-
-                <div className='options__information--label'>
-                  <label htmlFor="main_office_department" className="form-label">
-                    Departamento donde se ubica la sede principal de la empresa * {errors.main_office_department && <span className="error-message">{errors.main_office_department}</span>}
-                  </label>
-                  <select
-                    id="main_office_department"
-                    name="main_office_department"
-                    required
-                    className="form-select"
-                    value={formData.main_office_department}
+                    value={formData.mainOfficeDepartment}
                     onChange={handleChange}
                   >
                     <option value="" disabled>Seleccione departamento</option>
@@ -674,67 +369,93 @@ function Personal({ onFormSubmit, formNames }) {
                 </div>
 
                 <div className='options__information--label'>
-                  <label htmlFor="client_focus" className="form-label">
-                    ¿Cuál es el tipo de cliente en el que se enfoca tu empresa? * {errors.client_focus && <span className="error-message">{errors.client_focus}</span>}
+                  <label htmlFor="mainOfficeMunicipality" className="form-label">
+                    Municipio donde se ubica la sede principal de la empresa * {errors.mainOfficeMunicipality && <span className="error-message">{errors.mainOfficeMunicipality}</span>}
                   </label>
                   <select
-                    id="client_focus"
-                    name="client_focus"
+                    id="mainOfficeMunicipality"
+                    name="mainOfficeMunicipality"
                     required
                     className="form-select"
-                    value={formData.client_focus}
+                    value={formData.mainOfficeMunicipality}
                     onChange={handleChange}
+                    disabled={!formData.mainOfficeDepartment}
                   >
-                    <option value="" disabled>Seleccione el tipo de cliente</option>
-                    <option value="B2B">Su principal cliente es otra empresa (B2B)</option>
-                    <option value="B2C">Sus principales clientes son consumidores o el usuario final (B2C)</option>
-                    <option value="B2G">Sus principales clientes son entes u organizaciones del gobierno (B2G)</option>
+                    <option value="" disabled>Seleccione municipio</option>
+                    {municipiosOptions.map(municipio => (
+                      <option key={municipio} value={municipio}>{municipio}</option>
+                    ))}
                   </select>
                 </div>
 
+              </div>
+
+              <div className="options__information--labels">            
+
                 <div className='options__information--label'>
-                  <label htmlFor="product_type" className="form-label">
-                    ¿Qué tipo de productos y/o servicios ofrece tu empresa? * {errors.product_type && <span className="error-message">{errors.product_type}</span>}
+                  <label htmlFor="operationStartYear" className="form-label">
+                    Año en el que inició operaciones * {errors.operationStartYear && <span className="error-message">{errors.operationStartYear}</span>}
+                  </label>
+                  <input
+                    type="date"
+                    id="operationStartYear"
+                    name="operationStartYear"
+                    required
+                    className="form-input"
+                    value={formData.operationStartYear}
+                    onChange={handleChange}
+                  />
+                </div>
+
+                <div className='options__information--label'>
+                  <label htmlFor="marketReach" className="form-label">
+                    ¿Cuál es el tipo de mercado al que llega actualmente tu emprendimiento? * {errors.marketReach && <span className="error-message">{errors.marketReach}</span>}
                   </label>
                   <select
-                    id="product_type"
-                    name="product_type"
+                    id="marketReach"
+                    name="marketReach"
                     required
                     className="form-select"
-                    value={formData.product_type}
+                    value={formData.marketReach}
                     onChange={handleChange}
                   >
-                    <option value="" disabled>Seleccione el tipo de producto o servicio</option>
-                    <option value="productos_bienes_fisicos">Productos o bienes físicos</option>
-                    <option value="productos_bienes_no_fisicos">Productos o bienes no físicos</option>
-                    <option value="servicios">Servicios</option>
+                    <option value="" disabled>Seleccione el alcance de mercado</option>
+                    <option value="local">Local (ciudad/municipio)</option>
+                    <option value="regional">Regional (departamento / región del país)</option>
+                    <option value="nacional">Nacional</option>
+                    <option value="nacional_internacional">Nacional e internacional</option>
+                    <option value="solo_internacional">Solo internacional</option>
                   </select>
                 </div>
+
               </div>
+
             </div>
+                  
           </div>
+
           <div className='data__treatment'>
             <p className='data__treatment--text'>
-              Autoriza a la Cámara de Comercio de Cali como responsable del tratamiento de los datos personales,
+              Autoriza a Wirk Consulting SAS como responsable del tratamiento de los datos personales,
               para la recolección, almacenamiento, uso, transmisión y/o transferencia de los datos personales
               suministrados en este formulario, para las finalidades dispuestas en la
-              política de tratamiento de datos personales que puede <a className='data__treatment--text' href="https://www.ccc.org.co/wp-content/uploads/2024/05/Tratamiento-de-datos_autodignostico_digitalizate.pdf" target="_blank" rel="noopener noreferrer"> consultar aquí</a>.
+              política de tratamiento de datos personales que puede <a className='data__treatment--text' href="https://www.wirkconsulting.com" target="noreferrer"> consultar aquí</a>.
             </p>
             <div className='data__treatment--check'>
               <input
                 type="checkbox"
-                id="data_consent"
-                name="data_consent"
-                checked={formData.data_consent}
+                id="dataConsent"
+                name="dataConsent"
+                checked={formData.dataConsent}
                 onChange={handleChange}
               />
-              <label htmlFor="data_consent" style={{ paddingLeft: '5px' }}>
-                Autorizo tratamiento de datos personales. {!formData.data_consent && (<span className="error-message">Debe autorizar el tratamiento de los datos personales para continuar.</span>)}
+              <label htmlFor="dataConsent" style={{ paddingLeft: '5px' }}>
+                Autorizo tratamiento de datos personales. {errors.dataConsent && <span className="error-message">{errors.dataConsent || ''}</span>}
               </label>
             </div>
           </div>
           <div className='button__container'>
-            <button type="submit" className="form-submit-button" disabled={!formData.data_consent}>Continuar con el autodiagnóstico</button>
+            <button type="submit" className="form-submit-button" disabled={!formData.dataConsent}>Continuar con el autodiagnóstico</button>
           </div>
         </form>
       </div>

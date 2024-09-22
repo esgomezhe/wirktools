@@ -13,31 +13,21 @@ import os
 # Configuración del log
 logger = logging.getLogger(__name__)
 
-# Mapeo de preguntas de información
 info_questions = {
-    "full_name": "Nombre",
-    "company_type": "Tipo de Empresa",
-    "identification_type": "Tipo de Documento",
-    "document": "Número de Identificación",
-    "birth_date": "Fecha de Nacimiento",
-    "gender": "Género",
-    "ethnic_group": "Grupo Étnico",
-    "disability": "Discapacidad",
+    "userName": "Nombre",
+    "analysisType": "Tipo de Empresa",
+    "identificationType": "Tipo de Documento",
+    "identificationNumber": "Número de Identificación",
+    "birthDate": "Fecha de Nacimiento",
     "email": "Correo Electrónico",
-    "phone_number": "Teléfono",
-    "highest_education_level": "Nivel Educativo Máximo",
-    "company_name": "Nombre de Empresa",
-    "company_nit": "NIT de Empresa",
-    "previous_business": "¿Ha creado otra empresa anteriormente?",
-    "operation_start_year": "Año de Inicio de Operaciones",
-    "registered_in_ccc": "Registrado en CCC",
-    "main_office_department": "Departamento de la Sede Principal",
-    "main_office_municipality": "Municipio de la Sede Principal",
-    "business_sector": "Sector Principal de la Empresa",
-    "product_type": "Tipo de Productos/Servicios Ofrecidos",
-    "client_focus": "Enfoque del Cliente",
-    "market_reach": "Alcance del Mercado",
-    "business_size": "Tamaño de la Empresa",
+    "phoneNumber": "Teléfono",
+    "companyName": "Nombre de la Empresa",
+    "companyNIT": "NIT de la Empresa",
+    "operationStartYear": "Año de Inicio de Operaciones",
+    "mainOfficeDepartment": "Departamento de la Sede Principal",
+    "mainOfficeMunicipality": "Municipio de la Sede Principal",
+    "productType": "Tipo de Productos/Servicios Ofrecidos",
+    "marketReach": "Alcance del Mercado",
 }
 
 # Función para enviar correos de diagnóstico
@@ -115,7 +105,7 @@ def calculate_category_averages(answers):
     except Exception as e:
         logging.error(f"Error calculating category averages: {e}")
         return []
-
+    
 # Función para obtener las preguntas ordenadas
 def get_ordered_answer_questions(forms):
     ordered_answer_questions = []
@@ -225,98 +215,3 @@ def export_as_excel(queryset):
 
     wb.save(response)
     return response
-
-# Función para actualizar el archivo Excel con los datos del último formulario completado
-def update_excel_file():
-    CompletedForm = apps.get_model('forms', 'CompletedForm')
-    file_name = 'completed_forms.xlsx'
-    file_path = os.path.join('media', file_name)
-    
-    last_completed_form = CompletedForm.objects.latest('created_at')
-    
-    if os.path.exists(file_path):
-        try:
-            wb = load_workbook(file_path)
-        except InvalidFileException:
-            wb = Workbook()
-    else:
-        wb = Workbook()
-
-    form_title = last_completed_form.form_title[:31]
-    if form_title in wb.sheetnames:
-        ws = wb[form_title]
-    else:
-        ws = wb.create_sheet(title=form_title)
-        ordered_answer_questions = get_ordered_answer_questions([last_completed_form])
-        headers = ['User', 'Form Title', 'Created At'] + list(info_questions.values()) + ordered_answer_questions + linea_base_headers()
-
-        all_category_averages = set()
-        category_averages = calculate_category_averages(last_completed_form.content.get('answers', []))
-        all_category_averages.update(f"Autodiagnóstico {avg['category']['name']}" for avg in category_averages)
-        headers += list(all_category_averages)
-
-        ws.append(headers)
-
-    ordered_answer_questions = get_ordered_answer_questions([last_completed_form])
-    category_averages = calculate_category_averages(last_completed_form.content.get('answers', []))
-    row = build_row(last_completed_form, ordered_answer_questions, category_averages)
-    ws.append(row)
-
-    for column in ws.columns:
-        max_length = max(len(str(cell.value)) for cell in column)
-        adjusted_width = (max_length + 2)
-        ws.column_dimensions[column[0].column_letter].width = adjusted_width
-
-    wb.save(file_path)
-
-# Encabezados de línea base
-def linea_base_headers():
-    return [
-        'Estado Empresa', 'Ventas 2023', 'Ventas Digitales', 'Porcentaje Ventas Digitales', 
-        'Empleados Mujeres Nómina', 'Empleados Mujeres Temporales', 'Empleados Mujeres Servicios', 
-        'Empleados Mujeres Practicantes', 'Empleados Mujeres Voluntarios', 
-        'Empleados Hombres Nómina', 'Empleados Hombres Temporales', 'Empleados Hombres Servicios', 
-        'Empleados Hombres Practicantes', 'Empleados Hombres Voluntarios', 'Barreras TD', 
-        'Indicadores 0 Nombre', 'Indicadores 0 Antes', 'Indicadores 0 Después', 
-        'Indicadores 1 Nombre', 'Indicadores 1 Antes', 'Indicadores 1 Después', 
-        'Indicadores 2 Nombre', 'Indicadores 2 Antes', 'Indicadores 2 Después', 
-        'Otro Hito', 'Mencionar Hito'
-    ]
-
-# Función para obtener datos de línea base
-def linea_base_data(linea_base):
-    if not linea_base:
-        return ['N/A'] * 26
-
-    empleados_mujeres = linea_base.get('empleados', {}).get('mujeres', {})
-    empleados_hombres = linea_base.get('empleados', {}).get('hombres', {})
-    indicadores = linea_base.get('indicadores', [{}] * 3)
-
-    return [
-        linea_base.get('estadoEmpresa', 'N/A'),
-        linea_base.get('ventas2023', 'N/A'),
-        linea_base.get('ventasDigitales', 'N/A'),
-        linea_base.get('porcentajeVentasDigitales') or 'No hay datos para mostrar',
-        empleados_mujeres.get('nomina', 'N/A'),
-        empleados_mujeres.get('temporales', 'N/A'),
-        empleados_mujeres.get('servicios', 'N/A'),
-        empleados_mujeres.get('practicantes', 'N/A'),
-        empleados_mujeres.get('voluntarios', 'N/A'),
-        empleados_hombres.get('nomina', 'N/A'),
-        empleados_hombres.get('temporales', 'N/A'),
-        empleados_hombres.get('servicios', 'N/A'),
-        empleados_hombres.get('practicantes', 'N/A'),
-        empleados_hombres.get('voluntarios', 'N/A'),
-        ', '.join(linea_base.get('barrerasTD', [])) or 'N/A',
-        indicadores[0].get('nombre', 'N/A'),
-        indicadores[0].get('antes', 'N/A'),
-        indicadores[0].get('despues', 'N/A'),
-        indicadores[1].get('nombre', 'N/A'),
-        indicadores[1].get('antes', 'N/A'),
-        indicadores[1].get('despues', 'N/A'),
-        indicadores[2].get('nombre', 'N/A'),
-        indicadores[2].get('antes', 'N/A'),
-        indicadores[2].get('despues', 'N/A'),
-        linea_base.get('otroHito', 'N/A'),
-        linea_base.get('mencionarHito') or 'No hay datos para mostrar'
-    ]

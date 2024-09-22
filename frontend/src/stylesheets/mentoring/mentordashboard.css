@@ -1,134 +1,134 @@
 .mentor-dashboard {
-    display: flex;
-    justify-content: space-between;
-    padding: 20px;
-    background-color: #f8f9fa;
-    min-height: 70vh;
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  background-color: #f8f9fa;
+  min-height: 70vh;
+}
+
+.left-column, .right-column {
+  width: 48%;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.left-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-right: 20px;
+}
+
+.right-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.sessions, .availability, .mentors, .session-details {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.sessions h2, .availability h2, .mentors h2, .session-details h2 {
+  margin-bottom: 15px;
+  color: #333;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 10px;
+}
+
+.sessions ul, .availability ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.sessions ul li, .availability ul li {
+  padding: 10px;
+  background-color: #f1f1f1;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 15px;
+}
+
+.sessions ul li:hover, .availability ul li:hover {
+  background-color: #e9ecef;
+}
+
+.link input, input[type="text"], textarea {
+  width: 100%;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  margin-bottom: 15px;
+  transition: border-color 0.3s ease;
+}
+
+input:focus, textarea:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  font-size: 13px;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5);
+}
+
+ul li button {
+  margin-left: 10px;
+}
+
+.session-details input, .session-details textarea {
+  margin-bottom: 15px;
+}
+
+.session-details textarea {
+  resize: none;
+  height: 100px;
+}
+
+h1 {
+  margin-bottom: 20px;
+  color: #343a40;
+}
+
+p {
+  color: #6c757d;
+}
+
+@media (max-width: 768px) {
+  .mentor-dashboard {
+    flex-direction: column;
   }
-  
+
   .left-column, .right-column {
-    width: 48%;
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .left-column {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    margin-right: 20px;
-  }
-  
-  .right-column {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-  
-  .sessions, .availability, .mentors, .session-details {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
     width: 100%;
-  }
-  
-  .sessions h2, .availability h2, .mentors h2, .session-details h2 {
-    margin-bottom: 15px;
-    color: #333;
-    border-bottom: 2px solid #007bff;
-    padding-bottom: 10px;
-  }
-  
-  .sessions ul, .availability ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .sessions ul li, .availability ul li {
-    padding: 10px;
-    background-color: #f1f1f1;
-    border-radius: 4px;
-    margin-bottom: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 15px;
-  }
-  
-  .sessions ul li:hover, .availability ul li:hover {
-    background-color: #e9ecef;
-  }
-  
-  .link input, input[type="text"], textarea {
-    width: 100%;
-    border-radius: 4px;
-    border: 1px solid #ddd;
-    margin-bottom: 15px;
-    transition: border-color 0.3s ease;
-  }
-  
-  input:focus, textarea:focus {
-    border-color: #007bff;
-    outline: none;
-  }
-  
-  button {
-    background-color: #007bff;
-    color: white;
-    font-size: 13px;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-  }
-  
-  button:hover {
-    background-color: #0056b3;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  button:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5);
-  }
-  
-  ul li button {
-    margin-left: 10px;
-  }
-  
-  .session-details input, .session-details textarea {
-    margin-bottom: 15px;
-  }
-  
-  .session-details textarea {
-    resize: none;
-    height: 100px;
-  }
-  
-  h1 {
+    margin-right: 0;
     margin-bottom: 20px;
-    color: #343a40;
   }
-  
-  p {
-    color: #6c757d;
-  }
-  
-  @media (max-width: 768px) {
-    .mentor-dashboard {
-      flex-direction: column;
-    }
-  
-    .left-column, .right-column {
-      width: 100%;
-      margin-right: 0;
-      margin-bottom: 20px;
-    }
-  }
+}

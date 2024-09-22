@@ -5,7 +5,7 @@ from forms.models import Category
 class Mentoring(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     is_mentor = models.BooleanField(default=False)
-    is_apprentice = models.BooleanField(default=True)
+    is_apprentice = models.BooleanField(default=False)
     about = models.TextField(blank=True, null=True)  # Acerca del mentor
     rating = models.DecimalField(max_digits=3, decimal_places=2, default=0.00)  # Rating promedio del mentor
     total_ratings = models.PositiveIntegerField(default=0)  # Número total de calificaciones

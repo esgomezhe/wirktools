@@ -1,84 +1,131 @@
-import React from 'react'
-import '../stylesheets/newHome/footerHome.css'
-import { Facebook, Instagram, Linkedin, X, Youtube } from 'iconoir-react';
-import CallCenter from '../img/svg/call_footer.svg'
-import Email from '../img/svg/email_footer.svg'
-import EmailJudicial from '../img/svg/email2_footer.svg'
+import React, { useEffect } from "react";
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+import '../stylesheets/home/style.css';
 
+const FooterLink = ({ iconClass, text, href }) => (
+  <li><i className={iconClass}></i> <a href={href}>{text}</a></li>
+);
 
-function FooterHome() {
+function Footer() {
+  useEffect(() => {
+    AOS.init();
+
+    // Back to top button
+    let backtotop = document.querySelector('.back-to-top');
+
+    if (backtotop) {
+      const toggleBacktotop = () => {
+        if (window.scrollY > 100) {
+          backtotop.classList.add('active');
+        } else {
+          backtotop.classList.remove('active');
+        }
+      }
+
+      window.addEventListener('load', toggleBacktotop);
+      window.addEventListener('scroll', toggleBacktotop);
+
+      // Cleanup on component unmount
+      return () => {
+        window.removeEventListener('load', toggleBacktotop);
+        window.removeEventListener('scroll', toggleBacktotop);
+      };
+    }
+  }, []);
+
+  const handleBackToTop = () => {
+    // Scrolls to the top of the page
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
+
   return (
     <>
-      <footer className='footer__page'>
-        <div className="footer__content">
-          <div className='footer__content--container'>
-            <div className="footer__section">
-              <div className='footer__logos'>
-                <img src={require('../img/logo.jpg')} alt="camara de comercio cali logo" height={40} />
-                <div className="footer_logos--wirk">
-                  <span className='wirk--span'>Con el apoyo de:</span>
-                  <img src={require('../img/wirk_logo.jpg')} alt="wirkconsulting logo" height={37} />
-                </div>
+      <footer id="footer" data-aos="fade-up" data-aos-easing="ease-in-out" data-aos-duration="500">
+        <div className="footer-newsletter">
+          <div className="container">
+            <div className="row">
+              <div className="col-lg-6">
+                <h4>Nuestro Newsletter</h4>
+                <p>Suscríbete a nuestro Newsletter para obtener las actualizaciones de nuestras herramientas y ofertas exclusivas</p>
               </div>
-
-              <div className='footer__direction'>
-                <span className='footer__direction--span'>cámara de comercio de cali</span>
-                <p className='footer__direction--text'>NIT: 890399001-1</p>
-                <p className='footer__direction--text'>Calle 8 No. 3 - 14</p>
-                <p className='footer__direction--text'>Cali, valle, colombia</p>
+              <div className="col-lg-6">
+                <form action="" method="post">
+                  <input type="email" name="email" /><input type="submit" value="Subscribe" />
+                </form>
               </div>
             </div>
+          </div>
+        </div>
 
-            <div className='footer__contact'>
-              <div className='footer__contact--text'>
-                <img src={CallCenter} width={15} alt='call center' />
-                <div className='contact--text-container'>
-                  <span className='footer__contact--span'> call center: </span>
-                  <a href="tel:(602)8861300" className='footer__contact--link'>+57 (602) 8861300</a>
-                </div>
+        <div className="footer-top">
+          <div className="container">
+            <div className="row">
+
+              <div className="col-lg-3 col-md-6 footer-links">
+                <h4>Mapa del Sitio</h4>
+                <ul>
+                  <FooterLink iconClass="bx bx-chevron-right" text="Inicio" href="/" />
+                  <FooterLink iconClass="bx bx-chevron-right" text="Acerca de nostros" href="https://wirkconsulting.com/#equipo" />
+                  <FooterLink iconClass="bx bx-chevron-right" text="Servicios" href="https://wirkconsulting.com/#diagnosticos" />
+                  <FooterLink iconClass="bx bx-chevron-right" text="Terminos de servico" href="https://wirkconsulting.com/" />
+                  <FooterLink iconClass="bx bx-chevron-right" text="Políticas de privacidad" href="https://wirkconsulting.com/" />
+                </ul>
               </div>
 
-              <div className='footer__contact--text'>
-                <img src={Email} width={15} alt='email' />
-                <div className='contact--text-container'>
-                  <span className='footer__contact--span'> email: </span>
-                  <a href="mailto:transformatedigital@ccc.org.co" className='footer__contact--link' >transformatedigital@ccc.org.co</a>
-                </div>
+              <div className="col-lg-3 col-md-6 footer-links">
+                <h4>Nuestras Herramientas</h4>
+                <ul>
+                  <FooterLink iconClass="bx bx-chevron-right" text="Autodiagnóstico" href="/autodiagnostico/" />
+                  <FooterLink iconClass="bx bx-chevron-right" text="Marketplace" href="/marketplace/" />
+                  <FooterLink iconClass="bx bx-chevron-right" text="Mentorías" href="/mentorias/" />
+                  <FooterLink iconClass="bx bx-chevron-right" text="Cursos Virtuales" href="/academia/" />
+                </ul>
               </div>
 
-              <div className='footer__contact--text'>
-                <img src={EmailJudicial} width={15} alt='notification email' />
-                <div className='contact--text-container'>
-                  <span className='footer__contact--span'> Notificaciones judiciales: </span>
-                  <a href="mailto:notificacionesjudiciales@ccc.org.co" className='footer__contact--link'>notificacionesjudiciales@ccc.org.co</a>
+              <div className="col-lg-3 col-md-6 footer-contact">
+                <h4>Conntáctanos</h4>
+                <p>
+                  Calle 22 #22-26<br />
+                  Manizales, Caldas<br />
+                  Colombia<br /><br />
+                  <strong>Teléfono: </strong>(606) 8800609<br />
+                  <strong>Email: </strong>gerencia@wirkconsulting.com<br />
+                </p>
+              </div>
+
+              <div className="col-lg-3 col-md-6 footer-info">
+                <h3>Acerca de Wirk Consulting SAS</h3>
+                <p>
+                  Somos una firma de consultoría que genera valor y confianza a sus clientes y aporta a las organizaciones conocimiento y experiencia para llevarte al siguiente nivel
+                </p>
+                <div className="social-links mt-3">
+                  <a href="/" className="twitter"><i className="bx bxl-twitter"></i></a>
+                  <a href="/" className="facebook"><i className="bx bxl-facebook"></i></a>
+                  <a href="/" className="instagram"><i className="bx bxl-instagram"></i></a>
+                  <a href="/" className="linkedin"><i className="bx bxl-linkedin"></i></a>
                 </div>
               </div>
             </div>
+          </div>
+        </div>
 
-            <div className="footer__tools">
-              <span className='footer__tools--span'>Autodiagnósticos disponibles</span>
-              <a href="/autodiagnostico/" className='footer__tools--text'>Medianas y grandes empresas</a>
-              <a href="/autodiagnostico/" className='footer__tools--text'>Micros y pequeñas empresas</a>
-              <a href="/autodiagnostico/" className='footer__tools--text'>Economía popular, asociativa y comunitaria</a>
-              <a href="/autodiagnostico/" className='footer__tools--text'>Excelencia clínica</a>
-            </div>
+        <div className="container">
+          <div className="copyright">
+            &copy; Copyright <strong><span>Wirk Consulting SAS</span></strong>. All Rights Reserved
           </div>
         </div>
       </footer>
-      <div className="footer__socialmedia">
-        <div className="footer__socialmedia--container">
-          <div className="footer__socialmedia--links">
-            <a href="https://www.facebook.com/CamaraComercioCali" className='social--link' target='_blank' rel="noreferrer"><Facebook /></a>
-            <a href="https://twitter.com/camaracali" className='social--link' target='_blank' rel="noreferrer"><X /></a>
-            <a href="https://www.youtube.com/user/camaradecomerciocali" className='social--link' target='_blank' rel="noreferrer"><Youtube /></a>
-            <a href="https://www.instagram.com/camaracali/" className='social--link' target='_blank' rel="noreferrer"><Linkedin /></a>
-            <a href="https://www.linkedin.com/company/camara-de-comercio-de-cali/" className='social--link' target='_blank' rel="noreferrer"><Instagram /></a>
-          </div>
-          <p className='footer__socialmedia--text'>© 2024. Todos los derechos reservados</p>
-        </div>
-      </div>
+
+      {/* Back to top button */}
+      <a href="/" className="back-to-top d-flex align-items-center justify-content-center" onClick={handleBackToTop}>
+        <i className="bi bi-arrow-up-short"></i>
+      </a>
     </>
-  )
+  );
 }
 
-export default FooterHome
+export default Footer;

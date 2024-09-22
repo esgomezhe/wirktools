@@ -1,11 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { sliderSettings, calculateIntensidadDigitalScore, calculateGestionTransformacionalScore } from '../../utils/chartConfigs';
+import { sliderSettings } from '../../utils/chartConfigs';
+//import { calculateIntensidadDigitalScore, calculateGestionTransformacionalScore } from '../../utils/chartConfigs';
 import BarChart from '../../charts/BarChart';
 import RadarChart from '../../charts/RadarChart';
-import BubbleChart from '../../charts/BubbleChart';
+//import BubbleChart from '../../charts/BubbleChart';
 import PercentageChart from '../../charts/PercentageChart';
-import '../../stylesheets/formCompletion.css';
+import '../../stylesheets/results.css';
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -15,8 +16,8 @@ import figure from '../../img/svg/formulario_figure.svg';
 
 const ResultsDisplay = ({ userData, categoryData }) => {
 
-  const intensidadDigitalScore = calculateIntensidadDigitalScore(categoryData);
-  const gestionTransformacionalScore = calculateGestionTransformacionalScore(categoryData);
+  //const intensidadDigitalScore = calculateIntensidadDigitalScore(categoryData);
+  //const gestionTransformacionalScore = calculateGestionTransformacionalScore(categoryData);
 
   return (
     <div className="results">
@@ -27,20 +28,22 @@ const ResultsDisplay = ({ userData, categoryData }) => {
         <div className="notice__options">
           <Link to={'/'}><img src={home} alt="home" /> </Link>
           <img src={arrow} alt="arrow" />
-          <p className='notice__options--text'>Resultados</p>
+          <p className='notice__options--text'>Formulario de línea base</p>
         </div>
         <div className="notice__title--container">
           <h4 className='notice__title'>
-            {`Bienvenido, ${userData?.info?.full_name || 'Usuario'}! Estos son tus resultados de ${userData?.info?.company_type || ''}`}
+            {`Bienvenido, ${userData?.info?.userName || 'Usuario'}! Estos son tus resultados de ${userData?.info?.analysisType || ''}`}
           </h4>
         </div>
       </div>
 
       <section className="results">
-        <div className="slider-container">
+        <div className="category-container">
           <Slider {...sliderSettings}>
             {categoryData.map((category, index) => (
-              <PercentageChart key={index} category={category} />
+              <div className="slider-container" key={index}>
+                <PercentageChart category={category} />
+              </div>
             ))}
           </Slider>
         </div>
@@ -51,13 +54,17 @@ const ResultsDisplay = ({ userData, categoryData }) => {
           <div className="chart">
             <RadarChart categories={categoryData} />
           </div>
+          {/* 
           <div className="chart">
             <BubbleChart intensidadDigital={intensidadDigitalScore} gestionTransformacional={gestionTransformacionalScore} />
           </div>
+          */}
         </div>
+        {/* 
         <div className='restart-form'>
           <Link className='results-button restart' to='/autodiagnostico'>Rellenar otro formulario</Link>
         </div>
+        */}
       </section>
     </div>
   );
